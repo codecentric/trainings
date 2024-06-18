@@ -1,0 +1,33 @@
+
+name: kc-fundamentals-lab4
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.5
+    environment:
+
+      # Keycloak Admin User
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      # Logging, see: https://www.keycloak.org/server/logging
+      KC_LOG_LEVEL: INFO
+
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+
+    ports:
+      - 8080:8080   # HTTP
+
+    networks:
+      - backend
+
+    command:
+      - "--verbose"
+      - "start-dev" # Only for Dev-Environment!
+
+networks:
+  backend:
+
+volumes:
+  keycloak-data:
