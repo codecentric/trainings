@@ -1,0 +1,59 @@
+
+name: kc-fundamentals-lab3-1
+services:
+
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    restart: unless-stopped
+    command:
+      - --http-address
+      - 0.0.0.0:4180
+    ports:
+      - 4180:4180/tcp
+    environment:
+      OAUTH2_PROXY_UPSTREAMS: <url-of-your-nginx-webapp>
+      OAUTH2_PROXY_COOKIE_SECRET: "OQINaROshtE9TcZkNAm-5Zs2Pv3xaWytBmc5W7sPX7w="
+      OAUTH2_PROXY_PROVIDER: keycloak-oidc
+      OAUTH2_PROXY_PROVIDER_DISPLAY_NAME: Keycloak
+      OAUTH2_PROXY_CLIENT_ID: <client-id-of-your-client-in-keycloak>
+      OAUTH2_PROXY_CLIENT_SECRET: <client-secret-of-your-client-in-keycloak>
+      OAUTH2_PROXY_REDIRECT_URL: http://localhost:4180/oauth2/callback
+      OAUTH2_PROXY_OIDC_ISSUER_URL: <issuer-url-of-your-keycloak-realm>
+      OAUTH2_PROXY_COOKIE_SECURE: false
+      OAUTH2_PROXY_PASS_ACCESS_TOKEN: true
+      OAUTH2_PROXY_EMAIL_DOMAINS: <tld-of-your-accepted-users>
+    networks:
+      - backend
+    depends_on:
+      - keycloak
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    networks:
+      - backend
+    restart: always
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.5
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: INFO
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+    command:
+      - "--verbose"
+      - "start-dev"
+networks:
+  backend:
+
+volumes:
+  keycloak-data:
