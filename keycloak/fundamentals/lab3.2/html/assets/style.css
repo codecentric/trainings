@@ -1,0 +1,97 @@
+body {
+    background-color: #eaeaea;
+    font-size: 10px;
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+button {
+    font-family: sans-serif;
+    font-size: 25px;
+    width: 200px;
+    margin: 2px;
+
+    background-color: #22F4AE;
+
+    border: 0;
+}
+
+button:hover {
+    background-color: #00c9ec;
+    cursor: pointer;
+}
+
+hr {
+    border: none;
+    background-color: #eee;
+    height: 10px;
+}
+
+.title {
+    float: left;
+}
+
+.logo {
+    float: right;
+    padding: 10px;
+}
+
+.menu {
+    margin-bottom: 10px;
+}
+
+.content {
+    font-size: 20px;
+    border: 0;
+    padding: 10px;
+}
+
+.message-content {
+    font-size: 20px;
+    background-color: #fff;
+}
+
+.token-content {
+    font-size: 20px;
+    padding: 5px;
+    white-space: pre;
+    text-transform: none;
+}
+
+.wrapper {
+    position: absolute;
+    left: 10px;
+    top: 80px;
+    bottom: 10px;
+    right: 10px;
+}
+
+.error {
+    color: #a21e22;
+}
+
+table {
+    width: 100%;
+}
+
+table.credentials, table.profile, table.apps {
+    width: unset;
+}
+
+tr.even {
+    background-color: #eee;
+}
+
+td {
+    padding: 5px;
+}
+
+td.label {
+    font-weight: bold;
+    width: 250px;
+}
+
+.hidden {
+    display: none;
+}
