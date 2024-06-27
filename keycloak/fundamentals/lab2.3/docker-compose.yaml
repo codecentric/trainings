@@ -1,0 +1,44 @@
+
+name: kc-fundamentals-lab2-3
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.5
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: INFO
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+    command:
+      - "--verbose"
+      - "start-dev" # Only for Dev-Environment!
+
+  openldap:
+    image: bitnami/openldap:2
+    ports:
+      - '1389:1389'
+      - '1636:1636'
+    environment:
+      LDAP_ADMIN_USERNAME: admin
+      LDAP_ADMIN_PASSWORD: adminpassword
+      LDAP_ADMIN_DN: cn=admin,dc=codecentric,dc=de
+      LDAP_USERS: user01,user02
+      LDAP_PASSWORDS: password1,password2
+      LDAP_USER_DC: users
+      LDAP_ROOT: dc=codecentric,dc=de
+    networks:
+      - backend
+    volumes:
+      - 'openldap-data:/bitnami/openldap'
+
+networks:
+  backend:
+
+volumes:
+  keycloak-data:
+  openldap-data:
