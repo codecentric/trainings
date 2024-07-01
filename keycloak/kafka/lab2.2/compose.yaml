@@ -23,7 +23,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_ADVERTISED_LISTENERS: INTERBROKER://kafka-broker:19091,KAFKAUI://kafka-broker:9091,PUBLIC://kafka-broker:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERBROKER
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERBROKER:PLAINTEXT,KAFKAUI:PLAINTEXT,PUBLIC:SASL_PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERBROKER:PLAINTEXT,KAFKAUI:PLAINTEXT,PUBLIC:PLAINTEXT
 
       # Konfiguration für Authentication-Server
       KAFKA_LISTENER_NAME_PUBLIC_SASL_ENABLED_MECHANISMS: OAUTHBEARER
@@ -75,7 +75,7 @@ services:
       - "--verbose"
       - "start-dev"
     healthcheck:
-      test: curl -f http://keycloak:9000/health/ready
+      test: ["CMD", "sh", "-c", "timeout 10s bash -c ':> /dev/tcp/localhost/8080' || exit 1"]
       interval: 20s
       timeout: 1m
       retries: 5

@@ -23,7 +23,6 @@
     <li>Zustand in der kafka-ui anschauen: http://localhost:8082
 </ol>
 
-
 <u>Teil 2 - Kafka-Client-Kommunikation mit Kafka absichern</u>
 <ol>
     <li>Zuerst müssen die Clients in Keycloak konfiguriert werden: http://localhost:8080
@@ -35,25 +34,10 @@
         </ol>            
     </li>
     <li>Ändere den Listener PUBLIC auf SASL und starte das compose-file neu.</li>
-    <ol>
-            <li>Versuche erneut eine Nachricht zu senden, </li>            
-            
-    </ol>
-</ol>
-            <li>Kafka limitiert die Token mit einer <u>Audience</u> (https://www.keycloak.org/docs/latest/server_admin/#audience-support). Erstelle einen Scope mit einem Audience-Mapper. Wir konfigurieren die Audience 'kafka-broker' hardcoded. Hinweis: Achte darauf, der der erstellte Client Scope zum Client hinzugefügt wird!</li>
-            <li>Das `compose.yaml` anpassen: Ändere die `KAFKA_LISTENER_SECURITY_PROTOCOL_MAP` für den INTERBROKER auf `SASL`PLAINTEXT` und setze die Client-Secrets für die jeweiligen kafla-clients.</li>
-            <li>Das `compose.yaml` neu starten.</li>
-            <li>Über die kafka-ui -> configs lässt sich die aktuelle Konfiguration überprüfen: Was fällt dir beim interbroker protocol auf?</li>
-            <li>Aber auch im `compose.yaml`-Logs lässt sich die Meldung "Successfully authenticated as ..." für den jeweiligen Broker finden.</li>
-        </ol>
-    </li>
+    <li>Versuche erneut eine Nachricht zu senden...</li>
+    <li>Klappt natürlich nicht, konfiguriere den CLI-Client in der kafka-cli.conf</li>
+    <li>Sende eine Nachricht mit der CLI-Konfiguration: `docker-compose exec kafka-cli /bin/kafka-console-producer --broker-list kafka-broker:9092 --topic topic1 --producer.config /etc/kafka/kafka-cli.conf`</li>
+    <li>Empfange die Nachrichten mit der CLI-Konfiguration: `docker-compose exec -it kafka-cli /bin/kafka-console-consumer --bootstrap-server kafka-broker:9092 --topic topic1 --from-beginning --consumer.config /etc/kafka/kafka-cli.conf`</li>
+    <li>Nutze auch gerne die Kafka-UI</li>
     <li>Frage: Warum werden für den Kafka-Broker keine Client-Credentials konfiguriert?</li>
-
-
-
-
-`docker-compose exec -it kafka-cli /bin/kafka-topics --bootstrap-server kafka-broker:9092 --topic topic3 --create --partitions 1 --replication-factor 1`
-`docker-compose exec kafka-cli /bin/kafka-console-producer --broker-list kafka-broker:9092 --topic topic1`
-`docker-compose exec -it kafka-cli /bin/kafka-console-consumer --bootstrap-server kafka-broker:9092 --topic topic1  --from-beginning`
-
-
+</ol>
