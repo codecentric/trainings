@@ -54,8 +54,8 @@ services:
       KAFKA_LISTENER_NAME_INTERBROKER_SASL_OAUTHBEARER_JWKS_ENDPOINT_URL: http://keycloak:8080/realms/kafka/protocol/openid-connect/certs
       KAFKA_LISTENER_NAME_INTERBROKER_SASL_OAUTHBEARER_EXPECTED_AUDIENCE: kafka-broker
       KAFKA_LISTENER_NAME_INTERBROKER_SASL_OAUTHBEARER_EXPECTED_ISSUER: http://keycloak:8080/realms/kafka
-      KAFKA_LISTENER_NAME_INTERBROKER_OAUTHBEARER_SASL_LOGIN_CALLBACK_HANDLER_CLASS: org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginCallbackHandler
       KAFKA_LISTENER_NAME_INTERBROKER_SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL: http://keycloak:8080/realms/kafka/protocol/openid-connect/token
+      KAFKA_LISTENER_NAME_INTERBROKER_OAUTHBEARER_SASL_LOGIN_CALLBACK_HANDLER_CLASS: org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginCallbackHandler
       KAFKA_LISTENER_NAME_INTERBROKER_OAUTHBEARER_SASL_JAAS_CONFIG: org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required clientId="kafka-broker-2" clientSecret="your-secret" scope="profile";
       KAFKA_LISTENER_NAME_INTERBROKER_OAUTHBEARER_SASL_SERVER_CALLBACK_HANDLER_CLASS: org.apache.kafka.common.security.oauthbearer.OAuthBearerValidatorCallbackHandler
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: OAUTHBEARER
@@ -68,7 +68,7 @@ services:
     ports:
       - 8082:8080
     environment:
-      KAFKA_CLUSTERS_0_NAME: kafka-lab1
+      KAFKA_CLUSTERS_0_NAME: kafka-lab2.1
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-broker-1:9091
 
   keycloak:
