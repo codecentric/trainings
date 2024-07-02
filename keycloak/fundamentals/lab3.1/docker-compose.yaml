@@ -4,7 +4,7 @@ services:
 
   oauth2-proxy:
     image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
-    restart: unless-stopped
+    restart: always
     command:
       - --http-address
       - 0.0.0.0:4180
@@ -25,7 +25,8 @@ services:
     networks:
       - backend
     depends_on:
-      - keycloak
+      keycloak:
+        condition: service_healthy
 
   nginx:
     image: nginx:latest
@@ -43,6 +44,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_LOG_LEVEL: INFO
+      KC_HEALTH_ENABLED: true
     volumes:
       - keycloak-data:/opt/keycloak/data:z
     ports:
@@ -52,6 +54,13 @@ services:
     command:
       - "--verbose"
       - "start-dev"
+    healthcheck:
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+
 networks:
   backend:
 
