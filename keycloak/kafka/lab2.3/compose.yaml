@@ -27,7 +27,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERBROKER
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERBROKER:PLAINTEXT,KAFKAUI:PLAINTEXT,PUBLIC:SASL_PLAINTEXT
 
-      # Konfiguration für Authentication-Server
+      # Konfiguration für Authentication-Server für PUBLIC
       KAFKA_LISTENER_NAME_PUBLIC_SASL_ENABLED_MECHANISMS: OAUTHBEARER
       KAFKA_LISTENER_NAME_PUBLIC_SASL_OAUTHBEARER_JWKS_ENDPOINT_URL: http://keycloak:8080/realms/kafka/protocol/openid-connect/certs
       KAFKA_LISTENER_NAME_PUBLIC_SASL_OAUTHBEARER_EXPECTED_AUDIENCE: kafka-broker
@@ -36,9 +36,11 @@ services:
       KAFKA_LISTENER_NAME_PUBLIC_OAUTHBEARER_SASL_SERVER_CALLBACK_HANDLER_CLASS: org.apache.kafka.common.security.oauthbearer.OAuthBearerValidatorCallbackHandler
 
       # Konfiguration ACL
-      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: FALSE
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: FALSE # Bedeutet auch der Kafka-Broker braucht selbst Berechtigungen
       KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-      KAFKA_SUPER_USERS: "User:sub-claim-id"
+      KAFKA_SUPER_USERS: "User:f0c339e9-52de-48ae-87bb-b04275b15720;User:ANONYMOUS"
+      # der User:ANONYMOUS wird Einfachheit halber für die INTERBROKER-Kommunikation und für die Kafja-UI verwendet!
+
 
   kafka-admin-cli:
     image: confluentinc/cp-kafka:7.6.1
@@ -52,7 +54,7 @@ services:
     environment:
       KAFKA_LOG4J_ROOT_LOGLEVEL: DEBUG
     volumes:
-      - ./kafka-user-cli.conf:/etc/kafka/kafka-admin-cli.conf
+      - ./kafka-admin-cli.conf:/etc/kafka/kafka-admin-cli.conf
 
   kafka-user-cli:
     image: confluentinc/cp-kafka:7.6.1
