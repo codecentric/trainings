@@ -1,0 +1,70 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SET_ACL: TRUE
+    ports:
+      - 22181:2181
+
+  kafka-broker:
+    image: confluentinc/cp-kafka:7.6.1
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    ports:
+      - 9091:9091
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG4J_ROOT_LOGLEVEL: TRACE
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ADVERTISED_LISTENERS: INTERBROKER://kafka-broker:19091,KAFKAUI://kafka-broker:9091,PUBLIC://kafka-broker:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERBROKER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERBROKER:PLAINTEXT,KAFKAUI:PLAINTEXT,PUBLIC:PLAINTEXT
+
+      # Konfiguration für Authentication-Server
+      KAFKA_LISTENER_NAME_KAFKAUI_SASL_ENABLED_MECHANISMS: OAUTHBEARER
+      KAFKA_LISTENER_NAME_KAFKAUI_SASL_OAUTHBEARER_JWKS_ENDPOINT_URL: http://keycloak:8080/realms/kafka/protocol/openid-connect/certs
+      KAFKA_LISTENER_NAME_KAFKAUI_SASL_OAUTHBEARER_EXPECTED_AUDIENCE: kafka-lab
+      KAFKA_LISTENER_NAME_KAFKAUI_SASL_OAUTHBEARER_EXPECTED_ISSUER: http://keycloak:8080/realms/kafka
+      KAFKA_LISTENER_NAME_KAFKAUI_OAUTHBEARER_SASL_JAAS_CONFIG: org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
+      KAFKA_LISTENER_NAME_KAFKAUI_OAUTHBEARER_SASL_SERVER_CALLBACK_HANDLER_CLASS: org.apache.kafka.common.security.oauthbearer.OAuthBearerValidatorCallbackHandler
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    depends_on:
+      - kafka-broker
+    ports:
+      - 8082:8080
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka-lab2.4
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-broker:9091
+      SPRING_CONFIG_ADDITIONAL-LOCATION: /config.yml
+    volumes:
+      - ./config.yml:/config.yml
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: INFO
+      JAVA_OPTS_APPEND: "--show-version"
+      DEBUG: "true"
+      DEBUG_PORT: "*:8787"
+      KC_HEALTH_ENABLED: true
+    ports:
+      - 8080:8080
+      - 8787:8787
+      - 9000:9000
+    command:
+      - "--verbose"
+      - "start-dev"
+    healthcheck:
+      test: ["CMD", "sh", "-c", "timeout 10s bash -c ':> /dev/tcp/localhost/8080' || exit 1"]
+      interval: 5s
+      timeout: 1m
+      retries: 10
