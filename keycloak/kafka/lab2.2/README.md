@@ -12,7 +12,7 @@ _Teil 1 - Ungesicherte Kommunikation (Demo Trainer)_
 <ol>
     <li>Schaue dir die <code>compose.yaml</code> an.</li>
     <li>Starte das compose-File: <code>docker-compose up</code></li>
-    <li>Wenn alle Komponenten hochgefahren sind, schauen wir uns das Kafka-Cluster in der kafka-ui an: <a href="http://localhost:8082">http://localhost:8082</a>
+    <li>Wenn alle Komponenten hochgefahren sind, schauen wir uns das Kafka-Cluster in der kafka-ui an: <a href="http://localhost:8082" target="_blank">http://localhost:8082</a>
         <ol>
             <li>Ein Broker ist online</li>
             <li>Es gibt keine Topic, Messages oder Consumer.</li>
@@ -26,7 +26,7 @@ _Teil 1 - Ungesicherte Kommunikation (Demo Trainer)_
 
 <u>Teil 2 - Kafka-Client-Kommunikation mit Kafka absichern</u>
 <ol>
-    <li>Zuerst müssen die Clients in Keycloak konfiguriert werden: <a href="http://localhost:8080">http://localhost:8080</a>
+    <li>Zuerst müssen die Clients in Keycloak konfiguriert werden: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
         <ol>
             <li>Wir konfigurieren alle Apps in einem eigenen Realm (z.B. <code>kafka</code>)</li>            
             <li>Erstelle einen Client Scope mit einem default Audience-Mapper mit der Audience <code>kafka-lab</code></li>            

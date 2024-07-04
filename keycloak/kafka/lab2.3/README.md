@@ -13,7 +13,7 @@ Trainer erklärt das compose-File!
 
 <ol>
     <li>Starte das compose-File: <code>docker-compose up</code></li>
-    <li>Im Keycloak (<a href="http://localhost:8080">http://localhost:8080</a>):
+    <li>Im Keycloak (<a href="http://localhost:8080" target="_blank">http://localhost:8080</a>):
     <ol>
         <li>Erstelle einen Realm <code>kafka</code></li>    
         <li>Konfiguriere einen Client-Scope für die Audience <code>kafka-broker</code></li>
@@ -39,6 +39,6 @@ Trainer erklärt das compose-File!
     <li>Als User die Topics anzeigen lassen: <pre><code>docker-compose exec -it kafka-user-cli /bin/kafka-topics --bootstrap-server kafka-broker:9092 --list --command-config /etc/kafka/kafka-user-cli.conf</code></pre></li>
     <li>Als User versuchen, eine Nachricht zu senden: <pre><code>docker-compose exec kafka-user-cli /bin/kafka-console-producer --broker-list kafka-broker:9092 --topic topic-a --producer.config /etc/kafka/kafka-user-cli.conf</code></pre></li>
     <li>Wir müssen den User für die topic-a berechtigen: <pre><code>docker-compose exec kafka-admin-cli /bin/kafka-acls --bootstrap-server kafka-broker:9092 --add --allow-principal User:user-id --operation ALL --topic topic-a --command-config /etc/kafka/kafka-admin-cli.conf</code></pre></li>
-    <li>Jetzt nochmal als User eine Nachricht versenden und in der <a href="http://localhost:8082">kafka-ui</a> prüfen.</li>
-    <li>In der <a href="http://localhost:8082">kafka-ui</a> lassen sich auch die ACLs anzeigen.</li>
+    <li>Jetzt nochmal als User eine Nachricht versenden und in der <a href="http://localhost:8082" target="_blank">kafka-ui</a> prüfen.</li>
+    <li>In der <a href="http://localhost:8082" target="_blank">kafka-ui</a> lassen sich auch die ACLs anzeigen.</li>
 </ol>

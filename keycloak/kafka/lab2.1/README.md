@@ -11,7 +11,7 @@
 <ol>
     <li>Schaue dir die <code>compose.yaml</code> an.</li>
     <li>Starte das compose-File: <code>docker-compuse up</code></li>
-    <li>Wenn alle Komponenten hochgefahren sind, schauen wir uns das Kafka-Cluster in der Kafka-UI an: <a href="http://localhost:8082">http://localhost:8082</a>
+    <li>Wenn alle Komponenten hochgefahren sind, schauen wir uns das Kafka-Cluster in der Kafka-UI an: <a href="http://localhost:8082" target="_blank">http://localhost:8082</a>
         <ol>
             <li>Unter Brokers sind beide Broker online</li>
             <li>Unter Broker-Details/Configs nach dem Begriff <i>security</i> suchen</li>
@@ -23,7 +23,7 @@
 
 <u>Teil 2 - Interbroker-Kommunikation mit Keycloak absichern</u>
 <ol>
-    <li>Zunächst müssen beide Kafka-Broker als Clients in Keycloak konfiguriert werden: <a href="http://localhost:8080">http://localhost:8080</a>
+    <li>Zunächst müssen beide Kafka-Broker als Clients in Keycloak konfiguriert werden: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
         <ol>
             <li>Wir konfigurieren alle Apps in einem eigenen Realm (z.B. <code>kafka</code>)</li>
             <li>Erstelle für jeden Kafka-Broker einen eigenen Client (<code>kafka-broker-1</code> & <code>kafka-broker-2</code>)</li>
