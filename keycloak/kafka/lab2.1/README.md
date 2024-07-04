@@ -10,7 +10,7 @@
 
 <ol>
     <li>Schaue dir die <code>compose.yaml</code> an.</li>
-    <li>Starte das compose-File: <code>docker-compuse up</code></li>
+    <li>Starte das compose-File: <code>docker-compose up</code></li>
     <li>Wenn alle Komponenten hochgefahren sind, schauen wir uns das Kafka-Cluster in der Kafka-UI an: <a href="http://localhost:8082" target="_blank">http://localhost:8082</a>
         <ol>
             <li>Unter Brokers sind beide Broker online</li>
