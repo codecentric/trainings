@@ -11,8 +11,9 @@
    * Fügt `farbe-step` eine Condition `user attribute` hinzu und konfiguriert via Zahnrad-Symbol den Attribute name auf `farbe` und den Expected attribute value auf `rot`.
    * Fügt `farbe-step` einen Step `Access Denied` hinzu.
    * Setzt die Condition und eurem Access Denied Step als Required.
-6) Prüft, ob euer Benutzer mit der Lieblingsfarbe rot nun Access Denied als Meldung erhält, wenn er sich in die Account Console einloggen will.
-7) Prüft, ob der Login erfolgreich ist, wenn ihr dem Benutzer zuvor eine andere Lieblingsfarbe zuweist.
+6) Über 'Bind Flow' den neuen Flow als Browser-Flow setzen
+7) Prüft, ob euer Benutzer mit der Lieblingsfarbe rot nun Access Denied als Meldung erhält, wenn er sich in die Account Console einloggen will. (http://localhost:8080/realms/acme/account/)
+8) Prüft, ob der Login erfolgreich ist, wenn ihr dem Benutzer zuvor eine andere Lieblingsfarbe zuweist.
 
 ## EN
 
@@ -25,5 +26,6 @@
    * Add a condition `user attribute` to `color-step` and configure the attribute name to `color` and the expected attribute value to `red` via the gear icon.
    * Add a step `Access Denied` to `color-step`.
    * Set the condition and your Access Denied step as Required.
-6) Check whether your user with the favorite color red now receives Access Denied as a message when he tries to log in to the Account Console.
-7) Check whether the login is successful if you have previously assigned a different favorite color to the user.
+6) Set new flow via 'Bind Flow' as new Browser Flow.
+7) Check whether your user with the favorite color red now receives Access Denied as a message when he tries to log in to the Account Console. (	http://localhost:8080/realms/acme/account/)
+8) Check whether the login is successful if you have previously assigned a different favorite color to the user.
