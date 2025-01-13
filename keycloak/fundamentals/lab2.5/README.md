@@ -7,7 +7,7 @@
 3) Fügt in den Realm settings dem User profile ein neues Attribut mit dem Namen `farbe` hinzu. Nutzt die Permissions im Erstellungsdialog um das Attribut durch User & Admin einsehbar und editierbar zu machen.
 4) Öffnet unter User euren zuvor erstellten Benutzer und setzt dort seine Lieblings-`farbe` auf einen Wert, z. B. `rot`.
 5) Dupliziert unter Authentication über das Drei-Punkte-Menü den Browser Flow und passt ihn so an, dass Benutzer mit `farbe==rot` auf `Access Denied` kommen.
-   * Fügt dazu unterhalb des Username Passwort Forms via + -> Add Sub Flow einen Schritt mit dem Namen `farbe-step` hinzu. Ihr könnt es via Drag&Drop direkt unter dem Username Passwort Form platzieren.
+   * Fügt dazu unterhalb des Username Passwort Forms via + -> Add Sub Flow einen Schritt mit dem Namen `farbe-step` hinzu. Ihr könnt es via Drag&Drop direkt unter dem Username Passwort Form platzieren. Er sollte als conditional markiert werden.
    * Fügt `farbe-step` eine Condition `user attribute` hinzu und konfiguriert via Zahnrad-Symbol den Attribute name auf `farbe` und den Expected attribute value auf `rot`.
    * Fügt `farbe-step` einen Step `Access Denied` hinzu.
    * Setzt die Condition und eurem Access Denied Step als Required.
@@ -22,7 +22,7 @@
 3) Add a new attribute with the name `color` to the user profile in the realm settings. Use the permissions in the creation dialog to make the attribute visible and editable by User & Admin.
 4) Open your previously created user under User and set his favorite `color` to a value, e.g. `red`.
 5) Duplicate the browser flow under Authentication via the three-dot menu and adjust it so that users with `color==red` are set to `Access Denied`.
-   * To do this, add a step with the name `color-step` below the username password form via + -> Add Sub Flow. You can place it directly under the Username Password Form via Drag&Drop.
+   * To do this, add a step with the name `color-step` below the username password form via + -> Add Sub Flow. You can place it directly under the Username Password Form via Drag&Drop. It should be marked as conditional.
    * Add a condition `user attribute` to `color-step` and configure the attribute name to `color` and the expected attribute value to `red` via the gear icon.
    * Add a step `Access Denied` to `color-step`.
    * Set the condition and your Access Denied step as Required.
