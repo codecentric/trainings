@@ -1,5 +1,5 @@
 
-name: kc-fundamentals-lab2-2
+name: kc-fundamentals-composetest
 services:
 
   keycloak:

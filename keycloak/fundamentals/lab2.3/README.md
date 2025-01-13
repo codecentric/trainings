@@ -9,9 +9,10 @@
    * Vendor: `Other`
    * Connection URL: `ldap://openldap:1389/`
    * Bind DN: `cn=admin,dc=codecentric,dc=de`
+   * Bind credentials: siehe compose File
    * Edit Mode: `READ_ONLY`
    * Users DN: `ou=users,dc=codecentric,dc=de`
-5) Wechselt in die Ansicht Users und prüft, ob eure Benutzer aus dem LDAP importiert wurden. Beachtet, dass die Benutzer nicht direkt in der Liste gezeigt werden, sondern nur über die Suche gefunden werden können.
+5) Wechselt in die Ansicht Users und prüft, ob eure Benutzer aus dem LDAP importiert wurden. Beachtet, dass die Benutzer nicht immer direkt in der Liste gezeigt werden, sondern teilweise nur über die Suche gefunden werden können.
 6) Versucht euch mit einem der importierten Benutzer in die Account-Console einzuloggen. Den Link zur Account-Console findet ihr unter Clients in der rechten Spalte als Home URL.
 
 ## EN
@@ -23,7 +24,8 @@
    * Vendor: `Other`
    * Connection URL: `ldap://openldap:1389/`
    * Bind DN: `cn=admin,dc=codecentric,dc=de`
+   * Bind credentials: see compose File
    * Edit Mode: `READ_ONLY`
    * Users DN: `ou=users,dc=codecentric,dc=de`
-5) Switch to the Users view and check whether your users have been imported from the LDAP. Note that the users are not shown directly in the list, but can only be found via the search.
+5) Switch to the Users view and check whether your users have been imported from the LDAP. Note that the users are not always shown directly in the list, but sometimes can only be found via the search.
 6) Try to log in to the Account Console with one of the imported users. You can find the link to the Account Console under Clients in the right-hand column as the Home URL.
