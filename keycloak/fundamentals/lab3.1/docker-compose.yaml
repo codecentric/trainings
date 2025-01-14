@@ -11,17 +11,18 @@ services:
 #    ports:
 #      - 4180:4180/tcp
 #    environment:
-#      OAUTH2_PROXY_UPSTREAMS: <url-of-your-nginx-webapp>
 #      OAUTH2_PROXY_COOKIE_SECRET: "OQINaROshtE9TcZkNAm-5Zs2Pv3xaWytBmc5W7sPX7w="
 #      OAUTH2_PROXY_PROVIDER: keycloak-oidc
 #      OAUTH2_PROXY_PROVIDER_DISPLAY_NAME: Keycloak
-#      OAUTH2_PROXY_CLIENT_ID: <client-id-of-your-client-in-keycloak>
-#      OAUTH2_PROXY_CLIENT_SECRET: <client-secret-of-your-client-in-keycloak>
-#      OAUTH2_PROXY_REDIRECT_URL: http://localhost:4180/oauth2/callback
-#      OAUTH2_PROXY_OIDC_ISSUER_URL: <issuer-url-of-your-keycloak-realm>
 #      OAUTH2_PROXY_COOKIE_SECURE: false
 #      OAUTH2_PROXY_PASS_ACCESS_TOKEN: true
-#      OAUTH2_PROXY_EMAIL_DOMAINS: <tld-of-your-accepted-users>
+#      OAUTH2_PROXY_UPSTREAMS: http://nginx:80/
+#      OAUTH2_PROXY_SKIP_OIDC_DISCOVERY: true
+#      OAUTH2_PROXY_OIDC_ISSUER_URL: http://localhost:8080/realms/proxy
+#      OAUTH2_PROXY_REDIRECT_URL: http://localhost:4180/oauth2/callback
+#      OAUTH2_PROXY_LOGIN_URL: http://localhost:8080/realms/proxy/protocol/openid-connect/auth
+#      OAUTH2_PROXY_REDEEM_URL: http://keycloak:8080/realms/proxy/protocol/openid-connect/token
+#      OAUTH2_PROXY_OIDC_JWKS_URL: http://keycloak:8080/realms/proxy/protocol/openid-connect/certs
 #    networks:
 #      - backend
 #    depends_on:
@@ -49,13 +50,14 @@ services:
       - keycloak-data:/opt/keycloak/data:z
     ports:
       - 8080:8080
+      - 9000:9000
     networks:
       - backend
     command:
       - "--verbose"
       - "start-dev"
     healthcheck:
-      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
       interval: 10s
       retries: 5
       start_period: 20s
