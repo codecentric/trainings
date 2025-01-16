@@ -20,7 +20,7 @@
 6) Exchange the admin's access token for the tokens of the created `labuser` (see code 2).
 7) Check whether the ID token received belongs to the `labuser`.
  
-# Code 1
+## Code 1
 
 ```
 curl \
@@ -33,7 +33,7 @@ curl \
 ```
 
 
-# Code 2
+## Code 2
 
 ```
 curl \
