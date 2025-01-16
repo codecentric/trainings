@@ -13,8 +13,15 @@ services:
       # Logging, see: https://www.keycloak.org/server/logging
       KC_LOG_LEVEL: INFO
 
+      # Postgres DB Configuration
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/keycloak
+      KC_DB_USERNAME: postgres_user
+      KC_DB_PASSWORD: postgres_pass
+
     volumes:
-      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+      - keycloak-data:/opt/keycloak/data:z
+      - ./themes:/opt/keycloak/themes:z
 
     ports:
       - 8080:8080   # HTTP
@@ -26,9 +33,22 @@ services:
       - "--verbose"
       - "start-dev" # Only for Dev-Environment!
 
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_pass
+    ports:
+        - 5432:5432
+    networks:
+      - backend
+    volumes:
+        - postgres-data:/var/lib/postgresql/data
+
 networks:
   backend:
-    name: lab-2-7-network
 
 volumes:
   keycloak-data:
+  postgres-data:

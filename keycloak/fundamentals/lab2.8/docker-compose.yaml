@@ -1,5 +1,5 @@
 
-name: kc-fundamentals-lab2-5
+name: kc-fundamentals-lab2-8
 services:
 
   keycloak:
@@ -12,8 +12,6 @@ services:
 
       # Logging, see: https://www.keycloak.org/server/logging
       KC_LOG_LEVEL: INFO
-
-      KC_FEATURES: token-exchange
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
@@ -30,6 +28,7 @@ services:
 
 networks:
   backend:
+    name: lab-2-7-network
 
 volumes:
   keycloak-data:

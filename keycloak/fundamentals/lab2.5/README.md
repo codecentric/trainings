@@ -3,29 +3,46 @@
 ## DE
 
 1) Startet das Lab via `docker compose up`.
-2) Legt einen neuen Realm und einen Benutzer im Realm an.
-3) Fügt in den Realm settings dem User profile ein neues Attribut mit dem Namen `farbe` hinzu. Nutzt die Permissions im Erstellungsdialog um das Attribut durch User & Admin einsehbar und editierbar zu machen.
-4) Öffnet unter User euren zuvor erstellten Benutzer und setzt dort seine Lieblings-`farbe` auf einen Wert, z. B. `rot`.
-5) Dupliziert unter Authentication über das Drei-Punkte-Menü den Browser Flow und passt ihn so an, dass Benutzer mit `farbe==rot` auf `Access Denied` kommen.
-   * Fügt dazu unterhalb des Username Passwort Forms via + -> Add Sub Flow einen Schritt mit dem Namen `farbe-step` hinzu. Ihr könnt es via Drag&Drop direkt unter dem Username Passwort Form platzieren. Er sollte als conditional markiert werden.
-   * Fügt `farbe-step` eine Condition `user attribute` hinzu und konfiguriert via Zahnrad-Symbol den Attribute name auf `farbe` und den Expected attribute value auf `rot`.
-   * Fügt `farbe-step` einen Step `Access Denied` hinzu.
-   * Setzt die Condition und eurem Access Denied Step als Required.
-6) Über 'Bind Flow' den neuen Flow als Browser-Flow setzen
-7) Prüft, ob euer Benutzer mit der Lieblingsfarbe rot nun Access Denied als Meldung erhält, wenn er sich in die Account Console einloggen will. (http://localhost:8080/realms/acme/account/)
-8) Prüft, ob der Login erfolgreich ist, wenn ihr dem Benutzer zuvor eine andere Lieblingsfarbe zuweist.
+2) Legt (im Master Realm) einen neuen Client mit dem Namen `labclient` an. Die Einstellungen können auf Default bleiben. Achtet darauf, den Direct Access Grant zu aktivieren.
+3) Legt einen neuen User `labuser` an.
+4) Legt unter Realm Settings -> Tokens -> Access Token Lifespan die Zeit auf 15min fest.
+5) Ruft für den Admin die Token ab (s. Code 1) und prüft dessen ID Token unter jwt.io.
+6) Tauscht den Access Tokens des Admin gegen die Token des angelegen `labuser` ein (s. Code 2).
+7) Prüft, ob der erhaltene ID Token zum `labuser` gehört.
 
 ## EN
 
-1) Start the lab via `docker compose up`.
-2) Create a new realm and a user in the realm.
-3) Add a new attribute with the name `color` to the user profile in the realm settings. Use the permissions in the creation dialog to make the attribute visible and editable by User & Admin.
-4) Open your previously created user under User and set his favorite `color` to a value, e.g. `red`.
-5) Duplicate the browser flow under Authentication via the three-dot menu and adjust it so that users with `color==red` are set to `Access Denied`.
-   * To do this, add a step with the name `color-step` below the username password form via + -> Add Sub Flow. You can place it directly under the Username Password Form via Drag&Drop. It should be marked as conditional.
-   * Add a condition `user attribute` to `color-step` and configure the attribute name to `color` and the expected attribute value to `red` via the gear icon.
-   * Add a step `Access Denied` to `color-step`.
-   * Set the condition and your Access Denied step as Required.
-6) Set new flow via 'Bind Flow' as new Browser Flow.
-7) Check whether your user with the favorite color red now receives Access Denied as a message when he tries to log in to the Account Console. (	http://localhost:8080/realms/acme/account/)
-8) Check whether the login is successful if you have previously assigned a different favorite color to the user.
+1) Starts the lab via `docker compose up`.
+3) Create (in master realm) a new client with the name `labclient`. The settings can remain at default. Make sure to activate the Direct Access Grant.
+3) Create a new user `labuser`.
+4) Set the time to 15min under Realm Settings -> Tokens -> Access Token Lifespan.
+5) Retrieve the tokens for the admin (see code 1) and check his ID token under jwt.io.
+6) Exchange the admin's access token for the tokens of the created `labuser` (see code 2).
+7) Check whether the ID token received belongs to the `labuser`.
+ 
+# Code 1
+
+```
+curl \
+-d "client_id=labclient" \
+-d "username=admin" \
+-d "password=admin" \
+-d "grant_type=password" \
+-d "scope=openid" \
+"http://localhost:8080/realms/master/protocol/openid-connect/token"
+```
+
+
+# Code 2
+
+```
+curl \
+-d "client_id=labclient" \
+-d "requested_subject=labuser" \
+-d "subject_token=<ADMIN-ACCESS-TOKEN>" \
+-d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
+-d "scope=openid" \
+"http://localhost:8080/realms/master/protocol/openid-connect/token"
+```
+
+
