@@ -46,7 +46,7 @@ docker run \
     -e KEYCLOAK_AVAILABILITYCHECK_ENABLED=true \
     -e KEYCLOAK_AVAILABILITYCHECK_TIMEOUT=5s \
     -e IMPORT_FILES_LOCATIONS='/config/*' \
-    --network=lab-2-7-network  \
+    --network=lab-2-8-network  \
     -v ./config:/config \
     adorsys/keycloak-config-cli:latest-26
 ```

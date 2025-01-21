@@ -28,7 +28,7 @@ services:
 
 networks:
   backend:
-    name: lab-2-7-network
+    name: lab-2-8-network
 
 volumes:
   keycloak-data:
