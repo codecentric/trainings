@@ -7,8 +7,9 @@
 3) Legt einen Benutzer vollständig an.
 4) Geht in die Client Konfiguration von `proxy` in den Tab `Client scopes` und dort auf `proxy-dedicated`. Nutzt `Configure a new mapper` -> `Audience` mit dem Namen `proxy` und der Included Client Audience `proxy`.
 5) Stoppt die Umgebung mit CTRL + C und kommentiert in die `docker-compose.yaml` den `oauth2-proxy` ein (`#` entfernen).
-6) Setzt die unten stehenden Values in der Datei. Die Email Domain sollte der Email Domain eures angelegten Benutzers entsprechen.
-7) Funktion des OAuth Proxies prüfen: http://localhost:4180/
+6) Setzt die unten stehenden Values in der Datei für `oauth2-proxy`. Die Email Domain sollte der Email Domain eures angelegten Benutzers entsprechen.
+7) Starte die Umgebung neu
+8) Funktion des OAuth Proxies prüfen: http://localhost:4180/
 
 Zusatzaufgabe: Versucht über eine Environmentvariable des OAuth Proxies PKCE zu aktivieren.
 

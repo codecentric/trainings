@@ -9,7 +9,7 @@
 5) Dupliziert unter Authentication über das Drei-Punkte-Menü den Browser Flow und passt ihn so an, dass Benutzer mit `farbe==rot` auf `Access Denied` kommen.
    * Fügt dazu unterhalb des Username Passwort Forms via + -> Add Sub Flow einen Schritt mit dem Namen `farbe-step` hinzu. Ihr könnt es via Drag&Drop direkt unter dem Username Passwort Form platzieren. Er sollte als conditional markiert werden.
    * Fügt `farbe-step` eine Condition `user attribute` hinzu und konfiguriert via Zahnrad-Symbol den Attribute name auf `farbe` und den Expected attribute value auf `rot`.
-   * Fügt `farbe-step` einen Step `Access Denied` hinzu.
+   * Fügt `farbe-step` einen Step `Deny Access` hinzu.
    * Setzt die Condition und eurem Access Denied Step als Required.
 6) Über 'Bind Flow' den neuen Flow als Browser-Flow setzen
 7) Prüft, ob euer Benutzer mit der Lieblingsfarbe rot nun Access Denied als Meldung erhält, wenn er sich in die Account Console einloggen will. (http://localhost:8080/realms/acme/account/)
