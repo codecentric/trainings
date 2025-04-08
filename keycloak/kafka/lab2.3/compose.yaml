@@ -6,7 +6,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_SET_ACL: TRUE
     ports:
-      - 22181:2181
+      - "22181:2181"
 
   kafka-broker:
     image: confluentinc/cp-kafka:7.6.1
@@ -14,8 +14,8 @@ services:
       keycloak:
         condition: service_healthy
     ports:
-      - 9091:9091
-      - 9092:9092
+      - "9091:9091"
+      - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -36,7 +36,7 @@ services:
       KAFKA_LISTENER_NAME_PUBLIC_OAUTHBEARER_SASL_SERVER_CALLBACK_HANDLER_CLASS: org.apache.kafka.common.security.oauthbearer.OAuthBearerValidatorCallbackHandler
 
       # Konfiguration ACL
-      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: FALSE # Bedeutet auch der Kafka-Broker braucht selbst Berechtigungen
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "FALSE"  # Bedeutet auch der Kafka-Broker braucht selbst Berechtigungen
       KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
       KAFKA_SUPER_USERS: "User:f0c339e9-52de-48ae-87bb-b04275b15720;User:ANONYMOUS"
       # der User:ANONYMOUS wird Einfachheit halber für die INTERBROKER-Kommunikation und für die Kafja-UI verwendet!
@@ -75,7 +75,7 @@ services:
     depends_on:
       - kafka-broker
     ports:
-      - 8082:8080
+      - "8082:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: kafka-lab2.3
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-broker:9091
@@ -89,11 +89,11 @@ services:
       JAVA_OPTS_APPEND: "--show-version"
       DEBUG: "true"
       DEBUG_PORT: "*:8787"
-      KC_HEALTH_ENABLED: true
+      KC_HEALTH_ENABLED: "true"
     ports:
-      - 8080:8080
-      - 8787:8787
-      - 9000:9000
+      - "8080:8080"
+      - "8787:8787"
+      - "9000:9000"
     command:
       - "--verbose"
       - "start-dev"
