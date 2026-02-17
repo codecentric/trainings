@@ -13,7 +13,7 @@ Ziel: Wir wollen eine Regel definieren, die Benutzern, die Mitglied einer bestim
 7) Wechselt in den "Authorization"-Tab des Clients.
    - Legt unter "Resources" ein Element an und setzt "Name" und "Display name" auf "test-ressource".
    - Legt unter "Policies" ein Element vom Typ "Group" an und setze den Namen "test-gruppe-policy" und füge via "Add groups" die "test-gruppe" hinzu.
-   - Verknüpfe nun Resource und Policy indem du eine Permission anlegst. Gebe ihr einen Namen und weise Resource und Policy hinzu.
+   - Verknüpfe nun Resource und Policy indem du eine Resource Based Permission anlegst. Gebe ihr einen Namen und weise Resource und Policy hinzu.
 8) Via "Evaluate" kannst du nun prüfen, ob dein Benutzer nun Zugriff auf die Resource hat. Wähle dort unter Users deinen Benutzer und unter Roles "default-roles-lab-realm" aus und klicke auf "Evaluate". Du solltest für die Resource "test-ressource" ein "Permit" erhalten.
 
 ## Zweiter Teil: Eigene Regeln definieren
