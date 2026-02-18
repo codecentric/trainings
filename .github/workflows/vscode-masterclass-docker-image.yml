@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/vscode-masterclass
+  IMAGE_NAME: ${{ github.repository }}/keycloak-masterclass-vscode
 
 jobs:
   build-and-push:
