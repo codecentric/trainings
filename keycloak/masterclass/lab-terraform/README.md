@@ -1,4 +1,4 @@
-# Lab Config as Code
+# Lab Terraform
 
 Ziel: Wir nehmen via Terraform eine Keycloak Konfiguration vor und spielen diese Konfiguration in Keycloak ein. 
 
