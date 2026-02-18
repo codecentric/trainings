@@ -1,6 +1,6 @@
 services:
   dev_env:
-    image: ghcr.io/codecentric/trainings/keycloak_master_course_development_environment:latest
+    image: ghcr.io/codecentric/trainings/keycloak-masterclass-vscode:latest
     container_name: dev_env
     environment:
       - PUID=1000

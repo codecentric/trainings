@@ -18,6 +18,7 @@
    Prüfen Sie anschließend die Container-Logs: Werden die erzeugten Events von Ihrer Extension protokolliert?
 
 ## EN
+
 1) Start the web-based development environment from the `vscode` directory using `docker compose up`.
 2) Open the development environment in your browser at `http://localhost:3000`.
 3) In the development environment, open the **“workspace”** folder.
