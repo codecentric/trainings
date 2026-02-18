@@ -18,6 +18,7 @@ RUN java -version && mvn -version
 RUN /app/openvscode-server/bin/openvscode-server \
     --install-extension redhat.java \
     --extensions-dir /config/.openvscode-server/extensions \
+    --install-extension hashicorp.terraform \
     || true
 
 RUN apt-get update && apt-get install -y gnupg wget software-properties-common
@@ -27,5 +28,3 @@ RUN apt update && apt install -y terraform
 
 #USER abc
 EXPOSE 3000
-
-#LABEL org.opencontainers.image.source=https://github.com/codecentric/trainings
