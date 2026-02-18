@@ -23,7 +23,7 @@ services:
       - keycloak-data:/opt/keycloak/data:z
 
     ports:
-      - 8080:8080   # HTTP
+      - "8080:8080"   # HTTP
 
     networks:
       - backend
@@ -39,7 +39,7 @@ services:
       POSTGRES_USER: postgres_user
       POSTGRES_PASSWORD: postgres_pass
     ports:
-        - 5432:5432
+        - "5432:5432"
     networks:
       - backend
     volumes:
