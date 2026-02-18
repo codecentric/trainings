@@ -16,18 +16,29 @@ services:
       - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
 
     ports:
-      - 8080:8080   # HTTP
-
-    networks:
-      - backend
+      - "8080:8080"   # HTTP
 
     command:
       - "--verbose"
       - "start-dev" # Only for Dev-Environment!
 
-networks:
-  backend:
-    name: kc-mc-lab-configcli-network
+  # Does not start automatically with `docker compose up` (due to the  profile);
+  # instead, execute on demand with `docker compose run`
+  keycloak-config:
+    profiles:
+      - cli # arbitrarily chosen
+    depends_on:
+      - keycloak
+    image: adorsys/keycloak-config-cli:latest-26.1.0
+    environment:
+      KEYCLOAK_URL: "http://keycloak:8080/"
+      KEYCLOAK_USER: "admin"
+      KEYCLOAK_PASSWORD: "admin"
+      KEYCLOAK_AVAILABILITYCHECK_ENABLED: true
+      KEYCLOAK_AVAILABILITYCHECK_TIMEOUT: 5s
+      IMPORT_FILES_LOCATIONS: '/config/*'
+    volumes:
+      - ./config:/config
 
 volumes:
   keycloak-data:

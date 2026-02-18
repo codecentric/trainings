@@ -1,4 +1,3 @@
-
 name: kc-fundamentals-lab2-8
 services:
 
@@ -23,7 +22,6 @@ services:
       - "--verbose"
       - "start-dev" # Only for Dev-Environment!
 
-  
   # Does not start automatically with `docker compose up` (due to the  profile);
   # instead, execute on demand with `docker compose run`
   keycloak-config:
@@ -31,7 +29,7 @@ services:
       - cli # arbitrarily chosen
     depends_on:
       - keycloak
-    image: adorsys/keycloak-config-cli:latest-26.1.0 # TODO: align version with keycloak service
+    image: adorsys/keycloak-config-cli:latest-26.1.0
     environment:
       KEYCLOAK_URL: "http://keycloak:8080/" 
       KEYCLOAK_USER: "admin" 
