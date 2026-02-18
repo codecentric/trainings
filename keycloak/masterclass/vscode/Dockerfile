@@ -17,8 +17,8 @@ RUN java -version && mvn -version
 # Pre-install Red Hat Java extension
 RUN /app/openvscode-server/bin/openvscode-server \
     --install-extension redhat.java \
-    --extensions-dir /config/.openvscode-server/extensions \
     --install-extension hashicorp.terraform \
+    --extensions-dir /config/.openvscode-server/extensions \
     || true
 
 RUN apt-get update && apt-get install -y gnupg wget software-properties-common
