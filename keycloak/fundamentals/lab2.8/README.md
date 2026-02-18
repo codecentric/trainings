@@ -6,7 +6,7 @@
 
 1) Startet das Lab via `docker compose up`.
 2) Schaut euch die Datei im Ordner `./config` an und überlegt, welche Struktur sie beschreibt.
-3) Führt das unten stehende Kommando auf der Kommandozeile aus.
+3) Führt das Kommando `docker compose run --remove-orphans keycloak-config` auf der Kommandozeile aus.
 4) Prüft, ob die zuvor gesehene Struktur im `./config`-Ordner umgesetzt wurde.
 
 ### Teil 2 - Config Variablen Substituieren
@@ -24,7 +24,7 @@
 
 1) Start the Lab via `docker compose up`.
 2) Look at the file in the `./config` folder and think about the structure it describes.
-3) Make sure, you are in the compose file's directory on the command line. Execute the command below on the command line. Under Windows, the line breaks and line-ending slashes may have to be removed.
+3) Make sure, you are in the compose file's directory on the command line. Execute the command `docker compose run --remove-orphans keycloak-config` on the command line. Under Windows, the line breaks and line-ending slashes may have to be removed.
 4) Check whether the previously seen structure in the `./config` folder has been implemented.
 
 ### Part 2 - Substituting config variables
@@ -35,9 +35,3 @@
     * Add the env `IMPORT_VAR_SUBSTITUTION_ENABLED=true`.
     * Add the env `LASTNAME=codecentric`.
 4) Apply the config as before and check whether everything has worked.
-
-## Docker Compose Command
-
-```bash
-docker compose run --remove-orphans keycloak-config
-```

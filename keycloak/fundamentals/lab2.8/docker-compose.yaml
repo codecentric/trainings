@@ -3,7 +3,7 @@ name: kc-fundamentals-lab2-8
 services:
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.3.3
+    image: quay.io/keycloak/keycloak:26.5.3
     environment:
 
       # Keycloak Admin User
@@ -31,7 +31,7 @@ services:
       - cli # arbitrarily chosen
     depends_on:
       - keycloak
-    image: adorsys/keycloak-config-cli:latest-26.0.5 # TODO: align version with keycloak service
+    image: adorsys/keycloak-config-cli:latest-26.1.0 # TODO: align version with keycloak service
     environment:
       KEYCLOAK_URL: "http://keycloak:8080/" 
       KEYCLOAK_USER: "admin" 
