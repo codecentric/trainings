@@ -3,7 +3,7 @@ name: kc-fundamentals-lab2-2
 services:
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.0.7
+    image: quay.io/keycloak/keycloak:26.3.3
     environment:
 
       # Keycloak Admin User
@@ -14,10 +14,11 @@ services:
       KC_LOG_LEVEL: INFO
 
     volumes:
-      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+      # Keycloak data, including but not exclusive to the H2 database
+      - keycloak-data:/opt/keycloak/data:z
 
     ports:
-      - 8080:8080   # HTTP
+      - "8080:8080"   # HTTP
 
     networks:
       - backend

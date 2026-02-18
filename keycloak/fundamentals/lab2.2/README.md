@@ -22,9 +22,10 @@ Wie ein PostgreSQL Container aussehen könnte, ist unten beschrieben.
 3) Change to this folder on the command line and execute `docker compose up` and check if your configuration was successful.
 4) Check the SPI `connectionsJpa` in the Provider Info Tab after the login.
 
-How a PostgreSQL container could look like is described below.
+What a PostgreSQL container might look like is described below.
 
-## PostgreSQL Contrainer
+## PostgreSQL Container
+
 ```yaml
   postgres:
     image: postgres
@@ -33,7 +34,7 @@ How a PostgreSQL container could look like is described below.
       POSTGRES_USER: postgres_user
       POSTGRES_PASSWORD: postgres_pass
     ports:
-        - 5432:5432
+      - "5432:5432"
     networks:
       - backend
     volumes:

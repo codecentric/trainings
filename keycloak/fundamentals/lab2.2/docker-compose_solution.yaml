@@ -3,7 +3,7 @@ name: kc-fundamentals-lab2-2
 services:
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.0.7
+    image: quay.io/keycloak/keycloak:26.3.3
     environment:
 
       # Keycloak Admin User
@@ -23,10 +23,14 @@ services:
       - keycloak-data:/opt/keycloak/data:z
 
     ports:
-      - 8080:8080   # HTTP
+      - "8080:8080"   # HTTP
 
     networks:
       - backend
+
+    depends_on:
+      postgres:
+        condition: service_started # TODO: add health check?
 
     command:
       - "--verbose"
@@ -39,11 +43,11 @@ services:
       POSTGRES_USER: postgres_user
       POSTGRES_PASSWORD: postgres_pass
     ports:
-        - 5432:5432
+      - "5432:5432"
     networks:
       - backend
     volumes:
-        - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 
 networks:
   backend:

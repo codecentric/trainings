@@ -1,0 +1,14 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.3
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: INFO
+    volumes:
+      - ./vscode/config/workspace/providers:/opt/keycloak/providers
+    ports:
+      - 8080:8080
+    command:
+      - "--verbose"
+      - "start-dev"

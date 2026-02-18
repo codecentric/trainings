@@ -14,8 +14,8 @@ services:
 #      OAUTH2_PROXY_COOKIE_SECRET: "OQINaROshtE9TcZkNAm-5Zs2Pv3xaWytBmc5W7sPX7w="
 #      OAUTH2_PROXY_PROVIDER: keycloak-oidc
 #      OAUTH2_PROXY_PROVIDER_DISPLAY_NAME: Keycloak
-#      OAUTH2_PROXY_COOKIE_SECURE: false
-#      OAUTH2_PROXY_PASS_ACCESS_TOKEN: true
+#      OAUTH2_PROXY_COOKIE_SECURE: "false"
+#      OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
 #      OAUTH2_PROXY_UPSTREAMS: http://nginx:80/
 #      OAUTH2_PROXY_SKIP_OIDC_DISCOVERY: true
 #      OAUTH2_PROXY_OIDC_ISSUER_URL: http://localhost:8080/realms/proxy
@@ -40,17 +40,17 @@ services:
     restart: always
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.0.7
+    image: quay.io/keycloak/keycloak:26.3.3
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_LOG_LEVEL: INFO
-      KC_HEALTH_ENABLED: true
+      KC_HEALTH_ENABLED: "true"
     volumes:
       - keycloak-data:/opt/keycloak/data:z
     ports:
-      - 8080:8080
-      - 9000:9000
+      - "8080:8080"
+      - "9000:9000"
     networks:
       - backend
     command:
