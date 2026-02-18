@@ -1,0 +1,11 @@
+services:
+  dev_env:
+    image: ghcr.io/codecentric/trainings/keycloak-masterclass-vscode:latest
+    container_name: dev_env
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./workspace:/config/workspace
+    ports:
+      - 3000:3000

@@ -1,0 +1,115 @@
+
+name: kc-acme-sso
+services:
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: outline
+      POSTGRES_PASSWORD: outline
+      POSTGRES_DB: outline
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U outline"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:latest
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.3
+    environment:
+
+      # Keycloak Admin User
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      # Logging, see: https://www.keycloak.org/server/logging
+      KC_LOG_LEVEL: INFO
+
+      # Fester Hostname, damit Tokens konsistent iss=http://localhost:8080 haben
+      KC_HOSTNAME: localhost
+
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+      - ./realm-acme.json:/opt/keycloak/data/import/realm-acme.json
+
+    ports:
+      - 8080:8080   # HTTP
+
+    networks:
+      - backend
+
+    command:
+      - "--verbose"
+      - "start-dev" # Only for Dev-Environment!
+      - "--import-realm"
+
+  nextcloud:
+    image: nextcloud:latest
+    environment:
+      SQLITE_DATABASE: nextcloud
+      NEXTCLOUD_ADMIN_USER: admin
+      NEXTCLOUD_ADMIN_PASSWORD: admin
+      NEXTCLOUD_TRUSTED_DOMAINS: localhost
+    ports:
+      - 8081:80
+    volumes:
+      - nextcloud-data:/var/www/html
+    networks:
+      - backend
+
+  outline:
+    image: outlinewiki/outline:latest
+    environment:
+      SECRET_KEY: fd236707c6de2ae656513620a88ed700a6005983e2cb609b7dd81958b37415f1
+      UTILS_SECRET: 1ca4313be4a69989b700a3feb62c8794dfb294f0fd4b1e1d7a294b2751424643
+      DATABASE_URL: postgres://outline:outline@postgres:5432/outline
+      PGSSLMODE: disable
+      REDIS_URL: redis://redis:6379
+      URL: http://localhost:8082
+      PORT: 3000
+      FORCE_HTTPS: false
+      FILE_STORAGE: local
+      FILE_STORAGE_LOCAL_ROOT_DIR: /var/lib/outline/data
+      # OIDC: Browser-Redirects nutzen localhost, Server-zu-Server nutzt den Docker-Service-Namen
+      OIDC_CLIENT_ID: outline
+      OIDC_CLIENT_SECRET: outline-secret
+      OIDC_AUTH_URI: http://localhost:8080/realms/acme/protocol/openid-connect/auth
+      OIDC_TOKEN_URI: http://keycloak:8080/realms/acme/protocol/openid-connect/token
+      OIDC_USERINFO_URI: http://keycloak:8080/realms/acme/protocol/openid-connect/userinfo
+      OIDC_LOGOUT_URI: http://localhost:8080/realms/acme/protocol/openid-connect/logout
+      OIDC_DISPLAY_NAME: Keycloak
+      OIDC_SCOPES: openid profile email
+    ports:
+      - 8082:3000
+    volumes:
+      - outline-data:/var/lib/outline/data
+    networks:
+      - backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+networks:
+  backend:
+
+volumes:
+  postgres-data:
+  keycloak-data:
+  nextcloud-data:
+  outline-data:

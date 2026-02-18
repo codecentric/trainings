@@ -1,9 +1,8 @@
-
-name: kc-fundamentals-lab2-8
+name: kc-mc-lab-passkeys
 services:
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.3.3
+    image: quay.io/keycloak/keycloak:26.5.3
     environment:
 
       # Keycloak Admin User
@@ -17,7 +16,7 @@ services:
       - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
 
     ports:
-      - "8080:8080"   # HTTP
+      - 8080:8080   # HTTP
 
     networks:
       - backend
@@ -28,7 +27,6 @@ services:
 
 networks:
   backend:
-    name: lab-2-8-network
 
 volumes:
   keycloak-data:

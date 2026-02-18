@@ -1,0 +1,9 @@
+{
+  "policies": [
+    {
+      "name": "JS Policy",
+      "fileName": "provider.js",
+      "description": "Our JS Provider"
+    }
+  ]
+}

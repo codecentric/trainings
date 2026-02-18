@@ -1,4 +1,4 @@
-# Lab 2.8
+# Lab Config CLI
 
 ## DE
 
@@ -11,7 +11,7 @@
 
 ### Teil 2 - Config Variablen Substituieren
 
-1) Löscht nun eure Container und volumes und startet mit `docker compose up` eine neue leere Umgebung.
+1) Löscht nun eure Container und volumes via `docker compose down -v` und startet mit `docker compose up` eine neue leere Umgebung.
 2) Modifiziert die Config Datei, indem ihr den Wert des Nachnamen durch `$(LASTNAME)` ersetzt.
 3) Modifiziert das docker run Kommando der Keycloak Config CLI
     * Ergänzt die env `IMPORT_VAR_SUBSTITUTION_ENABLED=true`
@@ -29,7 +29,7 @@
 
 ### Part 2 - Substituting config variables
 
-1) Now delete your containers and volumes and start a new empty environment with `docker compose up`.
+1) Now delete your containers and volumes via `docker compose down -v` and start a new empty environment with `docker compose up`.
 2) Modify the config file by replacing the value of the last name with `$(LASTNAME)`.
 3) Modify the docker run command of the Keycloak Config CLI
     * Add the env `IMPORT_VAR_SUBSTITUTION_ENABLED=true`.
@@ -46,7 +46,7 @@ docker run \
     -e KEYCLOAK_AVAILABILITYCHECK_ENABLED=true \
     -e KEYCLOAK_AVAILABILITYCHECK_TIMEOUT=5s \
     -e IMPORT_FILES_LOCATIONS='/config/*' \
-    --network=lab-2-8-network  \
+    --network=kc-mc-lab-configcli-network  \
     -v ./config:/config \
     adorsys/keycloak-config-cli:latest-26
 ```
