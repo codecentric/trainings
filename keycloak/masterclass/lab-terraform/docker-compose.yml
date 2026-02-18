@@ -1,4 +1,4 @@
-name: kc-mc-lab-configascode
+name: kc-mc-lab-terraform
 services:
   dev_env:
     image: ghcr.io/codecentric/trainings/keycloak-masterclass-vscode:latest
