@@ -1,0 +1,46 @@
+name: kc-mc-lab-configascode
+services:
+  dev_env:
+    image: ghcr.io/codecentric/trainings/keycloak-masterclass-vscode:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./workspace:/config/workspace
+    ports:
+      - 3000:3000
+
+    networks:
+      - backend
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.3
+    environment:
+
+      # Keycloak Admin User
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_FEATURES: scripts
+
+      # Logging, see: https://www.keycloak.org/server/logging
+      KC_LOG_LEVEL: INFO
+
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+      - ./providers:/opt/keycloak/providers:z
+
+    ports:
+      - 8080:8080   # HTTP
+
+    networks:
+      - backend
+
+    command:
+      - "--verbose"
+      - "start-dev" # Only for Dev-Environment!
+
+networks:
+  backend:
+
+volumes:
+  keycloak-data:
