@@ -65,15 +65,21 @@
      - Den erforderlichen JSON-Body zur Aktualisierung von `firstName` und `lastName`
 
 3) Notieren Sie sich die Informationen, die Sie ermittelt haben – Sie werden sie im nächsten Schritt benötigen.
-4) Fordern Sie ein User-Access-Token für `student1` mithilfe des Resource-Owner-Password-Grant an:  
+4) Bereiten Sie den `account-console` Client für die Authentifizierung vor:
+   - Aktivieren Sie **Direct access grants** (Resource Owner Password Credentials Grant)
+5) Fordern Sie ein User-Access-Token für `student1` mithilfe des Resource-Owner-Password-Grant an:  
    `curl -X POST "keycloak:8080/realms/lab-realm/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password" -d "client_id=account-console" -d "username=student1" -d "password=temp123"`
 
    Kopieren Sie das `access_token` aus der Antwort.
-5) Verwenden Sie den in Schritt 2 ermittelten Endpoint und die entsprechende Payload-Struktur, um einen curl-Request zu erstellen, der folgende Felder aktualisiert:
+6) Verwenden Sie den in Schritt 2 ermittelten Endpoint und die entsprechende Payload-Struktur, um einen curl-Request zu erstellen, der folgende Felder aktualisiert:
    - `firstName`
    - `lastName`
 
-6) Überprüfen Sie Ihr Ergebnis, indem Sie den Benutzer über die Admin API abrufen und bestätigen, dass die Attribute `firstName` und `lastName` aktualisiert wurden.
+   **Hinweis**: Die Account API ist unter `/realms/lab-realm/account/` erreichbar. Basierend auf Ihrer Analyse sollte der Request wie folgt aussehen:
+   
+   `curl -X POST "keycloak:8080/realms/lab-realm/account/" -H "Content-Type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>" -d '{"firstName":"Max","lastName":"Mustermann"}'`
+
+7) Überprüfen Sie Ihr Ergebnis, indem Sie den Benutzer über die Admin API abrufen und bestätigen, dass die Attribute `firstName` und `lastName` aktualisiert wurden.
 
 ## EN
 
@@ -141,12 +147,20 @@
      - The required JSON body to update `firstName` and `lastName`
 
 3) Note down the information you discovered – you will need it in the next step.
-4) Obtain a user access token for `student1` using the Resource Owner Password Grant:  
+4) Prepare the `account-console` client for authentication:
+   - Find the `account-console` client in the `lab-realm`
+   - Enable **Direct access grants** (Resource Owner Password Credentials Grant)
+   - Save the changes
+5) Obtain a user access token for `student1` using the Resource Owner Password Grant:  
    `curl -X POST "keycloak:8080/realms/lab-realm/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password" -d "client_id=account-console" -d "username=student1" -d "password=temp123"`
 
    Copy the `access_token` from the response.
-5) Using the endpoint and payload structure you identified in step 2, construct a curl request to update:
+6) Using the endpoint and payload structure you identified in step 2, construct a curl request to update:
    - `firstName`
    - `lastName`
 
-6) Verify your result by retrieving the user via the Admin API and confirming that the attributes `firstName` and `lastName` have been updated.
+   **Note**: The Account API is accessible at `/realms/lab-realm/account/`. Based on your analysis, the request should look like this:
+   
+   `curl -X POST "keycloak:8080/realms/lab-realm/account/" -H "Content-Type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>" -d '{"firstName":"John","lastName":"Doe"}'`
+
+7) Verify your result by retrieving the user via the Admin API and confirming that the attributes `firstName` and `lastName` have been updated.
