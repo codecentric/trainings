@@ -86,12 +86,14 @@
             <!-- Animated tagline (translated via messages/messages_*.properties) -->
             <p class="tagline" id="tagline">${msg("acme.tagline")}</p>
 
-            <#if realm.name == "labrealm">
-                <div class="alert alert-warning">
-                    <span class="alert-icon">⚠</span>
-                    <span>${msg("acme.demoWarning")}</span>
-                </div>
-            </#if>
+            <#-- ── TODO: Aufgabe 7 / Task 7 ─────────────────────────
+                 DE: Fügt hier eine FreeMarker-if-Anweisung ein, die einen
+                     "Demo Environment"-Hinweis anzeigt, wenn realm.name == "labrealm".
+                     Nutzt msg("acme.demoWarning") für den Text.
+                 EN: Add a FreeMarker if-statement here that shows a
+                     "Demo Environment" notice when realm.name == "labrealm".
+                     Use msg("acme.demoWarning") for the translated text.
+            ──────────────────────────────────────────────────────── -->
 
             <!-- ── Alert / Error Messages ─────────────────────── -->
             <#if message??>

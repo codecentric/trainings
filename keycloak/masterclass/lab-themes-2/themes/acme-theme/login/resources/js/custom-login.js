@@ -179,7 +179,6 @@ function togglePassword() {
 
     form.addEventListener('submit', () => {
         btn.classList.add('loading');
-        if (label) label.textContent = 'Signing in';
         if (arrow) arrow.style.display = 'none';
     });
 })();
