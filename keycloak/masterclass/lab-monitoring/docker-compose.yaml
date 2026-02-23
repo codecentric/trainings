@@ -1,0 +1,62 @@
+name: kc-mc-lab-monitoring
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.4
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: INFO
+
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+
+    ports:
+      - "8080:8080"   # HTTP (Admin UI, Auth)
+      - "9000:9000"   # Management (Metrics, Health)
+
+    command:
+      - "--verbose"
+      - "start-dev"               # Only for Dev-Environment!
+      - "--metrics-enabled=true"              # Expose /metrics on management port 9000
+      - "--health-enabled=true"               # Expose /health/ready and /health/live on port 9000
+      - "--event-metrics-user-enabled=true"   # Expose keycloak_user_events_total metric
+
+    networks:
+      - backend
+
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - keycloak
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana:11.5.2
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  keycloak-data:
+  prometheus-data:
+  grafana-data:
