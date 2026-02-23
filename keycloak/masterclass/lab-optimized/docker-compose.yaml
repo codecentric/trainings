@@ -3,7 +3,7 @@ name: kc-mc-lab-optimized
 services:
 
   keycloak:
-    image: docker.io/library/my-own-keycloak
+    image: quay.io/keycloak/keycloak:26.3.3
     environment:
 
       # Keycloak Admin User
