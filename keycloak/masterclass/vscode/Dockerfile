@@ -18,6 +18,7 @@ RUN java -version && mvn -version
 RUN /app/openvscode-server/bin/openvscode-server \
     --install-extension redhat.java \
     --install-extension hashicorp.terraform \
+    --install-extension ritwickdey.liveserver \
     --extensions-dir /config/.openvscode-server/extensions \
     || true
 

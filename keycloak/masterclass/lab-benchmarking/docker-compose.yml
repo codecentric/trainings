@@ -9,6 +9,7 @@ services:
       - ./workspace:/config/workspace
     ports:
       - 3000:3000
+      - 5500:5500
 
     networks:
       - backend
@@ -23,7 +24,6 @@ services:
       KC_LOG_LEVEL: INFO
 
     volumes:
-      - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
       - ./extensions:/opt/keycloak/providers:z # Custom extensions/providers
 
     ports:
@@ -38,6 +38,3 @@ services:
 
 networks:
   backend:
-
-volumes:
-  keycloak-data:

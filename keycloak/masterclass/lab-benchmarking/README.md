@@ -19,51 +19,44 @@ In diesem Lab lernen Sie, wie Sie Keycloak unter Last testen und die Ergebnisse 
 
 5) Importieren Sie ein Realm mit 200 Testbenutzern:
    ```bash
-   ./dataset-import.sh -a create-realms -r 1 -n realm-0 -c 10 -u 200 -l 'http://keycloak:8080/realms/master/dataset'
+    ./kcadm.sh config credentials --server http://keycloak:8080 --realm master --user admin --password admin
+    PATH=$PATH:$(pwd) ./initialize-benchmark-entities.sh -r benchmark-realm -c gatling -u user-0
    ```
 
    **Erklärung der Parameter:**
-   - `-a create-realms`: Aktion - erstelle Realms
-   - `-r 1`: Anzahl der Realms (1)
-   - `-n realm-0`: Name des Realms
-   - `-c 10`: Anzahl der Clients (10)
-   - `-u 200`: Anzahl der Benutzer (200)
-   - `-l`: Keycloak-URL (interner Container-Hostname)
+   - `-r benchmark-realm`: Name des Realms
+   - `-c gatling`: Name des Clients
+   - `-u user-0`: Präfix für Benutzernamen
 
-6) Warten Sie, bis der Import abgeschlossen ist (kann 1-2 Minuten dauern).
+6) Überprüfen Sie in der Admin Console (`http://localhost:8080`), ob das Realm `benchmark-realm` mit einem Benutzer erstellt wurde.
 
-7) Überprüfen Sie in der Admin Console (`http://localhost:8080`), ob das Realm `realm-0` mit 200 Benutzern erstellt wurde.
-
-8) Führen Sie den ersten Benchmark-Test mit **150 Benutzern pro Sekunde** durch:
+7) Führen Sie den ersten Benchmark-Test mit **150 Benutzern pro Sekunde** durch:
    ```bash
-   ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode \
-     --users-per-sec=150 --measurement=20
+   ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=150 --measurement=20
    ```
 
    Dieser Test simuliert 150 Benutzer pro Sekunde, die sich über den OAuth2 Authorization Code Flow anmelden (20 Sekunden Messung).
 
-9) Warten Sie, bis der Test abgeschlossen ist (~30-40 Sekunden total). Die Ergebnisse werden in `/workspace/results/` gespeichert.
+8) Warten Sie, bis der Test abgeschlossen ist (~30-40 Sekunden total). Die Ergebnisse werden in `/workspace/results/` gespeichert.
 
-10) Führen Sie den zweiten Benchmark-Test mit **180 Benutzern pro Sekunde** durch:
+9) Führen Sie den zweiten Benchmark-Test mit **180 Benutzern pro Sekunde** durch:
     ```bash
-    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode \
-      --users-per-sec=180 --measurement=20
+    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=180 --measurement=20
     ```
 
-11) Führen Sie den dritten Benchmark-Test mit **200 Benutzern pro Sekunde** durch:
+10) Führen Sie den dritten Benchmark-Test mit **200 Benutzern pro Sekunde** durch:
     ```bash
-    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode \
-      --users-per-sec=200 --measurement=20
+    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=200 --measurement=20
     ```
 
-12) Nach jedem Test sehen Sie eine Ausgabe wie:
+11) Nach jedem Test sehen Sie eine Ausgabe wie:
     ```
     Please open the following file://workspace/results/authorizationcode-20260223123456789/index.html
     ```
 
-13) Öffnen Sie die HTML-Berichte in Ihrem Browser, indem Sie die Datei über VS Code Web öffnen oder die Dateien im Verzeichnis `/workspace/results/` suchen.
+12) Öffnen Sie die HTML-Berichte in Ihrem Browser, indem Sie die Datei per Rechts-Klick mit der Live-Server Erweiterung öffnen
 
-14) Vergleichen Sie die drei Tests und achten Sie auf folgende Metriken:
+13) Vergleichen Sie die drei Tests und achten Sie auf folgende Metriken:
 
     **a) Request-Metriken (Global Information):**
     - Total Requests
@@ -72,34 +65,9 @@ In diesem Lab lernen Sie, wie Sie Keycloak unter Last testen und die Ergebnisse 
     - **95th percentile (P95)**
     - **99th percentile (P99)**
 
-    **b) Response Time Distribution:**
-    - Wie viele Anfragen waren < 800ms?
-    - Wie viele Anfragen waren > 1200ms oder fehlgeschlagen?
-
     **c) Requests per Second:**
-    - Konnte Keycloak die gewünschte Last verarbeiten?
-
-### Was sollten Sie sehen?
-
-15) **Erwartete Beobachtungen:**
-
-    - **Bei 150 users/sec:**
-      - Niedrige Fehlerrate (< 1%)
-      - P95 Latenz: ~500-800ms
-      - Stabile Performance
-
-    - **Bei 180 users/sec:**
-      - Moderate Fehlerrate (1-5%)
-      - P95 Latenz: ~800-1200ms
-      - Erste Anzeichen von Überlastung
-
-    - **Bei 200 users/sec:**
-      - Höhere Fehlerrate (5-15%+)
-      - P95 Latenz: > 1200ms oder Timeouts
-      - Deutliche Überlastung, viele Anfragen scheitern
-
-    **Kernfrage:** Ab welchem Load-Level beginnt Keycloak zu "strugglen"?
-    Beobachten Sie, wie die P95/P99-Latenzen exponentiell steigen und Fehlerraten zunehmen.
+    - Wie viele Benutzer-Logins pro Sekunde kann das aktuelle Setup verarbeiten?
+    - Ab wann ist die Performance für Benutzer unzumutbar?
 
 ---
 
@@ -122,51 +90,44 @@ In this lab, you will learn how to load test Keycloak and interpret the results.
 
 5) Import a realm with 200 test users:
    ```bash
-   ./dataset-import.sh -a create-realms -r 1 -n realm-0 -c 10 -u 200 -l 'http://keycloak:8080/realms/master/dataset'
+    ./kcadm.sh config credentials --server http://keycloak:8080 --realm master --user admin --password admin
+    PATH=$PATH:$(pwd) ./initialize-benchmark-entities.sh -r benchmark-realm -c gatling -u user-0
    ```
 
    **Parameter explanation:**
-   - `-a create-realms`: Action - create realms
-   - `-r 1`: Number of realms (1)
-   - `-n realm-0`: Realm name
-   - `-c 10`: Number of clients (10)
-   - `-u 200`: Number of users (200)
-   - `-l`: Keycloak URL (internal container hostname)
+   - `-r benchmark-realm`: Realm name
+   - `-c gatling`: Client name
+   - `-u user-0`: User name prefix
 
-6) Wait until the import is complete (may take 1-2 minutes).
+6) Verify in the Admin Console (`http://localhost:8080`) that the realm `benchmark-realm` with one user has been created.
 
-7) Verify in the Admin Console (`http://localhost:8080`) that the realm `realm-0` with 200 users has been created.
-
-8) Run the first benchmark test with **150 users per second**:
+7) Run the first benchmark test with **150 users per second**:
    ```bash
-   ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode \
-     --users-per-sec=150 --measurement=20
+   ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=150 --measurement=20
    ```
 
    This test simulates 150 users per second logging in via OAuth2 Authorization Code Flow (20 seconds measurement).
 
-9) Wait until the test completes (~30-40 seconds total). Results are saved to `/workspace/results/`.
+8) Wait until the test completes (~30-40 seconds total). Results are saved to `/workspace/results/`.
 
-10) Run the second benchmark test with **180 users per second**:
+9) Run the second benchmark test with **180 users per second**:
     ```bash
-    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode \
-      --users-per-sec=180 --measurement=20
+    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=180 --measurement=20
     ```
 
-11) Run the third benchmark test with **200 users per second**:
+10) Run the third benchmark test with **200 users per second**:
     ```bash
-    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode \
-      --users-per-sec=200 --measurement=20
+    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=200 --measurement=20
     ```
 
-12) After each test, you'll see output like:
+11) After each test, you'll see output like:
     ```
     Please open the following file://workspace/results/authorizationcode-20260223123456789/index.html
     ```
 
-13) Open the HTML reports in your browser by opening the file via VS Code Web or browsing the `/workspace/results/` directory.
+12) Open the HTML reports in your browser by right-clicking the file and opening it with the Live Server extension
 
-14) Compare the three tests and focus on these metrics:
+13) Compare the three tests and focus on these metrics:
 
     **a) Request Metrics (Global Information):**
     - Total Requests
@@ -175,16 +136,13 @@ In this lab, you will learn how to load test Keycloak and interpret the results.
     - **95th percentile (P95)**
     - **99th percentile (P99)**
 
-    **b) Response Time Distribution:**
-    - How many requests were < 800ms?
-    - How many requests were > 1200ms or failed?
-
     **c) Requests per Second:**
-    - Could Keycloak handle the desired load?
+    - How many user logins per second can the current setup handle?
+    - At what point does performance become unacceptable for users?
 
 ### What Should You See?
 
-15) **Expected Observations:**
+14) **Expected Observations:**
 
     - **At 150 users/sec:**
       - Low error rate (< 1%)
