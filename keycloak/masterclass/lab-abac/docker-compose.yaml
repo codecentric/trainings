@@ -1,10 +1,8 @@
 name: kc-mc-lab-abac
 services:
-
   keycloak:
-    image: quay.io/keycloak/keycloak:26.5.3
+    image: quay.io/keycloak/keycloak:26.5.4
     environment:
-
       # Keycloak Admin User
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -14,11 +12,11 @@ services:
       KC_LOG_LEVEL: INFO
 
     volumes:
-      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+      - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
       - ./providers:/opt/keycloak/providers:z
 
     ports:
-      - 8080:8080   # HTTP
+      - 8080:8080 # HTTP
 
     networks:
       - backend
