@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:26.3.3 AS builder
+FROM quay.io/keycloak/keycloak:26.4.0 AS builder
 
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
@@ -7,7 +7,7 @@ ENV KC_DB=postgres
 WORKDIR /opt/keycloak
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:26.3.3
+FROM quay.io/keycloak/keycloak:26.4.0
 
 WORKDIR /opt/keycloak
 COPY --from=builder /opt/keycloak/ /opt/keycloak/

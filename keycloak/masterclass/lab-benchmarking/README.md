@@ -32,21 +32,21 @@ In diesem Lab lernen Sie, wie Sie Keycloak unter Last testen und die Ergebnisse 
 
 7) Führen Sie den ersten Benchmark-Test mit **150 Benutzern pro Sekunde** durch:
    ```bash
-   ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=150 --measurement=20
+   ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm --ramp-up 5 --users-per-sec=150 --measurement=60
    ```
 
-   Dieser Test simuliert 150 Benutzer pro Sekunde, die sich über den OAuth2 Authorization Code Flow anmelden (20 Sekunden Messung).
+   Dieser Test simuliert 150 Benutzer pro Sekunde, die sich über den OAuth2 Authorization Code Flow anmelden (60 Sekunden Messung).
 
-8) Warten Sie, bis der Test abgeschlossen ist (~30-40 Sekunden total). Die Ergebnisse werden in `/workspace/results/` gespeichert.
+8) Warten Sie, bis der Test abgeschlossen ist. Die Ergebnisse werden in `/workspace/results/` gespeichert.
 
 9) Führen Sie den zweiten Benchmark-Test mit **180 Benutzern pro Sekunde** durch:
     ```bash
-    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=180 --measurement=20
+    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm --ramp-up 5 --users-per-sec=180 --measurement=60
     ```
 
 10) Führen Sie den dritten Benchmark-Test mit **200 Benutzern pro Sekunde** durch:
     ```bash
-    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=200 --measurement=20
+    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm --ramp-up 5 --users-per-sec=200 --measurement=60
     ```
 
 11) Nach jedem Test sehen Sie eine Ausgabe wie:
@@ -68,6 +68,50 @@ In diesem Lab lernen Sie, wie Sie Keycloak unter Last testen und die Ergebnisse 
     **c) Requests per Second:**
     - Wie viele Benutzer-Logins pro Sekunde kann das aktuelle Setup verarbeiten?
     - Ab wann ist die Performance für Benutzer unzumutbar?
+
+---
+
+## Teil 2: Optimiertes Keycloak benchmarken
+
+Jetzt wenden Sie Ihr Wissen aus dem "optimized"-Lab an und testen, ob die Optimierungen die Performance verbessern.
+
+14) Stoppen Sie die laufenden Container:
+    ```bash
+    docker compose down
+    ```
+
+15) Erstellen Sie eine neue Datei `docker-compose-optimized.yml` im Lab-Verzeichnis mit folgender Konfiguration:
+    - PostgreSQL-Datenbank (wie im optimized-Lab)
+    - Ihr optimiertes Keycloak-Image aus dem optimized-Lab
+    - VS Code Web Container (für die Benchmark-Ausführung)
+
+    **Hinweise:**
+    - Verwenden Sie das Image `my-own-keycloak`, das Sie im optimized-Lab gebaut haben
+    - Konfigurieren Sie Keycloak mit PostgreSQL
+    - Stellen Sie sicher, dass die VS Code-Umgebung Zugriff auf die Scripts hat
+    - Verwenden Sie die gleichen Ports wie zuvor
+
+16) Bauen Sie zunächst das optimierte Image (falls noch nicht geschehen):
+    ```bash
+    cd ../lab-optimized
+    docker build -t my-own-keycloak .
+    cd ../lab-benchmarking
+    ```
+
+17) Starten Sie die neue optimierte Umgebung:
+    ```bash
+    docker compose -f docker-compose-optimized.yml up
+    ```
+
+18) Wiederholen Sie die Schritte 4-13 mit der optimierten Keycloak-Instanz.
+
+19) Vergleichen Sie die Ergebnisse:
+
+    **Fragen zur Analyse:**
+    - Wie unterscheiden sich die P95/P99-Latenzzeiten zwischen dev-Mode und optimiertem Keycloak?
+    - Bei welcher Last beginnt das optimierte Keycloak zu kämpfen (verglichen mit dem dev-Mode)?
+    - Welche konkreten Performance-Verbesserungen können Sie messen?
+    - Rechtfertigen die Verbesserungen den zusätzlichen Aufwand der Optimierung?
 
 ---
 
@@ -103,21 +147,21 @@ In this lab, you will learn how to load test Keycloak and interpret the results.
 
 7) Run the first benchmark test with **150 users per second**:
    ```bash
-   ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=150 --measurement=20
+   ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm --ramp-up 5 --users-per-sec=150 --measurement=60
    ```
 
-   This test simulates 150 users per second logging in via OAuth2 Authorization Code Flow (20 seconds measurement).
+   This test simulates 150 users per second logging in via OAuth2 Authorization Code Flow (60 seconds measurement).
 
-8) Wait until the test completes (~30-40 seconds total). Results are saved to `/workspace/results/`.
+8) Wait until the test completes. Results are saved to `/workspace/results/`.
 
 9) Run the second benchmark test with **180 users per second**:
     ```bash
-    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=180 --measurement=20
+    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm --ramp-up 5  --users-per-sec=180 --measurement=60
     ```
 
 10) Run the third benchmark test with **200 users per second**:
     ```bash
-    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm  --users-per-sec=200 --measurement=20
+    ./kcb.sh --scenario=keycloak.scenario.authentication.AuthorizationCode --server-url=http://keycloak:8080 --realm-name=benchmark-realm --ramp-up 5  --users-per-sec=200 --measurement=60
     ```
 
 11) After each test, you'll see output like:
@@ -140,24 +184,46 @@ In this lab, you will learn how to load test Keycloak and interpret the results.
     - How many user logins per second can the current setup handle?
     - At what point does performance become unacceptable for users?
 
-### What Should You See?
+---
 
-14) **Expected Observations:**
+## Part 2: Benchmarking Optimized Keycloak
 
-    - **At 150 users/sec:**
-      - Low error rate (< 1%)
-      - P95 latency: ~500-800ms
-      - Stable performance
+Now apply your knowledge from the "optimized" lab and test whether the optimizations improve performance.
 
-    - **At 180 users/sec:**
-      - Moderate error rate (1-5%)
-      - P95 latency: ~800-1200ms
-      - First signs of overload
+14) Stop the running containers:
+    ```bash
+    docker compose down
+    ```
 
-    - **At 200 users/sec:**
-      - Higher error rate (5-15%+)
-      - P95 latency: > 1200ms or timeouts
-      - Clear overload, many requests fail
+15) Create a new file `docker-compose-optimized.yml` in the lab directory with the following configuration:
+    - PostgreSQL database (like in the optimized lab)
+    - Your optimized Keycloak image from the optimized lab
+    - VS Code Web container (for running benchmarks)
 
-    **Key Question:** At what load level does Keycloak start to struggle?
-    Observe how P95/P99 latencies increase exponentially and error rates rise.
+    **Hints:**
+    - Use the image `my-own-keycloak` that you built in the optimized lab
+    - Configure Keycloak with PostgreSQL
+    - Ensure the VS Code environment has access to the scripts
+    - Use the same ports as before
+
+16) First, build the optimized image (if not already done):
+    ```bash
+    cd ../lab-optimized
+    docker build -t my-own-keycloak .
+    cd ../lab-benchmarking
+    ```
+
+17) Start the new optimized environment:
+    ```bash
+    docker compose -f docker-compose-optimized.yml up
+    ```
+
+18) Repeat steps 4-13 with the optimized Keycloak instance.
+
+19) Compare the results:
+
+    **Analysis Questions:**
+    - How do P95/P99 latencies differ between dev-mode and optimized Keycloak?
+    - At what load level does the optimized Keycloak start to struggle (compared to dev-mode)?
+    - What specific performance improvements can you measure?
+    - Do the improvements justify the additional effort of optimization?

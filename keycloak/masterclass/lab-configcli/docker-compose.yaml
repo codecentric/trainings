@@ -1,10 +1,8 @@
 name: kc-mc-lab-configcli
 services:
-
   keycloak:
-    image: quay.io/keycloak/keycloak:26.5.3
+    image: quay.io/keycloak/keycloak:26.5.4
     environment:
-
       # Keycloak Admin User
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -13,10 +11,10 @@ services:
       KC_LOG_LEVEL: INFO
 
     volumes:
-      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+      - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
 
     ports:
-      - "8080:8080"   # HTTP
+      - "8080:8080" # HTTP
 
     command:
       - "--verbose"
@@ -36,7 +34,7 @@ services:
       KEYCLOAK_PASSWORD: "admin"
       KEYCLOAK_AVAILABILITYCHECK_ENABLED: true
       KEYCLOAK_AVAILABILITYCHECK_TIMEOUT: 5s
-      IMPORT_FILES_LOCATIONS: '/config/*'
+      IMPORT_FILES_LOCATIONS: "/config/*"
     volumes:
       - ./config:/config
 

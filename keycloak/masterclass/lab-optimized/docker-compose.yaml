@@ -1,11 +1,8 @@
-
 name: kc-mc-lab-optimized
 services:
-
   keycloak:
-    image: quay.io/keycloak/keycloak:26.3.3
+    image: quay.io/keycloak/keycloak:26.4.0
     environment:
-
       # Keycloak Admin User
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -23,7 +20,7 @@ services:
       - keycloak-data:/opt/keycloak/data:z
 
     ports:
-      - "8080:8080"   # HTTP
+      - "8080:8080" # HTTP
 
     networks:
       - backend
@@ -37,7 +34,7 @@ services:
       - "start-dev" # Only for Dev-Environment!
 
   postgres:
-    image: postgres
+    image: postgres:17
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: postgres_user
