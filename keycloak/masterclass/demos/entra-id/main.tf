@@ -101,6 +101,10 @@ resource "azuread_service_principal" "keycloak" {
   feature_tags {
     enterprise = true
   }
+
+  # Ensure service principal is created after password
+  # This means during destroy, password is deleted first (reverse order)
+  depends_on = [azuread_application_password.keycloak]
 }
 
 # Generate a client secret for the application
