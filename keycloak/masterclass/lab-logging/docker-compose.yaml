@@ -1,0 +1,73 @@
+name: kc-mc-lab-logging
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.4
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      # Log-Konfiguration ueber Environment-Variablen
+      KC_LOG: console                          # Log-Ausgabeziel (console, file, syslog)
+      KC_LOG_CONSOLE_FORMAT: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%c] %s%e%n"  # Default-Format
+      KC_LOG_LEVEL: INFO                       # Root-Level, Kategorie-spezifisch moeglich
+
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z
+
+    ports:
+      - "8080:8080"
+
+    command:
+      - "--verbose"
+      - "start-dev"
+
+    labels:
+      - "logging=true"
+
+    networks:
+      - backend
+
+  loki:
+    image: grafana/loki:3.4.3
+    volumes:
+      - ./loki/loki.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    ports:
+      - "3100:3100"
+    networks:
+      - backend
+
+  promtail:
+    image: grafana/promtail:3.4.3
+    volumes:
+      - ./promtail/promtail.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    depends_on:
+      - loki
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana:11.5.2
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - loki
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  keycloak-data:
+  loki-data:
+  grafana-data:
