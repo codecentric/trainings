@@ -8,9 +8,10 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
 
       # Log-Konfiguration ueber Environment-Variablen
-      KC_LOG: console                          # Log-Ausgabeziel (console, file, syslog)
+      KC_LOG: console                             # Log-Target (console, file, syslog)
+      KC_LOG_CONSOLE_OUTPUT: default              # Outout format: json oder default
       KC_LOG_CONSOLE_FORMAT: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%c] %s%e%n"  # Default-Format
-      KC_LOG_LEVEL: INFO                       # Root-Level, Kategorie-spezifisch moeglich
+      KC_LOG_LEVEL: INFO,org.keycloak.events:DEBUG,org.keycloak.authentication:TRACE                       # Root-Level, Kategorie-spezifisch moeglich
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z
@@ -22,9 +23,46 @@ services:
       - "--verbose"
       - "start-dev"
 
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080"]
+      interval: 5s
+      timeout: 2s
+      retries: 15
+
     labels:
       - "logging=true"
 
+    networks:
+      - backend
+
+  # Initializes Keycloak after startup:
+  # - Disables SSL requirement (needed when browser traffic comes from external IP)
+  # - Creates lab-realm with testuser
+  keycloak-init:
+    image: quay.io/keycloak/keycloak:26.5.4
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        KCADM="/opt/keycloak/bin/kcadm.sh"
+
+        $$KCADM config credentials --server http://keycloak:8080 --realm master --user admin --password admin
+
+        # Disable SSL requirement on master realm
+        $$KCADM update realms/master -s sslRequired=NONE
+        echo "SSL requirement disabled on master realm."
+
+        # Create lab-realm
+        $$KCADM create realms -s realm=lab-realm -s enabled=true -s sslRequired=NONE
+        echo "Realm lab-realm created."
+
+        # Create testuser
+        $$KCADM create users -r lab-realm -s username=testuser -s enabled=true -s emailVerified=true -s email=testuser@example.com -s firstName=Test -s lastName=User
+        $$KCADM set-password -r lab-realm --username testuser --new-password testuser --temporary=false
+        echo "User testuser created (password: testuser)."
     networks:
       - backend
 

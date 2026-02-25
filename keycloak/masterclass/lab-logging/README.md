@@ -27,7 +27,7 @@ Die `docker-compose.yaml` startet vier Services:
    ```
 3) Oeffnet die `docker-compose.yaml` und schaut euch die Log-Konfiguration an:
    - `KC_LOG`: Ausgabeziel (`console`, `file`, `syslog`)
-   - `KC_LOG_CONSOLE_FORMAT`: Format der Console-Ausgabe
+   - `KC_LOG_CONSOLE_OUTPUT`: Ausgabeformat (`default` oder `json`)
    - `KC_LOG_LEVEL`: Log-Level (Root und Kategorie-spezifisch)
 
 ### Zweiter Teil: JSON-Logging aktivieren
@@ -37,7 +37,7 @@ Strukturierte Logs im JSON-Format sind in der Praxis wichtig, weil sie maschinel
 1) Stoppt die Umgebung mit `Ctrl+C`.
 2) Aendert in der `docker-compose.yaml` das Log-Format auf JSON:
    ```yaml
-   KC_LOG_CONSOLE_FORMAT: json
+   KC_LOG_CONSOLE_OUTPUT: json
    ```
 3) Startet die Umgebung neu: `docker compose up`
 4) Vergleicht die Ausgabe - jede Log-Zeile ist jetzt ein JSON-Objekt:
@@ -61,14 +61,14 @@ Strukturierte Logs im JSON-Format sind in der Praxis wichtig, weil sie maschinel
 
 ### Vierter Teil: Logs in Grafana durchsuchen
 
-1) Stellt sicher, dass `KC_LOG_CONSOLE_FORMAT: json` gesetzt ist und startet die Umgebung.
-2) Legt einen Realm `lab-realm` und einen Benutzer an (Username: `testuser`, Email Verified: On, Passwort gesetzt, Temporary: Off).
-3) Loggt euch mehrfach ein und aus: http://localhost:8080/realms/lab-realm/account/
-4) Oeffnet Grafana: http://localhost:3000 (Login: `admin`/`admin`, Skip bei Passwort-Aenderung).
-5) Navigiert zu **Explore** (Kompass-Icon links) und waehlt die Datasource **Loki**.
-6) Fuehrt eure erste LogQL-Query aus:
+1) Stellt sicher, dass `KC_LOG_CONSOLE_OUTPUT: json` gesetzt ist und startet die Umgebung.
+   Der `keycloak-init` Service legt automatisch den Realm `lab-realm` und den Benutzer `testuser` (Passwort: `testuser`) an.
+2) Loggt euch mehrfach mit `testuser` ein und aus: http://localhost:8080/realms/lab-realm/account/
+3) Oeffnet Grafana: http://localhost:3000 (Login: `admin`/`admin`, Skip bei Passwort-Aenderung).
+4) Navigiert zu **Explore** (Kompass-Icon links) und waehlt die Datasource **Loki**.
+5) Fuehrt eure erste LogQL-Query aus:
    ```
-   {service="keycloak"}
+   {service_name="/kc-mc-lab-logging-keycloak-1"}
    ```
    Das zeigt alle Keycloak-Logs.
 
@@ -78,43 +78,42 @@ Probiert folgende Queries in Grafana Explore aus:
 
 ```logql
 # Alle Keycloak-Logs
-{service="keycloak"}
+{service_name="/kc-mc-lab-logging-keycloak-1"}
 
 # Nur Fehler und Warnungen
-{service="keycloak"} |= "ERROR" or {service="keycloak"} |= "WARN"
+{service_name="/kc-mc-lab-logging-keycloak-1"} |= "ERROR" or {service_name="/kc-mc-lab-logging-keycloak-1"} |= "WARN"
 
 # Logs nach einem bestimmten Text filtern
-{service="keycloak"} |= "LOGIN"
+{service_name="/kc-mc-lab-logging-keycloak-1"} |= "LOGIN"
 
 # Bei JSON-Format: nach Feldern filtern
-{service="keycloak"} | json | level="ERROR"
+{service_name="/kc-mc-lab-logging-keycloak-1"} | json | level="ERROR"
 
 # Bei JSON-Format: nach Logger-Kategorie filtern
-{service="keycloak"} | json | loggerName="org.keycloak.events"
+{service_name="/kc-mc-lab-logging-keycloak-1"} | json | loggerName="org.keycloak.events"
 
 # Anzahl der Log-Zeilen pro Minute
-rate({service="keycloak"}[1m])
+rate({service_name="/kc-mc-lab-logging-keycloak-1"}[1m])
 
 # Anzahl der Fehler pro Minute
-rate({service="keycloak"} | json | level="ERROR" [1m])
+rate({service_name="/kc-mc-lab-logging-keycloak-1"} | json | level="ERROR" [1m])
 ```
 
-### Sechster Teil: Event-Logging aktivieren
+### Sechster Teil: Aenderungen in Loki nachvollziehen
 
-1) Loggt euch in die Admin Console ein: http://localhost:8080/admin/
-2) Wechselt in den Realm `lab-realm`.
-3) Navigiert zu **Realm settings → Events**.
-4) Unter **User events settings**: Schaltet **Save events** ein und klickt **Save**.
-5) Unter **Admin events settings**: Schaltet **Save events** und **Include representation** ein und klickt **Save**.
-6) Fuehrt einige Aktionen aus:
-   - Loggt euch als `testuser` ein und aus (User Event)
-   - Legt einen neuen Benutzer an (Admin Event)
-   - Versucht einen fehlerhaften Login (User Event: LOGIN_ERROR)
-7) Prueft die Events in der Admin Console unter **Events → User events** und **Events → Admin events**.
-8) Sucht die Events in Grafana mit LogQL:
+Ziel: Eine Benutzeraktion in der Account Console durchfuehren und den zugehoerigen Log-Eintrag in Loki finden.
+
+1) Loggt euch als `testuser` in die Account Console ein: http://localhost:8080/realms/lab-realm/account/
+2) Klickt auf **Personal info** und aendert den Benutzernamen (z.B. von `testuser` auf `testuser-renamed`).
+3) Wechselt zu Grafana Explore und sucht den passenden Log-Eintrag:
    ```logql
-   {service="keycloak"} |= "LOGIN"
+   {service_name="/kc-mc-lab-logging-keycloak-1"} |= "UPDATE_PROFILE"
    ```
+4) Untersucht den Log-Eintrag. Welche Informationen liefert Keycloak zu dieser Aktion?
+5) Probiert weitere Aktionen und sucht die zugehoerigen Logs:
+   - Passwort aendern → `UPDATE_PASSWORD`
+   - Fehlerhafter Login → `LOGIN_ERROR`
+   - Erfolgreicher Login → `LOGIN`
 
 ---
 
@@ -145,7 +144,7 @@ The `docker-compose.yaml` starts four services:
    ```
 3) Open `docker-compose.yaml` and review the log configuration:
    - `KC_LOG`: Output target (`console`, `file`, `syslog`)
-   - `KC_LOG_CONSOLE_FORMAT`: Console output format
+   - `KC_LOG_CONSOLE_OUTPUT`: Output format (`default` or `json`)
    - `KC_LOG_LEVEL`: Log level (root and category-specific)
 
 ### Part 2: Enable JSON Logging
@@ -155,7 +154,7 @@ Structured JSON logs are important in practice because they can be parsed by mac
 1) Stop the environment with `Ctrl+C`.
 2) Change the log format to JSON in `docker-compose.yaml`:
    ```yaml
-   KC_LOG_CONSOLE_FORMAT: json
+   KC_LOG_CONSOLE_OUTPUT: json
    ```
 3) Restart the environment: `docker compose up`
 4) Compare the output - each log line is now a JSON object:
@@ -179,14 +178,14 @@ Structured JSON logs are important in practice because they can be parsed by mac
 
 ### Part 4: Search Logs in Grafana
 
-1) Make sure `KC_LOG_CONSOLE_FORMAT: json` is set and start the environment.
-2) Create a realm `lab-realm` and a user (username: `testuser`, email verified: on, password set, temporary: off).
-3) Log in and out multiple times: http://localhost:8080/realms/lab-realm/account/
-4) Open Grafana: http://localhost:3000 (login: `admin`/`admin`, skip password change).
-5) Navigate to **Explore** (compass icon on the left) and select the **Loki** datasource.
-6) Run your first LogQL query:
+1) Make sure `KC_LOG_CONSOLE_OUTPUT: json` is set and start the environment.
+   The `keycloak-init` service automatically creates the realm `lab-realm` and user `testuser` (password: `testuser`).
+2) Log in and out multiple times as `testuser`: http://localhost:8080/realms/lab-realm/account/
+3) Open Grafana: http://localhost:3000 (login: `admin`/`admin`, skip password change).
+4) Navigate to **Explore** (compass icon on the left) and select the **Loki** datasource.
+5) Run your first LogQL query:
    ```
-   {service="keycloak"}
+   {service_name="/kc-mc-lab-logging-keycloak-1"}
    ```
    This shows all Keycloak logs.
 
@@ -196,40 +195,39 @@ Try the following queries in Grafana Explore:
 
 ```logql
 # All Keycloak logs
-{service="keycloak"}
+{service_name="/kc-mc-lab-logging-keycloak-1"}
 
 # Only errors and warnings
-{service="keycloak"} |= "ERROR" or {service="keycloak"} |= "WARN"
+{service_name="/kc-mc-lab-logging-keycloak-1"} |= "ERROR" or {service_name="/kc-mc-lab-logging-keycloak-1"} |= "WARN"
 
 # Filter logs by specific text
-{service="keycloak"} |= "LOGIN"
+{service_name="/kc-mc-lab-logging-keycloak-1"} |= "LOGIN"
 
 # With JSON format: filter by fields
-{service="keycloak"} | json | level="ERROR"
+{service_name="/kc-mc-lab-logging-keycloak-1"} | json | level="ERROR"
 
 # With JSON format: filter by logger category
-{service="keycloak"} | json | loggerName="org.keycloak.events"
+{service_name="/kc-mc-lab-logging-keycloak-1"} | json | loggerName="org.keycloak.events"
 
 # Count log lines per minute
-rate({service="keycloak"}[1m])
+rate({service_name="/kc-mc-lab-logging-keycloak-1"}[1m])
 
 # Count errors per minute
-rate({service="keycloak"} | json | level="ERROR" [1m])
+rate({service_name="/kc-mc-lab-logging-keycloak-1"} | json | level="ERROR" [1m])
 ```
 
-### Part 6: Enable Event Logging
+### Part 6: Track Changes in Loki
 
-1) Log in to the Admin Console: http://localhost:8080/admin/
-2) Switch to the `lab-realm`.
-3) Navigate to **Realm settings → Events**.
-4) Under **User events settings**: Enable **Save events** and click **Save**.
-5) Under **Admin events settings**: Enable **Save events** and **Include representation**, then click **Save**.
-6) Perform some actions:
-   - Log in and out as `testuser` (user event)
-   - Create a new user (admin event)
-   - Try a failed login (user event: LOGIN_ERROR)
-7) Check the events in the Admin Console under **Events → User events** and **Events → Admin events**.
-8) Search for events in Grafana using LogQL:
+Goal: Perform a user action in the Account Console and find the corresponding log entry in Loki.
+
+1) Log in as `testuser` to the Account Console: http://localhost:8080/realms/lab-realm/account/
+2) Click **Personal info** and change the username (e.g. from `testuser` to `testuser-renamed`).
+3) Switch to Grafana Explore and search for the corresponding log entry:
    ```logql
-   {service="keycloak"} |= "LOGIN"
+   {service_name="/kc-mc-lab-logging-keycloak-1"} |= "UPDATE_PROFILE"
    ```
+4) Examine the log entry. What information does Keycloak provide about this action?
+5) Try more actions and search for their logs:
+   - Change password → `UPDATE_PASSWORD`
+   - Failed login → `LOGIN_ERROR`
+   - Successful login → `LOGIN`
