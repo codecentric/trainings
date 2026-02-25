@@ -1,0 +1,182 @@
+{
+  "realm": "insecure-realm",
+  "enabled": true,
+  "sslRequired": "none",
+  "bruteForceProtected": false,
+  "passwordPolicy": "hashIterations(1)",
+  "eventsEnabled": false,
+  "adminEventsEnabled": false,
+  "accessTokenLifespan": 3600,
+  "ssoSessionIdleTimeout": 86400,
+  "ssoSessionMaxLifespan": 2592000,
+  "offlineSessionMaxLifespan": 31536000,
+  "revokeRefreshToken": false,
+  "registrationAllowed": true,
+  "verifyEmail": false,
+  "browserSecurityHeaders": {
+    "contentSecurityPolicy": "",
+    "contentSecurityPolicyReportOnly": "",
+    "xContentTypeOptions": "",
+    "xFrameOptions": "",
+    "xRobotsTag": "",
+    "xXSSProtection": "",
+    "strictTransportSecurity": "",
+    "referrerPolicy": ""
+  },
+  "roles": {
+    "realm": [
+      {
+        "name": "app-user",
+        "description": "Application user role"
+      },
+      {
+        "name": "app-admin",
+        "description": "Application admin role"
+      }
+    ]
+  },
+  "scopeMappings": [
+    {
+      "client": "webapp",
+      "roles": [
+        "app-user"
+      ]
+    }
+  ],
+  "defaultDefaultClientScopes": [
+    "role_list",
+    "profile",
+    "email",
+    "roles",
+    "web-origins",
+    "acr"
+  ],
+  "defaultOptionalClientScopes": [
+    "offline_access",
+    "address",
+    "phone",
+    "microprofile-jwt"
+  ],
+  "clients": [
+    {
+      "clientId": "webapp",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "webapp-secret",
+      "redirectUris": [
+        "*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": true,
+      "defaultClientScopes": [
+        "role_list",
+        "profile",
+        "email",
+        "roles",
+        "web-origins",
+        "acr",
+        "offline_access"
+      ],
+      "optionalClientScopes": [],
+      "protocol": "openid-connect"
+    },
+    {
+      "clientId": "spa-app",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "http://*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": true,
+      "attributes": {
+        "pkce.code.challenge.method": "",
+        "oidc.ciba.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false"
+      },
+      "protocol": "openid-connect"
+    },
+    {
+      "clientId": "service-account-client",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "password",
+      "redirectUris": [],
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "fullScopeAllowed": true,
+      "protocol": "openid-connect"
+    }
+  ],
+  "users": [
+    {
+      "username": "testuser",
+      "email": "testuser@example.com",
+      "firstName": "Test",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "app-user"
+      ]
+    },
+    {
+      "username": "realmadmin",
+      "email": "realmadmin@example.com",
+      "firstName": "Realm",
+      "lastName": "Admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "app-admin"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "realm-admin"
+        ]
+      }
+    },
+    {
+      "username": "service-account-service-account-client",
+      "serviceAccountClientId": "service-account-client",
+      "enabled": true,
+      "emailVerified": false,
+      "clientRoles": {
+        "realm-management": [
+          "realm-admin"
+        ]
+      }
+    }
+  ]
+}
