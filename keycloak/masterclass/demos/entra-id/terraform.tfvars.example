@@ -7,6 +7,3 @@
 
 # Realm name in Keycloak where you'll configure Azure AD
 # keycloak_realm = "labrealm"
-
-# Whether to create a demo user in Azure AD for testing
-# create_demo_user = true
