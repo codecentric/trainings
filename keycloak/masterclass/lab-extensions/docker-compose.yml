@@ -6,7 +6,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_LOG_LEVEL: INFO
     volumes:
-      - ./vscode/config/workspace/providers:/opt/keycloak/providers
+      - ./vscode/workspace/providers:/opt/keycloak/providers
     ports:
       - 8080:8080
     command:
