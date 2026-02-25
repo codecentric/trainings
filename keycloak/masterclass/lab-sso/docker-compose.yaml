@@ -29,7 +29,7 @@ services:
       - backend
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.5.3
+    image: quay.io/keycloak/keycloak:26.5.4
     environment:
 
       # Keycloak Admin User
