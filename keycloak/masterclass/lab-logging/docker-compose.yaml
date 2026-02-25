@@ -36,7 +36,6 @@ services:
       - backend
 
   # Initializes Keycloak after startup:
-  # - Disables SSL requirement (needed when browser traffic comes from external IP)
   # - Creates lab-realm with testuser
   keycloak-init:
     image: quay.io/keycloak/keycloak:26.5.4
@@ -51,12 +50,8 @@ services:
 
         $$KCADM config credentials --server http://keycloak:8080 --realm master --user admin --password admin
 
-        # Disable SSL requirement on master realm
-        $$KCADM update realms/master -s sslRequired=NONE
-        echo "SSL requirement disabled on master realm."
-
         # Create lab-realm
-        $$KCADM create realms -s realm=lab-realm -s enabled=true -s sslRequired=NONE
+        $$KCADM create realms -s realm=lab-realm -s enabled=true
         echo "Realm lab-realm created."
 
         # Create testuser
