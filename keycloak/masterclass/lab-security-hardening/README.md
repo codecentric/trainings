@@ -18,8 +18,7 @@ Login: `admin` / `admin`
 Wechselt nach dem Login in den Realm **insecure-realm**.
 
 ### Aufgabe
-
-Untersucht den Realm `insecure-realm` systematisch und findet **mindestens 12 Sicherheitsprobleme**. Dokumentiert fuer jedes Problem:
+Untersucht den Realm `insecure-realm` systematisch und findet so viele Sicherheitsprobleme wie möglich. Dokumentiert fuer jedes Problem:
 
 1. **Was?** - Was genau ist das Problem?
 2. **Warum?** - Welches Risiko entsteht dadurch?
@@ -75,7 +74,7 @@ After login, switch to the **insecure-realm**.
 
 ### Task
 
-Systematically examine the `insecure-realm` and find **at least 12 security issues**. For each issue, document:
+Systematically examine the `insecure-realm` and find as many security issues as possible. For each issue, document:
 
 1. **What?** - What exactly is the problem?
 2. **Why?** - What risk does it create?
