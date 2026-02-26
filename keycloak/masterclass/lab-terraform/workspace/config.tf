@@ -25,11 +25,11 @@ resource "keycloak_openid_client" "public_client" {
   name      = "Mein Public Client"
   enabled   = true
 
-  # Das macht ihn zum Confidential Client
+  # Das macht ihn zum Public Client
   access_type = "PUBLIC"
 
   # Standardeinstellungen für Authorization Code Flow
-  standard_flow_enabled = true
+  standard_flow_enabled      = true
   pkce_code_challenge_method = "S256"
 
   valid_redirect_uris = [
