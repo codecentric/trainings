@@ -15,7 +15,7 @@ docker compose up
 Keycloak Admin-Konsole: http://localhost:8080
 Login: `admin` / `admin`
 
-Wechselt nach dem Login in den Realm **insecure-realm** (Dropdown oben links).
+Wechselt nach dem Login in den Realm **insecure-realm**.
 
 ### Aufgabe
 
@@ -39,7 +39,7 @@ Geht die folgenden Bereiche in der Admin-Konsole systematisch durch:
 - [ ] **Realm Settings > Events** - Event-Logging
 - [ ] **Authentication > Required Actions** - Welche Aktionen sind fuer neue User vorgeschrieben?
 - [ ] **Authentication > Flows** - Ist ein zweiter Faktor konfiguriert?
-- [ ] **Clients** - Konfiguration aller Clients pruefen (Redirect URIs, Flows, Scopes, Web Origins) [service-account-client, spa-app, webapp]
+- [ ] **Clients** - Konfiguration aller Clients pruefen (Redirect URIs, Flows, Scopes, Web Origins) [service-account-client, webapp]
 - [ ] **Users** - Benutzer und ihre Rollen pruefen
 
 ### Hinweise
@@ -53,11 +53,6 @@ Geht die folgenden Bereiche in der Admin-Konsole systematisch durch:
 - Gibt es einen zweiten Faktor? Besonders fuer privilegierte Accounts?
 - Welche Origins duerfen Cross-Origin-Requests machen (CORS)?
 
-### Umgebung stoppen
-
-```bash
-docker compose down -v
-```
 
 ---
 
@@ -76,7 +71,7 @@ docker compose up
 Keycloak Admin Console: http://localhost:8080
 Login: `admin` / `admin`
 
-After login, switch to the **insecure-realm** (dropdown top left).
+After login, switch to the **insecure-realm**.
 
 ### Task
 
@@ -100,7 +95,7 @@ Go through the following areas in the Admin Console systematically:
 - [ ] **Realm Settings > Events** - Event logging
 - [ ] **Authentication > Required Actions** - Which actions are required for new users?
 - [ ] **Authentication > Flows** - Is a second factor configured?
-- [ ] **Clients** - Review all client configurations (redirect URIs, flows, scopes, web origins)
+- [ ] **Clients** - Review all client configurations (redirect URIs, flows, scopes, web origins) [service-account-client, webapp]
 - [ ] **Users** - Review users and their roles
 
 ### Hints
@@ -113,9 +108,3 @@ Go through the following areas in the Admin Console systematically:
 - Is there a password policy? If so, check all settings carefully - not just whether one exists, but what it does.
 - Is there a second factor? Especially for privileged accounts?
 - Which origins are allowed to make cross-origin requests (CORS)?
-
-### Stop the environment
-
-```bash
-docker compose down -v
-```

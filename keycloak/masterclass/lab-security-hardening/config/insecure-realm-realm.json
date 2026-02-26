@@ -69,8 +69,8 @@
       "webOrigins": [
         "*"
       ],
-      "publicClient": false,
-      "standardFlowEnabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": false,
       "implicitFlowEnabled": true,
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": false,
@@ -85,24 +85,6 @@
         "offline_access"
       ],
       "optionalClientScopes": [],
-      "protocol": "openid-connect"
-    },
-    {
-      "clientId": "spa-app",
-      "enabled": true,
-      "clientAuthenticatorType": "client-secret",
-      "redirectUris": [
-        "http://*"
-      ],
-      "webOrigins": [
-        "*"
-      ],
-      "publicClient": true,
-      "standardFlowEnabled": false,
-      "implicitFlowEnabled": true,
-      "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "fullScopeAllowed": true,
       "attributes": {
         "pkce.code.challenge.method": "",
         "oidc.ciba.grant.enabled": "false",
