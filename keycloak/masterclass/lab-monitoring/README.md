@@ -38,7 +38,7 @@ Keycloak wird mit den Flags `--metrics-enabled=true` und `--health-enabled=true`
 ### Zweiter Teil: Prometheus Targets pruefen
 
 1) Oeffnet die Prometheus-Oberflaeche: http://localhost:9090
-2) Navigiert zu **Status -> Targets**. Der Keycloak-Target sollte den Status `UP` haben.
+2) Navigiert zu **Status -> Target Health**. Der Keycloak-Target sollte den Status `UP` haben.
 3) Gebt im Query-Feld eine Metrik ein, z.B. `jvm_memory_used_bytes`, und klickt **Execute**. Wechselt auf den Tab **Graph**.
 4) Probiert weitere PromQL-Queries aus:
    - `rate(http_server_requests_seconds_count[1m])` (HTTP Requests pro Sekunde)

@@ -104,7 +104,7 @@ rate({service_name="/kc-mc-lab-logging-keycloak-1"} | json | level="ERROR" [1m])
 Ziel: Eine Benutzeraktion in der Account Console durchfuehren und den zugehoerigen Log-Eintrag in Loki finden.
 
 1) Loggt euch als `testuser` in die Account Console ein: http://localhost:8080/realms/lab-realm/account/
-2) Klickt auf **Personal info** und aendert den Benutzernamen (z.B. von `testuser` auf `testuser-renamed`).
+2) Klickt auf **Personal info** und aendert den Vornamen (z.B. von `Test` auf `Test-renamed`).
 3) Wechselt zu Grafana Explore und sucht den passenden Log-Eintrag:
    ```logql
    {service_name="/kc-mc-lab-logging-keycloak-1"} |= "UPDATE_PROFILE"
@@ -221,7 +221,7 @@ rate({service_name="/kc-mc-lab-logging-keycloak-1"} | json | level="ERROR" [1m])
 Goal: Perform a user action in the Account Console and find the corresponding log entry in Loki.
 
 1) Log in as `testuser` to the Account Console: http://localhost:8080/realms/lab-realm/account/
-2) Click **Personal info** and change the username (e.g. from `testuser` to `testuser-renamed`).
+2) Click **Personal info** and change the first name (e.g. from `Test` to `Test-renamed`).
 3) Switch to Grafana Explore and search for the corresponding log entry:
    ```logql
    {service_name="/kc-mc-lab-logging-keycloak-1"} |= "UPDATE_PROFILE"

@@ -1,5 +1,7 @@
 # Lab ABAC
 
+# DE
+
 ## Erster Teil: Basiskonfiguration
 
 Ziel: Wir wollen eine Regel definieren, die Benutzern, die Mitglied einer bestimmten Gruppe sind, Zugriff auf eine Ressource erlauben.
@@ -8,7 +10,7 @@ Ziel: Wir wollen eine Regel definieren, die Benutzern, die Mitglied einer bestim
 2) Wechselt auf der Kommandozeile in diesen Ordner und führt `docker compose up` aus.
 3) Öffnet in eurem Browser die URL http://localhost:8080 und loggt euch mit den Credentials `admin`/`admin` ein.
 4) Legt einen neuen "lab-realm" an und wechselt in diesen.
-5) Legt einen neuen Benutzer an und weist ihm ein Department zu. Lege auch eine neue Gruppe "test-gruppe" an, in der der Benutzer Mitglied ist.
+5) Legt einen neuen Benutzer an. Lege eine neue Gruppe "test-gruppe" an, in der der Benutzer Mitglied ist.
 6) Legt einen neuen Client "lab-client" an. Aktiviert dabei "Client authentication" und "Authorization".
 7) Wechselt in den "Authorization"-Tab des Clients.
    - Legt unter "Resources" ein Element an und setzt "Name" und "Display name" auf "test-ressource".
@@ -25,3 +27,35 @@ Ziel: Wir wollen eigene Policies implementieren, die mehr Logik enthalten könne
 3) Lege für den JS-Provider eine weitere Policy an. Dabei musst du nur einen Namen festlegen - die Logik ist im JS-Code!
 4) Füge deiner Permission die angelegt Policy hinzu.
 5) Wenn du jetzt "Evaluate" nutzt, erhälst du ein "Deny". Passe deinen Benutzer so an, dass das "Evaluate" zu "Permit" evaluiert.
+
+## Notizen
+* Speichern der JS Policy fügt automagisch den Code ein. Das nochmal genauer erläutern, wie das passiert? Kann ich mehrere JS Policies als Code abgelegt haben? Was passiert dann, wenn ich 2 oder mehr von dene in Providers liegen habe?
+* Allgemein liegt das Lab ABAC in den Folien nach RBAC aber vor ABAC. So gewollt?
+---
+
+# EN
+## Part One: Basic Configuration
+
+Goal: We want to define a rule that grants users who are members of a specific group access to a resource.
+
+1) Please open the `docker-compose.yaml` file in this directory and familiarize yourself with the configuration.
+2) Navigate to this folder on the command line and run `docker compose up`.
+3) Open the URL http://localhost:8080 in your browser and log in with the credentials `admin`/`admin`.
+4) Create a new "lab-realm" and switch to it.
+5) Create a new user and assign a department to them. Also create a new group "test-group" and make the user a member of it.
+6) Create a new client "lab-client". Enable "Client authentication" and "Authorization".
+7) Switch to the "Authorization" tab of the client.
+   - Under "Resources", create an element and set "Name" and "Display name" to "test-resource".
+   - Under "Policies", create an element of type "Group", set the name to "test-group-policy" and add the "test-group" via "Add groups".
+   - Now link the resource and policy by creating a Resource Based Permission. Give it a name and assign the resource and policy to it.
+8) Via "Evaluate", you can now check whether your user has access to the resource. Select your user under "Users" and "default-roles-lab-realm" under "Roles", then click "Evaluate". You should receive a "Permit" for the resource "test-resource".
+
+## Part Two: Defining Custom Rules
+
+Goal: We want to implement our own policies that can contain more logic, for example, evaluating profile attributes.
+
+1) In the "User Profile" section of the "Realm settings", create a new attribute named "department" so that it is readable and writable for users and admins.
+2) In the Providers folder, you'll find an implementation for a custom JavaScript provider. Take a close look at the providers.js file and see what happens in it.
+3) Create another policy for the JS provider. You only need to set a name - the logic is in the JS code!
+4) Add the newly created policy to your permission.
+5) If you now use "Evaluate", you'll get a "Deny". Adjust your user so that "Evaluate" evaluates to "Permit".
