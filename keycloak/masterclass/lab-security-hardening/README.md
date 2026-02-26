@@ -31,7 +31,7 @@ Geht die folgenden Bereiche in der Admin-Konsole systematisch durch:
 
 - [ ] **Realm Settings > General** - Grundlegende Realm-Einstellungen
 - [ ] **Realm Settings > Login** - Registrierung und Login-Optionen
-- [ ] **Realm Settings > Email** - Email-Verifikation
+- [ ] **Realm Settings > Login** - Email-Verifikation
 - [ ] **Realm Settings > Sessions** - Session-Timeouts
 - [ ] **Realm Settings > Tokens** - Token-Lifetimes
 - [ ] **Realm Settings > Security Defenses** - Brute Force, Headers
@@ -39,7 +39,7 @@ Geht die folgenden Bereiche in der Admin-Konsole systematisch durch:
 - [ ] **Realm Settings > Events** - Event-Logging
 - [ ] **Authentication > Required Actions** - Welche Aktionen sind fuer neue User vorgeschrieben?
 - [ ] **Authentication > Flows** - Ist ein zweiter Faktor konfiguriert?
-- [ ] **Clients** - Konfiguration aller Clients pruefen (Redirect URIs, Flows, Scopes, Web Origins)
+- [ ] **Clients** - Konfiguration aller Clients pruefen (Redirect URIs, Flows, Scopes, Web Origins) [service-account-client, spa-app, webapp]
 - [ ] **Users** - Benutzer und ihre Rollen pruefen
 
 ### Hinweise
