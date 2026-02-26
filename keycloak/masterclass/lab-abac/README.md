@@ -28,9 +28,6 @@ Ziel: Wir wollen eigene Policies implementieren, die mehr Logik enthalten könne
 4) Füge deiner Permission die angelegt Policy hinzu.
 5) Wenn du jetzt "Evaluate" nutzt, erhälst du ein "Deny". Passe deinen Benutzer so an, dass das "Evaluate" zu "Permit" evaluiert.
 
-## Notizen
-* Speichern der JS Policy fügt automagisch den Code ein. Das nochmal genauer erläutern, wie das passiert? Kann ich mehrere JS Policies als Code abgelegt haben? Was passiert dann, wenn ich 2 oder mehr von dene in Providers liegen habe?
-* Allgemein liegt das Lab ABAC in den Folien nach RBAC aber vor ABAC. So gewollt?
 ---
 
 # EN
