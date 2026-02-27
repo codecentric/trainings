@@ -20,14 +20,12 @@ services:
       # Keycloak Admin User
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_FEATURES: scripts
 
       # Logging, see: https://www.keycloak.org/server/logging
       KC_LOG_LEVEL: INFO
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
-      - ./providers:/opt/keycloak/providers:z
 
     ports:
       - 8080:8080 # HTTP
