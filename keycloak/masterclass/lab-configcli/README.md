@@ -14,8 +14,8 @@
 1) Löscht nun eure Container und volumes und startet mit `docker compose up` eine neue leere Umgebung.
 2) Modifiziert die Config Datei, indem ihr den Wert des Nachnamen durch `$(LASTNAME)` ersetzt.
 3) Modifiziert das docker run Kommando der Keycloak Config CLI
-   * Ergänzt die env `IMPORT_VAR_SUBSTITUTION_ENABLED=true`
-   * Ergänzt die env `LASTNAME=codecentric`
+   * Ergänzt die env `IMPORT_VAR_SUBSTITUTION_ENABLED: true`
+   * Ergänzt die env `LASTNAME: "codecentric"`
 4) Setzt die Config wie zuvor um und prüft, ob alles geklappt hat.
 
 ## EN
@@ -32,6 +32,6 @@
 1) Now delete your containers and volumes and start a new empty environment with `docker compose up`.
 2) Modify the config file by replacing the value of the last name with `$(LASTNAME)`.
 3) Modify the docker run command of the Keycloak Config CLI
-   * Add the env `IMPORT_VAR_SUBSTITUTION_ENABLED=true`.
-   * Add the env `LASTNAME=codecentric`.
+   * Add the env `IMPORT_VAR_SUBSTITUTION_ENABLED: true`.
+   * Add the env `LASTNAME: "codecentric"`.
 4) Apply the config as before and check whether everything has worked.
