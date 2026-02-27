@@ -2,6 +2,8 @@
 
 ## DE - Sicherheits-Review einer Keycloak-Konfiguration
 
+### Erster Teil: Manuelle Suche
+
 ### Szenario
 
 Ein Kollege hat ein Keycloak für ein neues Projekt aufgesetzt. Bevor die Anwendung in Produktion geht, sollt ihr die Konfiguration auf Sicherheitsprobleme pruefen. Der Realm `insecure-realm` enthaelt **absichtlich** mehrere Fehlkonfigurationen, die gefunden und dokumentiert werden muessen.
@@ -53,9 +55,30 @@ Geht die folgenden Bereiche in der Admin-Konsole systematisch durch:
 - Welche Origins duerfen Cross-Origin-Requests machen (CORS)?
 
 
+## Zweiter Teil: Automatisierte Analyse mit kcwarden
+
+[kcwarden](https://iteratec.github.io/kcwarden/) ist ein quelloffenes Werkzeug zur automatisierten Analyse von Sicherheitslücken in Konfigurationen von Realms in Keycloak.
+`kcwarden` analysiert einen Realm Export. Exportieren Sie das `insecure-realm` über Keycloak Admin UI und speichern Sie die Datei im `conf` Ordner als `realm-export.json` ab. 
+
+Führen Sie die Analyse aus:
+```bash
+docker compose run --rm kcwarden
+```
+
+1. **Analysiert den kcwarden-Report**
+   - Welche Findings hat kcwarden gefunden?
+   - Welche davon habt ihr im ersten Teil bereits manuell entdeckt?
+   - Hat kcwarden Probleme gefunden, die ihr übersehen habt?
+
+2. **Vergleicht mit eurer manuellen Analyse**
+   - Gibt es False Positives?
+   - Gibt es Probleme, die kcwarden nicht erkennt, die ihr aber manuell gefunden habt?
+
 ---
 
 ## EN - Security Review of a Keycloak Configuration
+
+### Part One: Manual Review
 
 ### Scenario
 
@@ -107,3 +130,23 @@ Go through the following areas in the Admin Console systematically:
 - Is there a password policy? If so, check all settings carefully - not just whether one exists, but what it does.
 - Is there a second factor? Especially for privileged accounts?
 - Which origins are allowed to make cross-origin requests (CORS)?
+
+
+## Part Two: Automated Analysis with kcwarden
+
+[kcwarden](https://iteratec.github.io/kcwarden/) is an open-source tool for automated analysis of security vulnerabilities in Keycloak realm configurations.
+`kcwarden` analyzes a realm export. Export the `insecure-realm` via Keycloak Admin UI and save the file in the `conf` folder as `realm-export.json`.
+
+Run the analysis:
+```bash
+docker compose run --rm kcwarden
+```
+
+1. **Analyze the kcwarden report**
+   - What findings did kcwarden discover?
+   - Which of these did you already find manually in part one?
+   - Did kcwarden find issues you missed?
+
+2. **Compare with your manual analysis**
+   - Are there any false positives?
+   - Are there issues that kcwarden doesn't detect but you found manually?

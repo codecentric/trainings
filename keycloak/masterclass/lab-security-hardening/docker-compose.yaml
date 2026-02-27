@@ -1,11 +1,8 @@
-
 name: kc-fundamentals-lab-security-hardening
 services:
-
   keycloak:
-    image: quay.io/keycloak/keycloak:26.3.3
+    image: quay.io/keycloak/keycloak:26.5.3
     environment:
-
       # Keycloak Admin User
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -14,11 +11,11 @@ services:
       KC_LOG_LEVEL: INFO
 
     volumes:
-      - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+      - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
       - ./config/insecure-realm-realm.json:/opt/keycloak/data/import/insecure-realm-realm.json
 
     ports:
-      - "8080:8080"   # HTTP
+      - "8080:8080" # HTTP
 
     networks:
       - backend
@@ -27,6 +24,18 @@ services:
       - "--verbose"
       - "start-dev" # Only for Dev-Environment!
       - "--import-realm"
+
+  kcwarden:
+    image: ghcr.io/iteratec/kcwarden:latest
+    profiles:
+      - tools
+    volumes:
+      - ./config:/config:ro
+    command:
+      - "audit"
+      - "/config/realm-export.json"
+    networks:
+      - backend
 
 networks:
   backend:
