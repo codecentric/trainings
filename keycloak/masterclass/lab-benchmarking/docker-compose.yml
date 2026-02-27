@@ -2,6 +2,7 @@ name: kc-mc-lab-benchmarking
 services:
   dev_env:
     image: ghcr.io/codecentric/trainings/keycloak-masterclass-vscode:latest
+    platform: linux/amd64
     environment:
       - PUID=1000
       - PGID=1000
