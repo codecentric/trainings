@@ -1,0 +1,37 @@
+name: kc-mc-demo-identity-brokering
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.4
+    environment:
+      # Keycloak Admin User
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      # Logging, see: https://www.keycloak.org/server/logging
+      KC_LOG_LEVEL: INFO
+
+      # Hostname settings for same-instance brokering
+      KC_HOSTNAME: http://localhost:8080
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: true
+
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
+      - ./config/realm-externe-firma.json:/opt/keycloak/data/import/realm-externe-firma.json
+      - ./config/realm-meine-firma.json:/opt/keycloak/data/import/realm-meine-firma.json
+
+    ports:
+      - 8080:8080 # HTTP
+
+    networks:
+      - backend
+
+    command:
+      - "--verbose"
+      - "start-dev" # Only for Dev-Environment!
+      - "--import-realm"
+
+networks:
+  backend:
+
+volumes:
+  keycloak-data:
