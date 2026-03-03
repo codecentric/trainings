@@ -1,0 +1,72 @@
+{
+  "realm": "externe-firma",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "meine-firma-broker",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "broker-secret",
+      "redirectUris": [
+        "http://localhost:8080/realms/meine-firma/*"
+      ],
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "yourapp_access-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "yourapp_access",
+            "claim.name": "yourapp_access",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "user-a",
+      "email": "nutzerA@externe-firma.test",
+      "firstName": "Alice",
+      "lastName": "External",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "test",
+          "temporary": false
+        }
+      ],
+      "attributes": {
+        "yourapp_access": ["true"]
+      }
+    },
+    {
+      "username": "user-b",
+      "email": "nutzerB@externe-firma.test",
+      "firstName": "Bob",
+      "lastName": "External",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "test",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}

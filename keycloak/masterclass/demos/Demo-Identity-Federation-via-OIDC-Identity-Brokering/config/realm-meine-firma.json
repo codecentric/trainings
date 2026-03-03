@@ -1,0 +1,30 @@
+{
+  "realm": "meine-firma",
+  "enabled": true,
+  "identityProviders": [
+    {
+      "alias": "externe-firma",
+      "displayName": "Login ueber externe-firma",
+      "providerId": "oidc",
+      "enabled": true,
+      "trustEmail": true,
+      "firstBrokerLoginFlowAlias": "first broker login",
+      "config": {
+        "clientId": "meine-firma-broker",
+        "clientSecret": "broker-secret",
+        "authorizationUrl": "http://localhost:8080/realms/externe-firma/protocol/openid-connect/auth",
+        "tokenUrl": "http://localhost:8080/realms/externe-firma/protocol/openid-connect/token",
+        "logoutUrl": "http://localhost:8080/realms/externe-firma/protocol/openid-connect/logout",
+        "userInfoUrl": "http://localhost:8080/realms/externe-firma/protocol/openid-connect/userinfo",
+        "issuer": "http://localhost:8080/realms/externe-firma",
+        "validateSignature": "true",
+        "useJwksUrl": "true",
+        "jwksUrl": "http://localhost:8080/realms/externe-firma/protocol/openid-connect/certs",
+        "syncMode": "IMPORT",
+        "filteredByClaim": "true",
+        "claimFilterName": "yourapp_access",
+        "claimFilterValue": "true"
+      }
+    }
+  ]
+}

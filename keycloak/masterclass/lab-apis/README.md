@@ -1,4 +1,4 @@
-# Lab X.Y
+# Lab APIs
 
 ## DE
 
