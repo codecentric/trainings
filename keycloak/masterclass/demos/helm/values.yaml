@@ -11,5 +11,3 @@ extraEnv: |
   - name: JAVA_OPTS_APPEND
     value: >-
       -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
-replicas: 3
-affinity: ""
