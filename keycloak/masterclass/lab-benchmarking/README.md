@@ -17,7 +17,7 @@ In diesem Lab lernen Sie, wie Sie Keycloak unter Last testen und die Ergebnisse 
    cd /workspace/scripts
    ```
 
-5) Importieren Sie ein Realm mit 200 Testbenutzern:
+5) Kreieren Sie einen Realm, der für die Benchmarks genutzt werden kann:
    ```bash
     ./kcadm.sh config credentials --server http://keycloak:8080 --realm master --user admin --password admin
     PATH=$PATH:$(pwd) ./initialize-benchmark-entities.sh -r benchmark-realm -c gatling -u user-0
@@ -132,7 +132,7 @@ In this lab, you will learn how to load test Keycloak and interpret the results.
    cd /workspace/scripts
    ```
 
-5) Import a realm with 200 test users:
+5) Create a realm that can be used for benchmarking:
    ```bash
     ./kcadm.sh config credentials --server http://keycloak:8080 --realm master --user admin --password admin
     PATH=$PATH:$(pwd) ./initialize-benchmark-entities.sh -r benchmark-realm -c gatling -u user-0
