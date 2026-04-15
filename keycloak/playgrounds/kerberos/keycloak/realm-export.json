@@ -1,0 +1,117 @@
+{
+  "realm": "kerberos-demo",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginTheme": "keycloak",
+  "components": {
+    "org.keycloak.storage.UserStorageProvider": [
+      {
+        "name": "ldap",
+        "providerId": "ldap",
+        "subComponents": {
+          "org.keycloak.storage.ldap.mappers.LDAPStorageMapper": [
+            {
+              "name": "username",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": ["uid"],
+                "user.model.attribute": ["username"],
+                "always.read.value.from.ldap": ["false"],
+                "is.mandatory.in.ldap": ["true"],
+                "read.only": ["true"]
+              }
+            },
+            {
+              "name": "email",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": ["mail"],
+                "user.model.attribute": ["email"],
+                "always.read.value.from.ldap": ["false"],
+                "is.mandatory.in.ldap": ["false"],
+                "read.only": ["true"]
+              }
+            },
+            {
+              "name": "first name",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": ["cn"],
+                "user.model.attribute": ["firstName"],
+                "always.read.value.from.ldap": ["false"],
+                "is.mandatory.in.ldap": ["true"],
+                "read.only": ["true"]
+              }
+            },
+            {
+              "name": "last name",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": ["sn"],
+                "user.model.attribute": ["lastName"],
+                "always.read.value.from.ldap": ["false"],
+                "is.mandatory.in.ldap": ["true"],
+                "read.only": ["true"]
+              }
+            }
+          ]
+        },
+        "config": {
+          "enabled": ["true"],
+          "priority": ["0"],
+          "editMode": ["READ_ONLY"],
+          "syncRegistrations": ["false"],
+          "importEnabled": ["true"],
+          "vendor": ["other"],
+          "usernameLDAPAttribute": ["uid"],
+          "rdnLDAPAttribute": ["uid"],
+          "uuidLDAPAttribute": ["entryUUID"],
+          "userObjectClasses": ["inetOrgPerson, organizationalPerson"],
+          "connectionUrl": ["ldap://openldap:389"],
+          "usersDn": ["ou=users,dc=example,dc=com"],
+          "authType": ["simple"],
+          "bindDn": ["cn=admin,dc=example,dc=com"],
+          "bindCredential": ["adminpassword"],
+          "searchScope": ["1"],
+          "useTruststoreSpi": ["ldapsOnly"],
+          "connectionPooling": ["true"],
+          "pagination": ["true"],
+          "batchSizeForSync": ["1000"],
+          "fullSyncPeriod": ["-1"],
+          "changedSyncPeriod": ["-1"],
+          "cachePolicy": ["DEFAULT"],
+          "allowKerberosAuthentication": ["true"],
+          "kerberosRealm": ["EXAMPLE.COM"],
+          "serverPrincipal": ["HTTP/localhost@EXAMPLE.COM"],
+          "keyTab": ["/keytabs/keycloak.keytab"],
+          "useKerberosForPasswordAuthentication": ["false"],
+          "debug": ["true"]
+        }
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "demo-app",
+      "name": "Demo Application",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["http://localhost:8080/*", "http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:8080", "http://localhost:3000"]
+    }
+  ],
+  "browserSecurityHeaders": {
+    "contentSecurityPolicyReportOnly": "",
+    "xContentTypeOptions": "nosniff",
+    "xRobotsTag": "none",
+    "xFrameOptions": "SAMEORIGIN",
+    "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';"
+  }
+}

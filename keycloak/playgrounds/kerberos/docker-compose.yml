@@ -1,0 +1,154 @@
+volumes:
+  keytabs:
+  ldap-data:
+  ldap-config:
+
+networks:
+  kerberos-net:
+    driver: bridge
+
+services:
+  # -------------------------------------------------------------------------
+  # MIT Kerberos KDC + kadmind
+  # Realm: EXAMPLE.COM
+  # On first boot, init-kdc.sh creates all principals and writes the keytab
+  # to the shared volume for Keycloak to pick up.
+  # -------------------------------------------------------------------------
+  kerberos:
+    build:
+      context: ./kerberos
+    container_name: kerberos
+    hostname: kerberos
+    networks:
+      - kerberos-net
+    ports:
+      - "88:88/udp"
+      - "88:88/tcp"
+      - "749:749/tcp"
+    volumes:
+      - keytabs:/keytabs
+    env_file:
+      - .env
+    healthcheck:
+      test:
+        ["CMD-SHELL", "kadmin.local -q 'listprincs' | grep -q 'HTTP/localhost'"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+
+  # -------------------------------------------------------------------------
+  # OpenLDAP — user directory
+  # Users in LDAP are the only ones allowed to authenticate via Kerberos.
+  #
+  # Base DN:   dc=example,dc=com
+  # Admin DN:  cn=admin,dc=example,dc=com
+  # Users OU:  ou=users,dc=example,dc=com
+  # Port:      389
+  # -------------------------------------------------------------------------
+  openldap:
+    image: osixia/openldap:1.5.0
+    container_name: openldap
+    hostname: openldap
+    networks:
+      - kerberos-net
+    ports:
+      - "389:389"
+    volumes:
+      - ldap-data:/var/lib/ldap
+      - ldap-config:/etc/ldap/slapd.d
+      - ./openldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/bootstrap.ldif:ro
+    environment:
+      LDAP_ORGANISATION: Example
+      LDAP_DOMAIN: example.com
+      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD:-adminpassword}
+      LDAP_TLS: "false"
+    command: --copy-service
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "ldapsearch",
+          "-x",
+          "-H", "ldap://localhost",
+          "-b", "dc=example,dc=com",
+          "-D", "cn=admin,dc=example,dc=com",
+          "-w", "adminpassword",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # -------------------------------------------------------------------------
+  # Keycloak with LDAP user federation + Kerberos (SPNEGO) integration
+  # Admin UI: http://localhost:8080  (admin / admin)
+  # Realm:    kerberos-demo
+  #
+  # Only users that exist in LDAP can authenticate via Kerberos.
+  # -------------------------------------------------------------------------
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.6.0
+    container_name: keycloak
+    hostname: localhost
+    networks:
+      - kerberos-net
+    ports:
+      - "8080:8080"
+    depends_on:
+      kerberos:
+        condition: service_healthy
+      openldap:
+        condition: service_healthy
+    volumes:
+      - keytabs:/keytabs:ro
+      - ./krb5.conf:/etc/krb5.conf:ro
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: dev-file
+      JAVA_OPTS_APPEND: >-
+        -Djava.security.krb5.conf=/etc/krb5.conf
+        -Dsun.security.krb5.debug=true
+    command:
+      - start-dev
+      - --import-realm
+      - --hostname=localhost
+      - --hostname-strict=false
+
+  # -------------------------------------------------------------------------
+  # Kerberos client — throwaway container for testing kinit inside the
+  # Docker network without needing anything installed on your host.
+  #
+  # Usage:
+  #   docker compose exec kerberos-client bash
+  #   kinit alice@EXAMPLE.COM        (password: userpassword)
+  #   klist
+  #   kdestroy
+  # -------------------------------------------------------------------------
+  kerberos-client:
+    image: debian:bookworm-slim
+    container_name: kerberos-client
+    hostname: kerberos-client
+    networks:
+      - kerberos-net
+    depends_on:
+      kerberos:
+        condition: service_healthy
+    volumes:
+      - keytabs:/keytabs:ro
+    environment:
+      DEBIAN_FRONTEND: noninteractive
+    command:
+      - bash
+      - -c
+      - |
+        apt-get update -qq &&
+        echo 'krb5-config krb5-config/default_realm string EXAMPLE.COM' | debconf-set-selections &&
+        echo 'krb5-config krb5-config/kerberos_servers string kerberos' | debconf-set-selections &&
+        echo 'krb5-config krb5-config/admin_server string kerberos' | debconf-set-selections &&
+        apt-get install -y -qq krb5-user ldap-utils curl &&
+        printf '[libdefaults]\n    default_realm = EXAMPLE.COM\n    dns_lookup_realm = false\n    dns_lookup_kdc = false\n    ticket_lifetime = 24h\n    renew_lifetime = 7d\n    forwardable = true\n    rdns = false\n\n[realms]\n    EXAMPLE.COM = {\n        kdc = kerberos:88\n        admin_server = kerberos:749\n    }\n\n# [domain_realm] maps hostnames to realms. default_realm covers our setup,\n# but localhost = EXAMPLE.COM makes the intent explicit.\n# [domain_realm]\n#     localhost = EXAMPLE.COM\n' > /etc/krb5.conf &&
+        echo 'Client ready — run: docker compose exec kerberos-client bash' &&
+        sleep infinity
