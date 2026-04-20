@@ -2,6 +2,8 @@
 
 ## DE
 
+Ziel: Ihr lernt, wie ihr ein vollständig eigenes Keycloak-Login-Theme mit FreeMarker-Templates erstellt, bedingte Inhalte einbaut und Mehrsprachigkeit (i18n) über Übersetzungsdateien umsetzt.
+
 1) Prüft die `docker-compose.yaml` auf Änderungen und versucht zu verstehen, was diese machen.
 2) Startet das Lab via `docker compose up`.
 3) Legt einen Realm an und setzt in den Realm Settings das Login-Theme auf `acme-theme`.
@@ -22,6 +24,8 @@
 9) Aktiviert die Mehrsprachigkeit im Realm: **Realm Settings → Localization → Internationalization → On**. Fügt dort Deutsch (`de`) und Chinesisch Vereinfacht/Simplified Chinese (`zh-CN`) als unterstützte Sprachen hinzu. Öffnet danach die Login-Seite – der Sprachumschalter erscheint unterhalb des Formulars. Schaut euch an, wie die Texte (Tagline, Demo-Hinweis, Footer) aus den Dateien im `messages/`-Ordner übersetzt werden.
 
 ## EN
+
+Goal: You will learn how to build a fully custom Keycloak login theme using FreeMarker templates, add conditional content, and implement internationalization (i18n) via translation files.
 
 1) Check the `docker-compose.yaml` for changes and try to understand what they do.
 2) Start the lab via `docker compose up`.

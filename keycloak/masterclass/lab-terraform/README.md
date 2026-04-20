@@ -1,6 +1,6 @@
 # Lab Terraform
 
-# DE
+## DE
 
 Ziel: Wir nehmen via Terraform eine Keycloak Konfiguration vor und spielen diese Konfiguration in Keycloak ein.
 
@@ -17,7 +17,7 @@ Ziel: Wir nehmen via Terraform eine Keycloak Konfiguration vor und spielen diese
 
 ---
 
-# EN
+## EN
 
 Goal: We will configure Keycloak using Terraform and apply this configuration to Keycloak.
 

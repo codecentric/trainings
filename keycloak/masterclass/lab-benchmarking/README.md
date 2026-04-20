@@ -2,7 +2,7 @@
 
 ## DE
 
-In diesem Lab lernen Sie, wie Sie Keycloak unter Last testen und die Ergebnisse interpretieren. Sie werden die Performance-Charakteristiken von Keycloak analysieren, indem Sie unterschiedliche Lastniveaus verwenden und die Auswirkungen auf Antwortzeiten beobachten.
+Ziel: Ihr lernt, wie ihr Keycloak unter Last testet, die Ergebnisse interpretiert und die Performance-Charakteristiken bei unterschiedlichen Lastniveaus analysiert.
 
 1) Starten Sie die Keycloak-Umgebung und die VS-Code-Umgebung im Projekt-Root-Verzeichnis mit `docker compose up`.
    Sobald die Container laufen, öffnen Sie die VS-Code-Umgebung im Browser unter `http://localhost:3000`.
@@ -117,7 +117,7 @@ Jetzt wenden Sie Ihr Wissen aus dem "optimized"-Lab an und testen, ob die Optimi
 
 ## EN
 
-In this lab, you will learn how to load test Keycloak and interpret the results. You will analyze Keycloak's performance characteristics by using different load levels and observing the impact on response times.
+Goal: You will learn how to load test Keycloak, interpret the results, and analyze performance characteristics under different load levels.
 
 1) Start the Keycloak environment and the VS Code environment from the project root directory using `docker compose up`.
    Once the containers are running, open the VS Code environment in your browser at `http://localhost:3000`.

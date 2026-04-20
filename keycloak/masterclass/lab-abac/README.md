@@ -1,6 +1,8 @@
 # Lab ABAC
 
-# DE
+## DE
+
+Ziel: Ihr lernt, wie ihr in Keycloak attributbasierte Zugriffskontrolle (ABAC) mit Gruppen-Policies und eigenen JavaScript-Policies umsetzt, um feingranularen Zugriff auf Ressourcen zu steuern.
 
 ## Erster Teil: Basiskonfiguration
 
@@ -30,7 +32,10 @@ Ziel: Wir wollen eigene Policies implementieren, die mehr Logik enthalten könne
 
 ---
 
-# EN
+## EN
+
+Goal: You will learn how to implement attribute-based access control (ABAC) in Keycloak using group policies and custom JavaScript policies to control fine-grained access to resources.
+
 ## Part One: Basic Configuration
 
 Goal: We want to define a rule that grants users who are members of a specific group access to a resource.

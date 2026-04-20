@@ -1,6 +1,8 @@
 # Lab: Security Hardening
 
-## DE - Sicherheits-Review einer Keycloak-Konfiguration
+## DE
+
+Ziel: Ihr lernt, eine Keycloak-Konfiguration systematisch auf Sicherheitsprobleme zu prüfen – sowohl manuell als auch mit dem automatisierten Analysetool kcwarden.
 
 ### Erster Teil: Manuelle Suche
 
@@ -76,7 +78,9 @@ docker compose run --rm kcwarden
 
 ---
 
-## EN - Security Review of a Keycloak Configuration
+## EN
+
+Goal: You will learn how to systematically review a Keycloak configuration for security issues – both manually and using the automated analysis tool kcwarden.
 
 ### Part One: Manual Review
 

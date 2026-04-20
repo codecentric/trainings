@@ -2,6 +2,8 @@
 
 ## DE
 
+Ziel: Ihr lernt, wie ihr die Keycloak Admin REST API und die Account API programmatisch per curl nutzt, um Benutzer zu verwalten und Profildaten zu aktualisieren.
+
 ### Erster Teil: Admin API
 
 1) Starten Sie die Keycloak-Umgebung und die VS-Code-Umgebung im Projekt-Root-Verzeichnis mit `docker compose up`.  
@@ -82,6 +84,8 @@
 7) Überprüfen Sie Ihr Ergebnis, indem Sie den Benutzer über die Admin API abrufen und bestätigen, dass die Attribute `firstName` und `lastName` aktualisiert wurden.
 
 ## EN
+
+Goal: You will learn how to programmatically use the Keycloak Admin REST API and the Account API via curl to manage users and update profile data.
 
 ### Part One: Admin API
 

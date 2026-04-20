@@ -1,6 +1,8 @@
 # Lab Passkeys
 
-# DE
+## DE
+
+Ziel: Ihr lernt, wie ihr in Keycloak Passkeys konfiguriert – sowohl als zweiten Faktor als auch als passwortlosen Login-Mechanismus.
 
 ## Erster Teil: Zweiter Faktor
 
@@ -25,7 +27,9 @@ Ziel: Benutzern den Login ohne Benutzername nur mit Passkey erlauben.
 
 ---
 
-# EN
+## EN
+
+Goal: You will learn how to configure passkeys in Keycloak – both as a second factor and as a passwordless login mechanism.
 
 ## Part One: Second Factor
 

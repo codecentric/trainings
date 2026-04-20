@@ -2,7 +2,7 @@
 
 ## DE
 
-## Zugriff auf 2 verschiedene Apps via SSO (Outline und Nextcloud) 
+Ziel: Ihr lernt, wie Single Sign-On (SSO) in der Praxis funktioniert, indem ihr zwei Anwendungen (Outline und Nextcloud) über Keycloak verbindet und das SSO-Verhalten sowie das Session-Management beobachtet.
 
 1) Startet das Lab via `docker compose up`. Der Realm `acme` mit zwei OIDC-Clients (`outline`, `nextcloud`) und einem Testbenutzer (`testuser` / `test`) wird automatisch importiert.
 2) Prüft in der Keycloak Admin Console (http://localhost:8080), ob der Realm `acme` sowie die beiden Clients und der Testbenutzer vorhanden sind.
@@ -34,7 +34,7 @@
 
 ## EN
 
-## Access to 2 different Apps via SSO (Outline and Nextcloud)
+Goal: You will learn how Single Sign-On (SSO) works in practice by connecting two applications (Outline and Nextcloud) through Keycloak and observing SSO behavior and session management.
 
 1) Start the lab via `docker compose up`. The realm `acme` with two OIDC clients (`outline`, `nextcloud`) and a test user (`testuser` / `test`) will be imported automatically.
 2) Verify in the Keycloak Admin Console (http://localhost:8080) that the realm `acme`, both clients, and the test user exist.

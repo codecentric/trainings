@@ -2,6 +2,8 @@
 
 ## DE
 
+Ziel: Ihr lernt, wie ihr Keycloak durch eigene Extensions erweitert, indem ihr einen Event Listener implementiert, der alle Keycloak-Events empfängt und protokolliert.
+
 1) Starten Sie die webbasierte Entwicklungsumgebung im `vscode`-Verzeichnis mit `docker compose up`.
 2) Öffnen Sie die Entwicklungsumgebung im Browser unter `http://localhost:3000`.
 3) Öffnen Sie in der Entwicklungsumgebung den Ordner **„workspace“**.
@@ -18,6 +20,8 @@
    Prüfen Sie anschließend die Container-Logs: Werden die erzeugten Events von Ihrer Extension protokolliert?
 
 ## EN
+
+Goal: You will learn how to extend Keycloak with custom extensions by implementing an event listener that receives and logs all Keycloak events.
 
 1) Start the web-based development environment from the `vscode` directory using `docker compose up`.
 2) Open the development environment in your browser at `http://localhost:3000`.

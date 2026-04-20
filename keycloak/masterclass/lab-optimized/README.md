@@ -1,6 +1,6 @@
 # Lab Optimized Build of Keycloak
 
-# DE
+## DE
 
 Ziel: Wir erstellen ein eigenes Keycloak Image um die Performance zu steigern.
 
@@ -15,7 +15,7 @@ Bonus) Schaue in der Dokumentation von Keycloak nach, warum die beiden obigen Um
 
 ---
 
-# EN
+## EN
 
 Goal: We will create our own Keycloak image to improve performance.
 

@@ -1,6 +1,6 @@
 # Lab Organizations
 
-# DE
+## DE
 
 Ziel: Da wir für unser Beispiel keine externen Identity Provider nutzen können, legen wir 2 Realms an die jeweils ein Identity Provider repräsentieren. Anschließend legen wir einen weiteren Realm an, den wir für unser Multi-Tendency Setup nutzen wollen, der im Rahmen von zwei Organizations die Benutzer anhand ihrer E-Mail Adresse unterscheiden und an den richtigen Identity Provider weiter leiten soll.
 
@@ -25,7 +25,7 @@ Was ist jetzt genau passiert? Wir haben zwei Identity Provider konfiguriert, die
 
 ---
 
-# EN
+## EN
 
 Goal: Since we cannot use external identity providers for our example, we will create 2 realms that each represent an identity provider. Then we will create another realm that we want to use for our multi-tenancy setup, which will distinguish users based on their email address within two organizations and redirect them to the correct identity provider.
 

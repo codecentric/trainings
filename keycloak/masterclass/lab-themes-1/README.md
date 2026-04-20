@@ -2,6 +2,8 @@
 
 ## DE
 
+Ziel: Ihr lernt, wie Keycloak-Themes strukturiert sind und wie ihr einfache Anpassungen (z. B. CSS-Änderungen) an einem bestehenden Login-Theme vornehmt.
+
 1) Prüft die `docker-compose.yaml` auf Änderungen und versucht zu verstehen, was diese machen.
 2) Startet das Lab via `docker compose up`.
 3) Legt einen Realm an und setzt in den Realm Settings das Login-Theme auf `training-theme`.
@@ -9,6 +11,8 @@
 5) Nehmt eine kleine Änderung (z. B. eine Farbe im CSS File) vor und prüft die Auswirkungen.
 
 ## EN
+
+Goal: You will learn how Keycloak themes are structured and how to make simple customizations (e.g. CSS changes) to an existing login theme.
 
 1) Check the `docker-compose.yaml` for changes and try to understand what they do.
 2) Start the lab via `docker compose up`.

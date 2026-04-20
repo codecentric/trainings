@@ -2,6 +2,8 @@
 
 ## DE
 
+Ziel: Ihr lernt, wie ihr mit dem keycloak-config-cli Keycloak-Konfigurationen deklarativ importiert und wie ihr dabei Variablen-Substitution einsetzt, um Konfigurationen flexibel zu gestalten.
+
 ### Teil 1 - Config Importieren
 
 1) Startet das Lab via `docker compose up`.
@@ -19,6 +21,8 @@
 4) Setzt die Config wie zuvor um und prüft, ob alles geklappt hat.
 
 ## EN
+
+Goal: You will learn how to declaratively import Keycloak configurations using keycloak-config-cli and how to use variable substitution to make configurations flexible.
 
 ### Part 1 - Import config
 
