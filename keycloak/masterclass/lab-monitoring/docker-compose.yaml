@@ -10,6 +10,7 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
+      - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json
 
     ports:
       - "8080:8080"   # HTTP (Admin UI, Auth)
@@ -21,6 +22,7 @@ services:
       - "--metrics-enabled=true"              # Expose /metrics on management port 9000
       - "--health-enabled=true"               # Expose /health/ready and /health/live on port 9000
       - "--event-metrics-user-enabled=true"   # Expose keycloak_user_events_total metric
+      - "--import-realm"
 
     networks:
       - backend

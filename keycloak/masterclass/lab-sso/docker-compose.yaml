@@ -1,4 +1,4 @@
-name: kc-acme-sso
+name: kc-mc-lab-sso
 services:
   postgres:
     image: postgres:17
@@ -36,7 +36,7 @@ services:
       KC_HOSTNAME_BACKCHANNEL_DYNAMIC: true
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
-      - ./realm-acme.json:/opt/keycloak/data/import/realm-acme.json
+      - ./realm-lab.json:/opt/keycloak/data/import/realm-lab.json
     ports:
       - 8080:8080 # HTTP
     networks:
@@ -76,10 +76,10 @@ services:
       # OIDC: Browser-Redirects nutzen localhost, Server-zu-Server nutzt den Docker-Service-Namen
       OIDC_CLIENT_ID: outline
       OIDC_CLIENT_SECRET: outline-secret
-      OIDC_AUTH_URI: http://localhost:8080/realms/acme/protocol/openid-connect/auth
-      OIDC_TOKEN_URI: http://keycloak:8080/realms/acme/protocol/openid-connect/token
-      OIDC_USERINFO_URI: http://keycloak:8080/realms/acme/protocol/openid-connect/userinfo
-      OIDC_LOGOUT_URI: http://localhost:8080/realms/acme/protocol/openid-connect/logout
+      OIDC_AUTH_URI: http://localhost:8080/realms/lab-realm/protocol/openid-connect/auth
+      OIDC_TOKEN_URI: http://keycloak:8080/realms/lab-realm/protocol/openid-connect/token
+      OIDC_USERINFO_URI: http://keycloak:8080/realms/lab-realm/protocol/openid-connect/userinfo
+      OIDC_LOGOUT_URI: http://localhost:8080/realms/lab-realm/protocol/openid-connect/logout
       OIDC_DISPLAY_NAME: Keycloak
       OIDC_SCOPES: openid profile email
     ports:

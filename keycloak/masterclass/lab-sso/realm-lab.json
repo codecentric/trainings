@@ -1,5 +1,5 @@
 {
-  "realm": "acme",
+  "realm": "lab-realm",
   "enabled": true,
   "clients": [
     {

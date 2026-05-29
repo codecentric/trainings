@@ -6,7 +6,7 @@ Ziel: Ihr lernt, wie ihr ein vollständig eigenes Keycloak-Login-Theme mit FreeM
 
 1) Prüft die `docker-compose.yaml` auf Änderungen und versucht zu verstehen, was diese machen.
 2) Startet das Lab via `docker compose up`.
-3) Legt einen Realm an und setzt in den Realm Settings das Login-Theme auf `acme-theme`.
+3) Wechselt in der Admin Console in den `lab-realm` und setzt in den Realm Settings das Login-Theme auf `acme-theme`.
 4) Schaut euch den `themes`-Ordner an und versteht seine Struktur sowie die `theme.properties`-Datei.
 5) Schaut euch die `login.ftl` an – das ist das FreeMarker-Template, das die komplette Login-Seite rendert. Hier habt ihr volle Kontrolle über HTML, CSS und JavaScript.
 6) Nehmt eine kleine Änderung (z. B. eine Farbe in den CSS-Variablen oder ein Text in der `login.ftl`) vor und prüft die Auswirkungen.
@@ -29,7 +29,7 @@ Goal: You will learn how to build a fully custom Keycloak login theme using Free
 
 1) Check the `docker-compose.yaml` for changes and try to understand what they do.
 2) Start the lab via `docker compose up`.
-3) Create a realm and set the login theme to `acme-theme` in the realm settings.
+3) Switch to the `lab-realm` in the Admin Console and set the login theme to `acme-theme` in the realm settings.
 4) Have a look at the `themes` folder and understand its structure as well as the `theme.properties` file.
 5) Have a look at `login.ftl` – this is the FreeMarker template that renders the complete login page. This gives you full control over HTML, CSS and JavaScript.
 6) Make a small change (e.g. a color in the CSS variables or a text in `login.ftl`) and check the effects.

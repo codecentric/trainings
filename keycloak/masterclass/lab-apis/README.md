@@ -11,7 +11,7 @@ Ziel: Ihr lernt, wie ihr die Keycloak Admin REST API und die Account API program
    Verwenden Sie diese VS-Code-Umgebung (integriertes Terminal), um alle curl-Aufrufe im Rahmen des Labs auszuführen.
 2) Sobald Keycloak läuft, öffnen Sie es im Browser unter `http://localhost:8080`.
 3) Öffnen Sie die **Keycloak Admin Console** und melden Sie sich mit den im `docker-compose.yml` definierten Admin-Zugangsdaten an.
-4) Erstellen Sie ein neues Realm mit dem Namen `lab-realm`.
+4) Wechseln Sie in den `lab-realm`. Der Realm ist bereits vorkonfiguriert und enthält den Benutzer `testuser`.
 5) Erstellen Sie innerhalb des Realms `lab-realm` einen neuen Client:
    - Client ID: `lab-admin-client`
    - Client-Authentifizierung: **Aktiviert**
@@ -94,7 +94,7 @@ Goal: You will learn how to programmatically use the Keycloak Admin REST API and
    Use this VS Code environment (integrated terminal) to perform all curl requests for the lab exercises.
 2) Once Keycloak is running, open it in your browser at `http://localhost:8080`.
 3) Open the **Keycloak Admin Console** and log in with the admin credentials defined in your `docker-compose.yml`.
-4) Create a new realm named `lab-realm`.
+4) Switch to the `lab-realm`. The realm is pre-configured and already contains the user `testuser`.
 5) Inside the realm `lab-realm`, create a new client:
    - Client ID: `lab-admin-client`
    - Client authentication: **Enabled**

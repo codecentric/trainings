@@ -62,7 +62,7 @@ Strukturierte Logs im JSON-Format sind in der Praxis wichtig, weil sie maschinel
 ### Vierter Teil: Logs in Grafana durchsuchen
 
 1) Stellt sicher, dass `KC_LOG_CONSOLE_OUTPUT: json` gesetzt ist und startet die Umgebung.
-   Der `keycloak-init` Service legt automatisch den Realm `lab-realm` und den Benutzer `testuser` (Passwort: `testuser`) an.
+   Der Realm `lab-realm` mit dem Benutzer `testuser` (Passwort: `testuser`) wird beim Start automatisch importiert.
 2) Loggt euch mehrfach mit `testuser` ein und aus: http://localhost:8080/realms/lab-realm/account/
 3) Oeffnet Grafana: http://localhost:3000 (Login: `admin`/`admin`, Skip bei Passwort-Aenderung).
 4) Navigiert zu **Explore** (Kompass-Icon links) und waehlt die Datasource **Loki**.
@@ -179,7 +179,7 @@ Structured JSON logs are important in practice because they can be parsed by mac
 ### Part 4: Search Logs in Grafana
 
 1) Make sure `KC_LOG_CONSOLE_OUTPUT: json` is set and start the environment.
-   The `keycloak-init` service automatically creates the realm `lab-realm` and user `testuser` (password: `testuser`).
+   The realm `lab-realm` with user `testuser` (password: `testuser`) is automatically imported on startup.
 2) Log in and out multiple times as `testuser`: http://localhost:8080/realms/lab-realm/account/
 3) Open Grafana: http://localhost:3000 (login: `admin`/`admin`, skip password change).
 4) Navigate to **Explore** (compass icon on the left) and select the **Loki** datasource.

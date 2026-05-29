@@ -9,12 +9,11 @@ Ziel: Ihr lernt, wie ihr in Keycloak Passkeys konfiguriert – sowohl als zweite
 Ziel: Benutzer dazu zwingen einen zweiten Faktor zum Login zu konfigurieren.
 
 1) Wechselt auf der Kommandozeile in diesen Ordner und führt `docker compose up` aus.
-2) Lege einen neuen Realm "lab-realm" an und wechsle in diesen.
-3) Lege im Realm einen neuen Benutzer an. Der Benutzer muss vollständig konfiguriert sein ("EMail verified", Passwort hinterlegt, Passwort nicht "temporary".)
-4) Damit Passkeys als zweiter Faktor genutzt werden können, muss im Browser Flow (Authentication -> Browser) der Step "WebAuthN Authenticator" als Alternative aktiviert werden. Dazu muss man den Flow duplizieren, dann editieren, speichern und binden.
-5) Um den Benutzer beim nächsten Login zu zwingen ein OTP festzulegen, füge die Required Action "Configure OTP" hinzu. Alternativ kann der Benutzer mit der Required Action "WebAuthN Register" dazu aufgefordert werden einen Passkey als zweiten Faktor zu hinterlegen.
-6) Logge dich mit dem Benutzer in die Account Console ein. Falls du parallel mit dem Admin eingeloggt bleiben willst, nutze ein privates Browserfenster oder einen anderen Browser: http://localhost:8080/realms/lab-realm/account/
-7) Folge den angezeigten Schritten und erprobe bei einem zweiten Loginversuch den Erfolg des zweiten Faktors.
+2) Wechselt in der Admin Console in den `lab-realm`. Der Realm ist bereits vorkonfiguriert und enthält den Benutzer `testuser` (Passwort: `testuser`, Email verifiziert, Passwort nicht "temporary").
+3) Damit Passkeys als zweiter Faktor genutzt werden können, muss im Browser Flow (Authentication -> Browser) der Step "WebAuthN Authenticator" als Alternative aktiviert werden. Dazu muss man den Flow duplizieren, dann editieren, speichern und binden.
+4) Um den Benutzer beim nächsten Login zu zwingen ein OTP festzulegen, füge `testuser` die Required Action "Configure OTP" hinzu. Alternativ kann der Benutzer mit der Required Action "WebAuthN Register" dazu aufgefordert werden einen Passkey als zweiten Faktor zu hinterlegen.
+5) Logge dich als `testuser` in die Account Console ein. Falls du parallel mit dem Admin eingeloggt bleiben willst, nutze ein privates Browserfenster oder einen anderen Browser: http://localhost:8080/realms/lab-realm/account/
+6) Folge den angezeigten Schritten und erprobe bei einem zweiten Loginversuch den Erfolg des zweiten Faktors.
 
 ## Zweiter Teil: Login via Passkey
 
@@ -36,12 +35,11 @@ Goal: You will learn how to configure passkeys in Keycloak – both as a second 
 Goal: Force users to configure a second factor for login.
 
 1) Navigate to this folder on the command line and run `docker compose up`.
-2) Create a new realm "lab-realm" and switch to it.
-3) Create a new user in the realm. The user must be fully configured ("Email verified", password set, password not "temporary").
-4) To use passkeys as a second factor, the step "WebAuthN Authenticator" must be enabled as an alternative in the Browser Flow (Authentication -> Browser). To do this, you need to duplicate the flow, then edit, save, and bind it.
-5) To force the user to set up an OTP on the next login, add the Required Action "Configure OTP". Alternatively, the user can be prompted with the Required Action "WebAuthN Register" to register a passkey as a second factor.
-6) Log in with the user to the Account Console. If you want to stay logged in as admin in parallel, use a private browser window or a different browser: http://localhost:8080/realms/lab-realm/account/
-7) Follow the displayed steps and test the success of the second factor with a second login attempt.
+2) Switch to the `lab-realm` in the Admin Console. The realm is pre-configured and already contains the user `testuser` (password: `testuser`, email verified, password not temporary).
+3) To use passkeys as a second factor, the step "WebAuthN Authenticator" must be enabled as an alternative in the Browser Flow (Authentication -> Browser). To do this, you need to duplicate the flow, then edit, save, and bind it.
+4) To force the user to set up an OTP on the next login, add the Required Action "Configure OTP" to `testuser`. Alternatively, the user can be prompted with the Required Action "WebAuthN Register" to register a passkey as a second factor.
+5) Log in as `testuser` to the Account Console. If you want to stay logged in as admin in parallel, use a private browser window or a different browser: http://localhost:8080/realms/lab-realm/account/
+6) Follow the displayed steps and test the success of the second factor with a second login attempt.
 
 ## Part Two: Login via Passkey
 

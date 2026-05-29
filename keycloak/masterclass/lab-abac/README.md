@@ -11,8 +11,8 @@ Ziel: Wir wollen eine Regel definieren, die Benutzern, die Mitglied einer bestim
 1) Bitte öffnet die in diesem Verzeichnis liegende Datei `docker-compose.yaml` und macht euch mit der Konfiguration vertraut.
 2) Wechselt auf der Kommandozeile in diesen Ordner und führt `docker compose up` aus.
 3) Öffnet in eurem Browser die URL http://localhost:8080 und loggt euch mit den Credentials `admin`/`admin` ein.
-4) Legt einen neuen "lab-realm" an und wechselt in diesen.
-5) Legt einen neuen Benutzer an. Lege eine neue Gruppe "test-gruppe" an, in der der Benutzer Mitglied ist.
+4) Wechselt in den `lab-realm`. Der Realm ist bereits vorkonfiguriert und enthält den Benutzer `testuser` (Passwort: `testuser`).
+5) Lege eine neue Gruppe "test-gruppe" an und weise `testuser` als Mitglied zu.
 6) Legt einen neuen Client "lab-client" an. Aktiviert dabei "Client authentication" und "Authorization".
 7) Wechselt in den "Authorization"-Tab des Clients.
    - Legt unter "Resources" ein Element an und setzt "Name" und "Display name" auf "test-ressource".
@@ -43,8 +43,8 @@ Goal: We want to define a rule that grants users who are members of a specific g
 1) Please open the `docker-compose.yaml` file in this directory and familiarize yourself with the configuration.
 2) Navigate to this folder on the command line and run `docker compose up`.
 3) Open the URL http://localhost:8080 in your browser and log in with the credentials `admin`/`admin`.
-4) Create a new "lab-realm" and switch to it.
-5) Create a new user and assign a department to them. Also create a new group "test-group" and make the user a member of it.
+4) Switch to the `lab-realm`. The realm is pre-configured and already contains the user `testuser` (password: `testuser`).
+5) Create a new group "test-group" and add `testuser` as a member.
 6) Create a new client "lab-client". Enable "Client authentication" and "Authorization".
 7) Switch to the "Authorization" tab of the client.
    - Under "Resources", create an element and set "Name" and "Display name" to "test-resource".

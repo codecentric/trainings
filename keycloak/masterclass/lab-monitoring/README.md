@@ -58,15 +58,12 @@ Keycloak wird mit den Flags `--metrics-enabled=true` und `--health-enabled=true`
 
 ### Vierter Teil: Last erzeugen und Metriken beobachten
 
-1) Legt in der Admin Console (http://localhost:8080/admin/) einen neuen Realm `lab-realm` an.
-2) Legt im Realm `lab-realm` einen Benutzer an:
-   - Username: `testuser`
-   - Email Verified: On
-   - Unter **Credentials**: Passwort setzen, Temporary: Off
-3) Loggt euch mit dem Benutzer `testuser` mehrfach in die Account Console ein und wieder aus:
+Der Realm `lab-realm` mit dem Benutzer `testuser` (Passwort: `testuser`) wird beim Start automatisch importiert.
+
+1) Loggt euch mit dem Benutzer `testuser` mehrfach in die Account Console ein und wieder aus:
    http://localhost:8080/realms/lab-realm/account/
-4) Beobachtet im Grafana-Dashboard die Panels **Keycloak Login Events** und **HTTP Server Requests** - die Werte sollten ansteigen.
-5) Versucht auch fehlerhafte Logins (falsches Passwort) und beobachtet die Login-Error-Metrik.
+2) Beobachtet im Grafana-Dashboard die Panels **Keycloak Login Events** und **HTTP Server Requests** - die Werte sollten ansteigen.
+3) Versucht auch fehlerhafte Logins (falsches Passwort) und beobachtet die Login-Error-Metrik.
 
 ---
 
@@ -128,12 +125,9 @@ Keycloak is started with the flags `--metrics-enabled=true` and `--health-enable
 
 ### Part 4: Generate Load and Observe Metrics
 
-1) In the Admin Console (http://localhost:8080/admin/), create a new realm `lab-realm`.
-2) In the `lab-realm`, create a user:
-   - Username: `testuser`
-   - Email Verified: On
-   - Under **Credentials**: set a password, Temporary: Off
-3) Log in and out multiple times with `testuser` via the Account Console:
+The realm `lab-realm` with user `testuser` (password: `testuser`) is automatically imported on startup.
+
+1) Log in and out multiple times with `testuser` via the Account Console:
    http://localhost:8080/realms/lab-realm/account/
-4) Watch the **Keycloak Login Events** and **HTTP Server Requests** panels in Grafana - values should increase.
-5) Also try failed logins (wrong password) and observe the login error metric.
+2) Watch the **Keycloak Login Events** and **HTTP Server Requests** panels in Grafana - values should increase.
+3) Also try failed logins (wrong password) and observe the login error metric.

@@ -15,6 +15,7 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z
+      - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json
 
     ports:
       - "8080:8080"
@@ -22,42 +23,11 @@ services:
     command:
       - "--verbose"
       - "start-dev"
-
-    healthcheck:
-      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080"]
-      interval: 5s
-      timeout: 2s
-      retries: 15
+      - "--import-realm"
 
     labels:
       - "logging=true"
 
-    networks:
-      - backend
-
-  # Initializes Keycloak after startup:
-  # - Creates lab-realm with testuser
-  keycloak-init:
-    image: quay.io/keycloak/keycloak:26.5.4
-    depends_on:
-      keycloak:
-        condition: service_healthy
-    entrypoint: ["/bin/bash", "-c"]
-    command:
-      - |
-        set -e
-        KCADM="/opt/keycloak/bin/kcadm.sh"
-
-        $$KCADM config credentials --server http://keycloak:8080 --realm master --user admin --password admin
-
-        # Create lab-realm
-        $$KCADM create realms -s realm=lab-realm -s enabled=true
-        echo "Realm lab-realm created."
-
-        # Create testuser
-        $$KCADM create users -r lab-realm -s username=testuser -s enabled=true -s emailVerified=true -s email=testuser@example.com -s firstName=Test -s lastName=User
-        $$KCADM set-password -r lab-realm --username testuser --new-password testuser --temporary=false
-        echo "User testuser created (password: testuser)."
     networks:
       - backend
 
