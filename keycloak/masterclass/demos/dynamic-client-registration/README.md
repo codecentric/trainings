@@ -1,4 +1,4 @@
-# Lab Dynamic Client Registration
+# Dynamic Client Registration
 
 ## DE
 
