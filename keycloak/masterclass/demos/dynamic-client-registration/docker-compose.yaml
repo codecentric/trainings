@@ -1,0 +1,20 @@
+name: kc-mc-lab-dynamic-client-registration
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.4
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: INFO
+      JAVA_OPTS_APPEND: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z
+    ports:
+      - 8080:8080
+      - 5005:5005
+    command:
+      - "--verbose"
+      - "start-dev"
+
+volumes:
+  keycloak-data:
