@@ -1,0 +1,23 @@
+{
+  "realm": "lab-realm",
+  "enabled": true,
+  "users": [
+    {
+      "username": "labuser",
+      "email": "labuser@example.com",
+      "emailVerified": true,
+      "enabled": true,
+      "firstName": "Lab",
+      "lastName": "User",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "labuser",
+          "temporary": false
+        }
+      ],
+      "requiredActions": ["CONFIGURE_TOTP"],
+      "realmRoles": ["default-roles-lab-realm"]
+    }
+  ]
+}

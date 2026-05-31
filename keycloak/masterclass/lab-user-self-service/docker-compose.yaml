@@ -1,0 +1,32 @@
+name: kc-mc-lab-user-self-service
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.6.2
+    environment:
+      # Keycloak Admin User
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      # Logging, see: https://www.keycloak.org/server/logging
+      KC_LOG_LEVEL: INFO
+
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
+      - ./realm-self-service.json:/opt/keycloak/data/import/realm-self-service.json
+
+    ports:
+      - 8080:8080 # HTTP
+
+    networks:
+      - backend
+
+    command:
+      - "--verbose"
+      - "start-dev" # Only for Dev-Environment!
+      - "--import-realm"
+
+networks:
+  backend:
+
+volumes:
+  keycloak-data:
