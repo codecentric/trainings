@@ -11,7 +11,7 @@ Ziel: Wir nehmen via Terraform eine Keycloak Konfiguration vor und spielen diese
 5) Geben Sie auf der VSCode Console im Ordner workspace nacheinander die Befehle `terraform init` und `terraform apply` ein. Letzteren Bestätigen Sie noch mit `yes`.
 6) Prüfen Sie in Keycloak unter `http://localhost:8080` ob die Änderungen umgesetzt wurden.
 7) Ergänzen Sie die `config.tf` so, das auch ein confidential Client im Realm angelegt wird.
-   - Schauen Sie dazu in die Dokumentation: https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client
+   - Schauen Sie dazu in die Dokumentation: https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client
    - Wenn Sie nicht alleine weiterkommen, schauen Sie in die `solution.tf`.
 8) Führend Sie danach erneut `terraform apply` aus um prüfen Sie, ob die Änderungen umgesetzt wurden.
 
@@ -28,6 +28,6 @@ Goal: We will configure Keycloak using Terraform and apply this configuration to
 5) In the VSCode console, navigate to the workspace folder and execute the commands `terraform init` and `terraform apply` in sequence. Confirm the latter with `yes`.
 6) Check in Keycloak at `http://localhost:8080` whether the changes have been applied.
 7) Extend the `config.tf` so that a confidential client is also created in the realm.
-   - Refer to the documentation: https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client
+   - Refer to the documentation: https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client
    - If you get stuck, check the `solution.tf` file.
 8) Then run `terraform apply` again and verify that the changes have been applied.
