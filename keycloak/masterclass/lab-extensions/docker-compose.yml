@@ -8,7 +8,7 @@ services:
     volumes:
       - ./vscode/workspace/providers:/opt/keycloak/providers
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
     command:
       - "--verbose"
       - "start-dev"

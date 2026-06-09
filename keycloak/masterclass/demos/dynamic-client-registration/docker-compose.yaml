@@ -10,7 +10,7 @@ services:
     volumes:
       - keycloak-data:/opt/keycloak/data:z
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
       - 5005:5005
     command:
       - "--verbose"

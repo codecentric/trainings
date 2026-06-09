@@ -17,7 +17,7 @@ services:
       - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json
 
     ports:
-      - 8080:8080 # HTTP
+      - 127.0.0.1:8080:8080 # HTTP
 
     networks:
       - backend

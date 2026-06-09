@@ -13,8 +13,8 @@ services:
       - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json
 
     ports:
-      - "8080:8080"   # HTTP (Admin UI, Auth)
-      - "9000:9000"   # Management (Metrics, Health)
+      - "127.0.0.1:8080:8080"   # HTTP (Admin UI, Auth)
+      - "127.0.0.1:9000:9000"   # Management (Metrics, Health)
 
     command:
       - "--verbose"

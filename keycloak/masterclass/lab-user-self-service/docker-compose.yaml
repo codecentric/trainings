@@ -15,7 +15,7 @@ services:
       - ./realm-self-service.json:/opt/keycloak/data/import/realm-self-service.json
 
     ports:
-      - 8080:8080 # HTTP
+      - 127.0.0.1:8080:8080 # HTTP
 
     networks:
       - backend

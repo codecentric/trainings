@@ -28,7 +28,7 @@ services:
       - ./extensions:/opt/keycloak/providers:z # Custom extensions/providers
 
     ports:
-      - 8080:8080 # HTTP
+      - 127.0.0.1:8080:8080 # HTTP
 
     networks:
       - backend
