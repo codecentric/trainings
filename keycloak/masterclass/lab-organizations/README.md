@@ -6,13 +6,13 @@ Ziel: Da wir für unser Beispiel keine externen Identity Provider nutzen können
 
 ## Erster Teil: Vorbereitung
 
-1) Lege 3 Realms an: "multi", "kunde_a" und "kunde_b".
+1) Lege 3 Realms an: "multi", "customer_a" und "customer_b".
 2) Aktiviere im "multi" Realm unter "Realm settings" -> "General" das Feld "Organizations".
 3) Aktiviere in allen Realms unter "Realm settings" -> "Login" das Feld "Email as username".
-4) Lege in den Realms "kunde_a" und "kunde_b" jeweils einen Benutzer vollständig an, inklusive Passwort. Die Domain der E-Mail-Adresse der Benutzer sollte sich eindeutig dem Kunden zuordnen lassen (z. B. "stefan@kunde-a.test" und "jens@kunde-b.test"). 
+4) Lege in den Realms "customer_a" und "customer_b" jeweils einen Benutzer vollständig an, inklusive Passwort. Die Domain der E-Mail-Adresse der Benutzer sollte sich eindeutig dem Kunden zuordnen lassen (z. B. "stefan@customer-a.test" und "jens@customer-b.test"). 
 5) Richte in den beiden Kunden-Realms jeweils einen Client "multi" inklusive aktivierter Client Authentication ein.
-6) Konfiguriere im "multi"-Realm die beiden anderen Realms als "Keycloak OpenID Connect provider". Der Discovery Endpoint lautet http://localhost:8080/realms/kunde_a/.well-known/openid-configuration bzw. http://localhost:8080/realms/kunde_b/.well-known/openid-configuration. Nutze als Client und Client Secret die Informationen aus den zuvor eingerichteten "multi"-Clients. 
-7) Aktiviere in allen drei Realms in den Realm Settings das Organizations Feature. Erstelle im "multi"-Realm zwei Organizations mit den Namen "kunde_a" bzw. "kunde_b" die die Domains "kunde-a.test" bzw. "kunde-b.test" nutzen. Verbinde dann mit der jeweiligen Organization den zugehörigen Identity Provider. Wähle dort auch die Domain und die beiden Optionen "Hide on login page" sowie "Redirect when email domain matches" aus.  
+6) Konfiguriere im "multi"-Realm die beiden anderen Realms als "Keycloak OpenID Connect provider". Der Discovery Endpoint lautet http://localhost:8080/realms/customer_a/.well-known/openid-configuration bzw. http://localhost:8080/realms/customer_b/.well-known/openid-configuration. Nutze als Client und Client Secret die Informationen aus den zuvor eingerichteten "multi"-Clients. 
+7) Aktiviere in allen drei Realms in den Realm Settings das Organizations Feature. Erstelle im "multi"-Realm zwei Organizations mit den Namen "customer_a" bzw. "customer_b" die die Domains "customer-a.test" bzw. "customer-b.test" nutzen. Verbinde dann mit der jeweiligen Organization den zugehörigen Identity Provider. Wähle dort auch die Domain und die beiden Optionen "Hide on login page" sowie "Redirect when email domain matches" aus.  
 
 ## Zweiter Teil: Login
 
@@ -31,13 +31,13 @@ Goal: Since we cannot use external identity providers for our example, we will c
 
 ## Part One: Preparation
 
-1) Create 3 realms: "multi", "kunde_a" and "kunde_b".
+1) Create 3 realms: "multi", "customer_a" and "customer_b".
 2) Enable the "Organizations" field in the "multi" realm under "Realm settings" -> "General".
 3) Enable the "Email as username" field in all realms under "Realm settings" -> "Login".
-4) In the "kunde_a" and "kunde_b" realms, create a complete user including password. The domain of the email address of the users should be clearly assigned to the customer (e.g. "stefan@kunde-a.test" and "jens@kunde-b.test").
+4) In the "customer_a" and "customer_b" realms, create a complete user including password. The domain of the email address of the users should be clearly assigned to the customer (e.g. "stefan@customer-a.test" and "jens@customer-b.test").
 5) Set up a client "multi" with enabled Client Authentication in both customer realms.
-6) Configure the two other realms as "Keycloak OpenID Connect provider" in the "multi" realm. The Discovery Endpoint is http://localhost:8080/realms/kunde_a/.well-known/openid-configuration and http://localhost:8080/realms/kunde_b/.well-known/openid-configuration respectively. Use the information from the previously configured "multi" clients as Client and Client Secret.
-7) Activate the Organizations Feature in all three realms. Create two organizations in the "multi" realm named "kunde_a" and "kunde_b" that use the domains "kunde-a.test" and "kunde-b.test" respectively. Then connect the corresponding identity provider to each organization. Also select the domain and both options "Hide on login page" and "Redirect when email domain matches".
+6) Configure the two other realms as "Keycloak OpenID Connect provider" in the "multi" realm. The Discovery Endpoint is http://localhost:8080/realms/customer_a/.well-known/openid-configuration and http://localhost:8080/realms/customer_b/.well-known/openid-configuration respectively. Use the information from the previously configured "multi" clients as Client and Client Secret.
+7) Activate the Organizations Feature in all three realms. Create two organizations in the "multi" realm named "customer_a" and "customer_b" that use the domains "customer-a.test" and "customer-b.test" respectively. Then connect the corresponding identity provider to each organization. Also select the domain and both options "Hide on login page" and "Redirect when email domain matches".
 
 ## Part Two: Login
 

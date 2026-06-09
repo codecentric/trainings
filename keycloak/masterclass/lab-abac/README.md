@@ -12,13 +12,13 @@ Ziel: Wir wollen eine Regel definieren, die Benutzern, die Mitglied einer bestim
 2) Wechselt auf der Kommandozeile in diesen Ordner und führt `docker compose up` aus.
 3) Öffnet in eurem Browser die URL http://localhost:8080 und loggt euch mit den Credentials `admin`/`admin` ein.
 4) Wechselt in den `lab-realm`. Der Realm ist bereits vorkonfiguriert und enthält den Benutzer `testuser` (Passwort: `testuser`).
-5) Lege eine neue Gruppe "test-gruppe" an und weise `testuser` als Mitglied zu.
+5) Lege eine neue Gruppe `test-group` an und weise `testuser` als Mitglied zu.
 6) Legt einen neuen Client "lab-client" an. Aktiviert dabei "Client authentication" und "Authorization".
 7) Wechselt in den "Authorization"-Tab des Clients.
-   - Legt unter "Resources" ein Element an und setzt "Name" und "Display name" auf "test-ressource".
-   - Legt unter "Policies" ein Element vom Typ "Group" an und setze den Namen "test-gruppe-policy" und füge via "Add groups" die "test-gruppe" hinzu.
+   - Legt unter "Resources" ein Element an und setzt "Name" und "Display name" auf "test-resource".
+   - Legt unter "Policies" ein Element vom Typ "Group" an und setze den Namen "test-group-policy" und füge via "Add groups" die "test-group" hinzu.
    - Verknüpfe nun Resource und Policy indem du eine Resource Based Permission anlegst. Gebe ihr einen Namen und weise Resource und Policy hinzu.
-8) Via "Evaluate" kannst du nun prüfen, ob dein Benutzer nun Zugriff auf die Resource hat. Wähle dort unter Users deinen Benutzer und unter Roles "default-roles-lab-realm" aus und klicke auf "Evaluate". Du solltest für die Resource "test-ressource" ein "Permit" erhalten.
+8) Via "Evaluate" kannst du nun prüfen, ob dein Benutzer nun Zugriff auf die Resource hat. Wähle dort unter Users deinen Benutzer und unter Roles "default-roles-lab-realm" aus und klicke auf "Evaluate". Du solltest für die Resource "test-resource" ein "Permit" erhalten.
 
 ## Zweiter Teil: Eigene Regeln definieren
 
