@@ -1,7 +1,7 @@
 name: kc-mc-lab-configcli-solution
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:26.5.4
+    image: quay.io/keycloak/keycloak:26.6.2
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin

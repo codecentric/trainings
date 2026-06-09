@@ -1,7 +1,7 @@
 name: kc-mc-lab-organizations
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:26.5.4
+    image: quay.io/keycloak/keycloak:26.6.2
     environment:
       # Keycloak Admin User
       KEYCLOAK_ADMIN: admin
