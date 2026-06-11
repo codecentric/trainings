@@ -2,48 +2,84 @@
 
 ## DE
 
-Ziel: Da wir für unser Beispiel keine externen Identity Provider nutzen können, legen wir 2 Realms an die jeweils ein Identity Provider repräsentieren. Anschließend legen wir einen weiteren Realm an, den wir für unser Multi-Tendency Setup nutzen wollen, der im Rahmen von zwei Organizations die Benutzer anhand ihrer E-Mail Adresse unterscheiden und an den richtigen Identity Provider weiter leiten soll.
+Ziel: Ihr lernt, wie ihr in Keycloak Organizations nutzt, um Benutzer anhand ihrer E-Mail-Domain automatisch an den richtigen Identity Provider weiterzuleiten (Multi-Tenancy).
 
-## Erster Teil: Vorbereitung
+Die beiden Kunden-Realms (`customer_a` und `customer_b`) werden beim Start automatisch importiert. Sie repräsentieren externe Identity Provider und sind bereits vollständig vorkonfiguriert:
 
-1) Lege 3 Realms an: "multi", "customer_a" und "customer_b".
-2) Aktiviere im "multi" Realm unter "Realm settings" -> "General" das Feld "Organizations".
-3) Aktiviere in allen Realms unter "Realm settings" -> "Login" das Feld "Email as username".
-4) Lege in den Realms "customer_a" und "customer_b" jeweils einen Benutzer vollständig an, inklusive Passwort. Die Domain der E-Mail-Adresse der Benutzer sollte sich eindeutig dem Kunden zuordnen lassen (z. B. "stefan@customer-a.test" und "jens@customer-b.test"). 
-5) Richte in den beiden Kunden-Realms jeweils einen Client "multi" inklusive aktivierter Client Authentication ein.
-6) Konfiguriere im "multi"-Realm die beiden anderen Realms als "Keycloak OpenID Connect provider". Der Discovery Endpoint lautet http://localhost:8080/realms/customer_a/.well-known/openid-configuration bzw. http://localhost:8080/realms/customer_b/.well-known/openid-configuration. Nutze als Client und Client Secret die Informationen aus den zuvor eingerichteten "multi"-Clients. 
-7) Aktiviere in allen drei Realms in den Realm Settings das Organizations Feature. Erstelle im "multi"-Realm zwei Organizations mit den Namen "customer_a" bzw. "customer_b" die die Domains "customer-a.test" bzw. "customer-b.test" nutzen. Verbinde dann mit der jeweiligen Organization den zugehörigen Identity Provider. Wähle dort auch die Domain und die beiden Optionen "Hide on login page" sowie "Redirect when email domain matches" aus.  
+| Realm | Benutzer | Passwort | Client | Client Secret |
+|-------|----------|----------|--------|---------------|
+| `customer_a` | `stefan@customer-a.test` | `customer-a` | `multi` | `customer-a-secret` |
+| `customer_b` | `jens@customer-b.test` | `customer-b` | `multi` | `customer-b-secret` |
 
-## Zweiter Teil: Login
+## Erster Teil: Multi-Realm und Identity Provider einrichten
 
-1) Versuche dich jetzt auf der Account Konsole des "multi"-Realms einzuloggen: http://localhost:8080/realms/multi/account/ 
-2) Gebe dazu die E-Mail-Adresse eines der beiden Kundenbenutzern ein. Im Anschluss kannst du sehen, wie eine automatische Weiterleitung zum korrekten Identity Provider passiert. Das kannst du daran erkennen, dass der Realm des ausgewählten Benutzers nun als Name in der URL Zeile erscheint. Auf dieser Seite wirst du dann dazu aufgefordert, auch das Passwort einzugeben. 
-3) Hast du dich nun korrekt eingeloggt, erfolgt eine Weiterleitung zurück in den "multi"-Realm und auf die Account Konsole des "multi"-Realms.
-4) Der Benutzer, den du eingeloggt hast, ist jetzt auch im Multi Realm in der Admin Console sichtbar.
+1) Startet das Lab via `docker compose up`.
+2) Öffnet die Admin Console unter http://localhost:8080 und meldet euch mit `admin`/`admin` an.
+3) Lege den Realm **"multi"** an.
+4) Aktiviere im "multi"-Realm unter **Realm settings → General** das Feld **"Organizations"**.
+5) Aktiviere unter **Realm settings → Login** das Feld **"Email as username"**.
+6) Konfiguriere die beiden Kunden-Realms als **"Keycloak OpenID Connect"**-Identity-Provider im "multi"-Realm.  
+   Die Discovery-Endpoints lauten:
+   - `http://localhost:8080/realms/customer_a/.well-known/openid-configuration`
+   - `http://localhost:8080/realms/customer_b/.well-known/openid-configuration`
 
-Was ist jetzt genau passiert? Wir haben zwei Identity Provider konfiguriert, die jeweils eine Organization zugehörig sind. Versuchst du dich nun in den Realm einzuloggen, denen die Organizations zugehörig sind, wirst du über die Domain der eingegebenen Mail-Adresse automatisch einer Organization zugeordnet. Dadurch kann der korrekte Identity Provider ausgewählt werden und du kannst dich dort einloggen. Anschließend bist du im ursprünglichen Realm eingeloggt.
+   Nutze als Client ID `multi` und die zugehörigen Client Secrets aus der Tabelle oben.
+
+## Zweiter Teil: Organizations einrichten
+
+1) Erstelle im "multi"-Realm zwei Organizations:
+   - Name `customer_a`, Domain `customer-a.test` → verknüpft mit dem Identity Provider für `customer_a`
+   - Name `customer_b`, Domain `customer-b.test` → verknüpft mit dem Identity Provider für `customer_b`
+2) Wähle bei jedem Identity Provider in der Organization-Konfiguration die Domain aus und aktiviere die Optionen **"Hide on login page"** sowie **"Redirect when email domain matches"**.
+
+## Dritter Teil: Login testen
+
+1) Öffne die Account Console des "multi"-Realms: http://localhost:8080/realms/multi/account/
+2) Gib die E-Mail-Adresse eines der beiden Kundenbenutzer ein. Du siehst, wie eine automatische Weiterleitung zum richtigen Identity Provider passiert — erkennbar daran, dass der Realm-Name in der URL erscheint. Gib dort das Passwort ein.
+3) Nach erfolgreichem Login wirst du zurück in den "multi"-Realm weitergeleitet.
+4) Der eingeloggte Benutzer ist nun auch im "multi"-Realm in der Admin Console sichtbar.
+
+Was ist passiert? Keycloak hat über die Domain der E-Mail-Adresse die zugehörige Organization — und damit den richtigen Identity Provider — ermittelt und die Weiterleitung automatisch vorgenommen.
 
 ---
 
 ## EN
 
-Goal: Since we cannot use external identity providers for our example, we will create 2 realms that each represent an identity provider. Then we will create another realm that we want to use for our multi-tenancy setup, which will distinguish users based on their email address within two organizations and redirect them to the correct identity provider.
+Goal: You will learn how to use Keycloak Organizations to automatically route users to the correct identity provider based on their email domain (multi-tenancy).
 
-## Part One: Preparation
+The two customer realms (`customer_a` and `customer_b`) are automatically imported on startup. They represent external identity providers and are fully pre-configured:
 
-1) Create 3 realms: "multi", "customer_a" and "customer_b".
-2) Enable the "Organizations" field in the "multi" realm under "Realm settings" -> "General".
-3) Enable the "Email as username" field in all realms under "Realm settings" -> "Login".
-4) In the "customer_a" and "customer_b" realms, create a complete user including password. The domain of the email address of the users should be clearly assigned to the customer (e.g. "stefan@customer-a.test" and "jens@customer-b.test").
-5) Set up a client "multi" with enabled Client Authentication in both customer realms.
-6) Configure the two other realms as "Keycloak OpenID Connect provider" in the "multi" realm. The Discovery Endpoint is http://localhost:8080/realms/customer_a/.well-known/openid-configuration and http://localhost:8080/realms/customer_b/.well-known/openid-configuration respectively. Use the information from the previously configured "multi" clients as Client and Client Secret.
-7) Activate the Organizations Feature in all three realms. Create two organizations in the "multi" realm named "customer_a" and "customer_b" that use the domains "customer-a.test" and "customer-b.test" respectively. Then connect the corresponding identity provider to each organization. Also select the domain and both options "Hide on login page" and "Redirect when email domain matches".
+| Realm | User | Password | Client | Client Secret |
+|-------|------|----------|--------|---------------|
+| `customer_a` | `stefan@customer-a.test` | `customer-a` | `multi` | `customer-a-secret` |
+| `customer_b` | `jens@customer-b.test` | `customer-b` | `multi` | `customer-b-secret` |
 
-## Part Two: Login
+## Part One: Set up the multi realm and identity providers
 
-1) Now try to log in to the Account Console of the "multi" realm: http://localhost:8080/realms/multi/account/
-2) Enter the email address of one of the two customer users. Afterwards you can see how an automatic redirect to the correct identity provider happens. You can recognize this by the fact that the realm of the selected user now appears as a name in the URL bar. On this page you will then be prompted to enter the password as well.
-3) Once you have logged in correctly, you will be redirected back to the "multi" realm and to the Account Console of the "multi" realm.
-4) The user you used for logging in is now also visible in the Users List of the Multi Realm in the Admin Console.
+1) Start the lab via `docker compose up`.
+2) Open the Admin Console at http://localhost:8080 and log in with `admin`/`admin`.
+3) Create the realm **"multi"**.
+4) Enable **"Organizations"** in the "multi" realm under **Realm settings → General**.
+5) Enable **"Email as username"** under **Realm settings → Login**.
+6) Configure the two customer realms as **"Keycloak OpenID Connect"** identity providers in the "multi" realm.  
+   The discovery endpoints are:
+   - `http://localhost:8080/realms/customer_a/.well-known/openid-configuration`
+   - `http://localhost:8080/realms/customer_b/.well-known/openid-configuration`
 
-What exactly happened? We configured two identity providers, each associated with an organization. When you now try to log in to the realm to which the organizations belong, you are automatically assigned to an organization via the domain of the entered email address. This allows the correct identity provider to be selected and you can log in there. Afterwards you are logged in to the original realm.
+   Use client ID `multi` and the corresponding client secrets from the table above.
+
+## Part Two: Set up Organizations
+
+1) Create two organizations in the "multi" realm:
+   - Name `customer_a`, domain `customer-a.test` → linked to the `customer_a` identity provider
+   - Name `customer_b`, domain `customer-b.test` → linked to the `customer_b` identity provider
+2) For each identity provider in the organization config, select the domain and enable both **"Hide on login page"** and **"Redirect when email domain matches"**.
+
+## Part Three: Test the login
+
+1) Open the Account Console of the "multi" realm: http://localhost:8080/realms/multi/account/
+2) Enter the email address of one of the two customer users. You will see an automatic redirect to the correct identity provider — recognizable by the realm name appearing in the URL. Enter the password there.
+3) After a successful login you are redirected back to the "multi" realm.
+4) The logged-in user is now also visible in the "multi" realm's user list in the Admin Console.
+
+What happened? Keycloak used the email domain to determine the matching organization — and therefore the correct identity provider — and performed the redirect automatically.

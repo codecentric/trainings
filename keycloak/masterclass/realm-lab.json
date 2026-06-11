@@ -15,7 +15,19 @@
           "value": "testuser",
           "temporary": false
         }
-      ]
+      ],
+      "clientRoles": {
+        "account": [
+          "delete-account",
+          "manage-account",
+          "manage-account-links",
+          "manage-consent",
+          "view-applications",
+          "view-consent",
+          "view-groups",
+          "view-profile"
+        ]
+      }
     }
   ]
 }
