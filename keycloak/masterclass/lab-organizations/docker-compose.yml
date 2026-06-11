@@ -12,6 +12,8 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
+      - ./realm-customer-a.json:/opt/keycloak/data/import/realm-customer-a.json
+      - ./realm-customer-b.json:/opt/keycloak/data/import/realm-customer-b.json
 
     ports:
       - 127.0.0.1:8080:8080 # HTTP
@@ -22,6 +24,7 @@ services:
     command:
       - "--verbose"
       - "start-dev" # Only for Dev-Environment!
+      - "--import-realm"
 
 networks:
   backend:

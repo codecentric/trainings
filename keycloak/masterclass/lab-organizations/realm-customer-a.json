@@ -1,0 +1,34 @@
+{
+  "realm": "customer_a",
+  "enabled": true,
+  "registrationEmailAsUsername": true,
+  "loginWithEmailAllowed": true,
+  "clients": [
+    {
+      "clientId": "multi",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "customer-a-secret",
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "protocol": "openid-connect",
+      "redirectUris": ["http://localhost:8080/*"]
+    }
+  ],
+  "users": [
+    {
+      "username": "stefan@customer-a.test",
+      "email": "stefan@customer-a.test",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "customer-a",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}

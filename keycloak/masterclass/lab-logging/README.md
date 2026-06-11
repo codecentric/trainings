@@ -71,6 +71,7 @@ Strukturierte Logs im JSON-Format sind in der Praxis wichtig, weil sie maschinel
    {service_name="/kc-mc-lab-logging-keycloak-1"}
    ```
    Das zeigt alle Keycloak-Logs.
+   Hinweis: Wechselt ggf. in eurer Query von der `Builder`-Ansicht zur `Code`-Ansicht, um die LogQL-Query einfügen zu können.
 
 ### Fuenfter Teil: LogQL-Queries
 
@@ -81,7 +82,7 @@ Probiert folgende Queries in Grafana Explore aus:
 {service_name="/kc-mc-lab-logging-keycloak-1"}
 
 # Nur Fehler und Warnungen
-{service_name="/kc-mc-lab-logging-keycloak-1"} |= "ERROR" or {service_name="/kc-mc-lab-logging-keycloak-1"} |= "WARN"
+{service_name="/kc-mc-lab-logging-keycloak-1"} |~ "ERROR|WARN"
 
 # Logs nach einem bestimmten Text filtern
 {service_name="/kc-mc-lab-logging-keycloak-1"} |= "LOGIN"
