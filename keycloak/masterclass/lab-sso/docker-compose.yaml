@@ -61,7 +61,7 @@ services:
       - backend
 
   outline:
-    image: outlinewiki/outline:latest
+    image: outlinewiki/outline:1.5.0
     environment:
       SECRET_KEY: fd236707c6de2ae656513620a88ed700a6005983e2cb609b7dd81958b37415f1
       UTILS_SECRET: 1ca4313be4a69989b700a3feb62c8794dfb294f0fd4b1e1d7a294b2751424643
