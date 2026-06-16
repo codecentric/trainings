@@ -47,7 +47,7 @@ services:
       - "--import-realm"
 
   nextcloud:
-    image: nextcloud:latest
+    image: nextcloud:34
     environment:
       SQLITE_DATABASE: nextcloud
       NEXTCLOUD_ADMIN_USER: admin

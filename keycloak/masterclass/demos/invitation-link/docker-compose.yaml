@@ -1,0 +1,42 @@
+name: kc-mc-demo-invitation-link
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - 127.0.0.1:8025:8025 # MailHog Web UI
+    networks:
+      - backend
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.6.2
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: INFO
+      # SMTP via MailHog
+      KC_SMTP_HOST: mailhog
+      KC_SMTP_PORT: 1025
+      KC_SMTP_FROM: keycloak@example.com
+      KC_SMTP_FROM_DISPLAY_NAME: Keycloak
+      KC_SMTP_AUTH: "false"
+      KC_SMTP_STARTTLS: "false"
+      KC_SMTP_SSL: "false"
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
+      - ./realm-invitation.json:/opt/keycloak/data/import/realm-invitation.json
+    ports:
+      - 127.0.0.1:8080:8080 # HTTP
+    networks:
+      - backend
+    command:
+      - "--verbose"
+      - "start-dev" # Only for Dev-Environment!
+      - "--import-realm"
+    depends_on:
+      - mailhog
+
+networks:
+  backend:
+
+volumes:
+  keycloak-data:

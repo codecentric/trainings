@@ -20,8 +20,8 @@
 | 12 | webapp: Multiple kritische Client-Fehlkonfigurationen | Clients > webapp | Kritisch |
 | 13 | service-account-client: realm-admin Rolle + schwaches Secret | Clients > service-account-client | Kritisch |
 | 14 | realmadmin: Admin-Benutzer im Application Realm | Users > realmadmin | Hoch |
-| 19 | Offline Session Max Lifespan 1 Jahr | Realm Settings > Sessions | Hoch |
-| 20 | Kein MFA/OTP konfiguriert | Authentication > Required Actions / Flows | Hoch |
+| 15 | Offline Session Max Lifespan 1 Jahr | Realm Settings > Sessions | Hoch |
+| 16 | Kein MFA/OTP konfiguriert | Authentication > Required Actions / Flows | Hoch |
 
 ---
 

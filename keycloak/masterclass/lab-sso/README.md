@@ -4,7 +4,7 @@
 
 Ziel: Ihr lernt, wie Single Sign-On (SSO) in der Praxis funktioniert, indem ihr zwei Anwendungen (Outline und Nextcloud) über Keycloak verbindet und das SSO-Verhalten sowie das Session-Management beobachtet.
 
-1) Startet das Lab via `docker compose up`. Der Realm `lab-realm` mit zwei OIDC-Clients (`outline`, `nextcloud`) und einem Testbenutzer (`testuser` / `test`) wird automatisch importiert.
+1) Startet das Lab via `docker compose up`. Der Realm `lab-realm` mit zwei OIDC-Clients (`outline`, `nextcloud`) und einem Testbenutzer (`testuser` / `testuser`) wird automatisch importiert.
 2) Prüft in der Keycloak Admin Console (http://localhost:8080), ob der Realm `lab-realm` sowie die beiden Clients und der Testbenutzer vorhanden sind.
 3) In den `lab-realm` Realm settings/Tokens -> Access Token Lifespan setzt ihr den Wert auf 15 Minuten. (damit unser Access Token für diese Übung nicht so schnell abläuft) 
 4) Öffnet Outline unter http://localhost:8082, ihr solltet in der Regel direkt zum Keycloak weitergeleitet werden. Loggt euch mit dem Testbenutzer ein. Outline ist bereits via Environmentvariablen für OIDC konfiguriert.

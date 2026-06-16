@@ -7,7 +7,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - ./workspace:/config/workspace
+      - ././workspace:/config/workspace
     ports:
       - 3000:3000
       - 5500:5500

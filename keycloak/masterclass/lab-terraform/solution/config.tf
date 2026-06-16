@@ -2,7 +2,7 @@ terraform {
   required_providers {
     keycloak = {
       source  = "keycloak/keycloak"
-      version = "5.0.0"
+      version = "5.8.0"
     }
   }
 }
@@ -45,7 +45,6 @@ resource "keycloak_openid_client" "confidential_client" {
 
   # Das macht ihn zum Confidential Client
   access_type = "CONFIDENTIAL"
-
   # Standardeinstellungen für Authorization Code Flow
   standard_flow_enabled = true
 
