@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: masterclass
+spec:
+  serviceAccountName: demo-workload
+  containers:
+    - name: curl
+      image: curlimages/curl:latest
+      command: ["sleep", "3600"]
+      volumeMounts:
+        - mountPath: /var/run/secrets/keycloak
+          name: keycloak-token
+  volumes:
+    - name: keycloak-token
+      projected:
+        sources:
+          - serviceAccountToken:
+              # audience must match the Keycloak realm issuer URL as called from inside the cluster
+              # verify the service name first: kubectl get svc | grep keycloak
+              audience: "http://keycloak-keycloakx-http/realms/lab-realm"
+              expirationSeconds: 600
+              path: token

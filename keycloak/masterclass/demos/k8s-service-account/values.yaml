@@ -1,0 +1,17 @@
+image:
+  tag: 26.6.3
+
+command:
+  - "/opt/keycloak/bin/kc.sh"
+  - "start-dev"
+
+http:
+  relativePath: "/"
+
+extraEnv: |
+  - name: KEYCLOAK_ADMIN
+    value: admin
+  - name: KEYCLOAK_ADMIN_PASSWORD
+    value: admin
+  - name: KC_HOSTNAME_STRICT
+    value: "false"
