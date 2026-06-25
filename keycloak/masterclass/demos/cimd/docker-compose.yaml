@@ -1,0 +1,34 @@
+name: kc-mc-demo-cimd
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.6.2
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: INFO
+      KC_HOSTNAME: http://localhost:8080
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: true
+      JAVA_OPTS_APPEND: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z
+      - ./realm/mcp-demo.json:/opt/keycloak/data/import/mcp-demo.json:ro
+    ports:
+      - 127.0.0.1:8080:8080
+      - 127.0.0.1:5005:5005
+    command:
+      - "start-dev"
+      - "--features=cimd"
+
+  mcp-server:
+    build: ./mcp-server
+    network_mode: host
+    environment:
+      KEYCLOAK_URL: http://localhost:8080
+      KEYCLOAK_REALM: mcp-demo
+      MCP_SERVER_URL: http://localhost:8000
+    depends_on:
+      - keycloak
+
+volumes:
+  keycloak-data:
