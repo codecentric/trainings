@@ -81,7 +81,7 @@ Da Keycloak den K8s-JWKS-Endpunkt (`https://kubernetes.default.svc`) erreichen m
    terraform apply -var="kubernetes_issuer=<ISSUER>"
    ```
    Falls der Issuer `https://kubernetes.default.svc` ist (Standard), kann `-var` weggelassen werden.
-   Terraform legt an: Realm `lab-realm`, Kubernetes Identity Provider, einen angepassten Client-Auth-Flow und den Client `workload-service`.
+   Terraform legt an: Realm `lab-realm`, Kubernetes Identity Provider und den Client `workload-service`.
 
 7. Kubernetes-Manifeste deployen:
    ```bash
@@ -95,7 +95,6 @@ Da Keycloak den K8s-JWKS-Endpunkt (`https://kubernetes.default.svc`) erreichen m
 |---|---|
 | Realm `lab-realm` | Demo-Realm |
 | Kubernetes Identity Provider `kubernetes` | Validiert SA-Tokens via K8s-JWKS |
-| Auth-Flow `clients-federated-jwt` | Akzeptiert SA-JWTs statt Client-Secrets |
 | Client `workload-service` | Gebunden an `system:serviceaccount:masterclass:demo-workload` |
 | ServiceAccount `demo-workload` | Kubernetes-Identität des Demo-Workloads |
 | Pod `test-pod` | curl-Pod mit projiziertem SA-Token |
@@ -109,7 +108,7 @@ Da Keycloak den K8s-JWKS-Endpunkt (`https://kubernetes.default.svc`) erreichen m
 
 2. Das SA-Token anzeigen und dekodieren (zeigt `iss`, `sub`, `aud` – kein Secret):
    ```bash
-   cat /var/run/secrets/keycloak/token
+   cat /var/run/secrets/serviceaccount/token
    ```
    Den Token-Wert auf [jwt.io](https://jwt.io) einfügen und die Claims betrachten:
    - `iss`: the cluster's SA token issuer (e.g. `https://kubernetes.default.svc.cluster.local`)
@@ -123,7 +122,7 @@ Da Keycloak den K8s-JWKS-Endpunkt (`https://kubernetes.default.svc`) erreichen m
      -H "Content-Type: application/x-www-form-urlencoded" \
      --data-urlencode "grant_type=client_credentials" \
      --data-urlencode "client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer" \
-     --data-urlencode "client_assertion=$(cat /var/run/secrets/keycloak/token)"
+     --data-urlencode "client_assertion=$(cat /var/run/secrets/serviceaccount/token)"
    ```
 
 4. Das Keycloak-Zugriffstoken auf [jwt.io](https://jwt.io) dekodieren:
@@ -133,7 +132,6 @@ Da Keycloak den K8s-JWKS-Endpunkt (`https://kubernetes.default.svc`) erreichen m
 
 ### Hinweise
 
-- Der `keycloak_authentication_bindings`-Flow gilt realm-weit. In produktiven Umgebungen sollten Client-Authentication-Flows auf Client-Ebene gebunden werden.
 - Das SA-Token läuft nach 600 Sekunden ab (Kubernetes-Minimum für projizierte Tokens: 600s, Maximum: 3600s). Der Pod erhält automatisch ein neues Token.
 
 ### Cleanup
@@ -227,7 +225,7 @@ Since Keycloak must reach the K8s JWKS endpoint (`https://kubernetes.default.svc
    terraform apply -var="kubernetes_issuer=<ISSUER>"
    ```
    If the issuer is `https://kubernetes.default.svc` (the default), the `-var` flag can be omitted.
-   Terraform creates: realm `lab-realm`, Kubernetes Identity Provider, a custom client auth flow, and the client `workload-service`.
+   Terraform creates: realm `lab-realm`, Kubernetes Identity Provider, and the client `workload-service`.
 
 8. Deploy Kubernetes manifests:
    ```bash
@@ -241,7 +239,6 @@ Since Keycloak must reach the K8s JWKS endpoint (`https://kubernetes.default.svc
 |---|---|
 | Realm `lab-realm` | Demo realm |
 | Kubernetes Identity Provider `kubernetes` | Validates SA tokens via K8s JWKS |
-| Auth flow `clients-federated-jwt` | Accepts SA JWTs instead of client secrets |
 | Client `workload-service` | Bound to `system:serviceaccount:masterclass:demo-workload` |
 | ServiceAccount `demo-workload` | Kubernetes identity of the demo workload |
 | Pod `test-pod` | curl pod with projected SA token |
@@ -255,7 +252,7 @@ Since Keycloak must reach the K8s JWKS endpoint (`https://kubernetes.default.svc
 
 2. Display and decode the SA token (shows `iss`, `sub`, `aud` — no secret):
    ```bash
-   cat /var/run/secrets/keycloak/token
+   cat /var/run/secrets/serviceaccount/token
    ```
    Paste the token value into [jwt.io](https://jwt.io) and inspect the claims:
    - `iss`: the cluster's SA token issuer (e.g. `https://kubernetes.default.svc.cluster.local`)
@@ -269,7 +266,7 @@ Since Keycloak must reach the K8s JWKS endpoint (`https://kubernetes.default.svc
      -H "Content-Type: application/x-www-form-urlencoded" \
      --data-urlencode "grant_type=client_credentials" \
      --data-urlencode "client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer" \
-     --data-urlencode "client_assertion=$(cat /var/run/secrets/keycloak/token)"
+     --data-urlencode "client_assertion=$(cat /var/run/secrets/serviceaccount/token)"
    ```
 
 4. Decode the Keycloak access token at [jwt.io](https://jwt.io):
@@ -279,7 +276,6 @@ Since Keycloak must reach the K8s JWKS endpoint (`https://kubernetes.default.svc
 
 ### Notes
 
-- The `keycloak_authentication_bindings` flow applies realm-wide. In production environments, client authentication flows should be bound at the client level.
 - The SA token expires after 600 seconds (Kubernetes minimum for projected tokens: 600s, maximum: 3600s). The pod automatically receives a refreshed token.
 
 ### Cleanup

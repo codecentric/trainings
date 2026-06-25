@@ -10,10 +10,10 @@ spec:
       image: curlimages/curl:latest
       command: ["sleep", "3600"]
       volumeMounts:
-        - mountPath: /var/run/secrets/keycloak
-          name: keycloak-token
+        - mountPath: /var/run/secrets/serviceaccount
+          name: sa-token
   volumes:
-    - name: keycloak-token
+    - name: sa-token
       projected:
         sources:
           - serviceAccountToken:

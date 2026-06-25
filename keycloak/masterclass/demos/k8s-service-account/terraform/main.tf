@@ -35,30 +35,6 @@ resource "keycloak_kubernetes_identity_provider" "kubernetes" {
   issuer = var.kubernetes_issuer # adjust to match your cluster's SA token issuer
 }
 
-# ─── Client Authentication Flow ───────────────────────────────────────────────
-# Replaces the default client-auth flow realm-wide with one that accepts
-# federated JWTs (SA tokens) as client credentials.
-
-resource "keycloak_authentication_flow" "federated_client_auth" {
-  realm_id    = keycloak_realm.lab.id
-  alias       = "clients-federated-jwt"
-  provider_id = "client-flow"
-}
-
-resource "keycloak_authentication_execution" "federated_jwt" {
-  realm_id          = keycloak_realm.lab.id
-  parent_flow_alias = keycloak_authentication_flow.federated_client_auth.alias
-  authenticator     = "federated-jwt"
-  requirement       = "ALTERNATIVE"
-}
-
-resource "keycloak_authentication_bindings" "auth_bindings" {
-  realm_id                   = keycloak_realm.lab.id
-  client_authentication_flow = keycloak_authentication_flow.federated_client_auth.alias
-
-  depends_on = [keycloak_authentication_execution.federated_jwt]
-}
-
 # ─── Workload Client ──────────────────────────────────────────────────────────
 # Identified by the SA's sub claim. No client secret is distributed.
 # The SA sub is: system:serviceaccount:<namespace>/<service-account-name>
@@ -80,5 +56,5 @@ resource "keycloak_openid_client" "workload_service" {
     "jwt.credential.sub"    = "system:serviceaccount:masterclass:demo-workload"
   }
 
-  depends_on = [keycloak_authentication_bindings.auth_bindings]
+  depends_on = [keycloak_kubernetes_identity_provider.kubernetes]
 }
