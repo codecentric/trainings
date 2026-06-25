@@ -8,7 +8,7 @@ services:
 
       # Log-Konfiguration ueber Environment-Variablen
       KC_LOG: console # Log-Target (console, file, syslog)
-      KC_LOG_CONSOLE_OUTPUT: default # Outout format: json oder default
+      KC_LOG_CONSOLE_OUTPUT: default # Output format: json oder default
       KC_LOG_CONSOLE_FORMAT: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%c] %s%e%n" # Default-Format
       KC_LOG_LEVEL: INFO,org.keycloak.events:DEBUG,org.keycloak.authentication:TRACE # Root-Level, Kategorie-spezifisch moeglich
 

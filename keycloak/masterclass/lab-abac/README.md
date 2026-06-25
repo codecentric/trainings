@@ -27,7 +27,7 @@ Ziel: Wir wollen eigene Policies implementieren, die mehr Logik enthalten könne
 1) Legt im "User Profile" in den "Realm settings" ein neues Attribut mit dem Namen "department" so an, dass es für Benutzer und Admin les- und schreibbar ist.
 2) Im Ordner Providers findest du eine Implementierung für einen selbst gebauten JavaScript provider. Schaue dir die Datei providers.js genau an und schau, was darin passiert.
 3) Lege den JS-Provider als weitere Policy in deinem Client an. Dabei musst du nur einen Namen festlegen - die Logik ist im JS-Code!
-4) Füge deiner Permission die angelegt Policy hinzu.
+4) Füge deiner Permission die angelegte Policy hinzu.
 5) Wenn du jetzt "Evaluate" nutzt, erhälst du ein "Deny". Passe deinen Benutzer so an, dass das "Evaluate" zu "Permit" evaluiert.
 
 ---

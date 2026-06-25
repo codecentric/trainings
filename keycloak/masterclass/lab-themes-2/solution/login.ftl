@@ -88,9 +88,9 @@
 
             <#-- ── Solution: Aufgabe 7 / Task 7 ──────────────────────
                  Show a "Demo Environment" warning banner when the realm
-                 name is exactly "labrealm".
+                 name is exactly "demo-realm".
             ──────────────────────────────────────────────────────── -->
-            <#if realm.name == "labrealm">
+            <#if realm.name == "demo-realm">
             <div class="alert alert-warning">
                 <span class="alert-icon">⚠</span>
                 <span>${msg("acme.demoWarning")}</span>
