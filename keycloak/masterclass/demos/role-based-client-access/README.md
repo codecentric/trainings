@@ -14,44 +14,30 @@ Die Logik der Rollenbedingung ist invertiert (negiert): Die Condition prüft, ob
 
 ### Struktur des generierten Browser-Flows
 
-```
-Cookie                     ALTERNATIVE
-  ├─ auth-cookie            ALTERNATIVE
-  └─ Cookie Access Check    CONDITIONAL
-       ├─ Condition - user role (negiert)   REQUIRED
-       └─ Deny access                       REQUIRED
+Das Muster ist für jede Authentifizierungsmethode identisch: Nach erfolgreicher Authentifizierung prüft ein CONDITIONAL-Subflow, ob die erforderliche Rolle **fehlt** — und verweigert in diesem Fall den Zugriff.
 
-Kerberos                   ALTERNATIVE
-  ├─ auth-spnego            ALTERNATIVE
-  └─ Kerberos Access Check  CONDITIONAL
-       ├─ Condition - user role (negiert)   REQUIRED
-       └─ Deny access                       REQUIRED
+```mermaid
+flowchart TD
+    Start([Login-Anfrage]) --> Auth
 
-Identity Provider          ALTERNATIVE
-  ├─ identity-provider-redirector           ALTERNATIVE
-  └─ IDP Access Check       CONDITIONAL
-       ├─ Condition - user role (negiert)   REQUIRED
-       └─ Deny access                       REQUIRED
+    subgraph Auth [Authentifizierung — erste passende Methode gewinnt]
+        direction TB
+        Cookie[Cookie]
+        Kerberos[Kerberos]
+        IDP[Identity Provider]
+        Org[Organization]
+        UP[Username + Password\n+ optionales OTP]
+    end
 
-Organization               ALTERNATIVE
-  ├─ Browser - Conditional Organization     CONDITIONAL
-  │    ├─ Condition - user configured       REQUIRED
-  │    └─ Organization Identity-First Login ALTERNATIVE
-  └─ Organization Access Check              CONDITIONAL
-       ├─ Condition - user role (negiert)   REQUIRED
-       └─ Deny access                       REQUIRED
+    Auth --> Check
 
-UsernamePassword           ALTERNATIVE
-  ├─ Username Password Form                 REQUIRED
-  ├─ OTP                    CONDITIONAL
-  │    ├─ Condition - user configured       REQUIRED
-  │    ├─ Condition - credential            REQUIRED
-  │    ├─ OTP Form                          ALTERNATIVE
-  │    ├─ WebAuthn Authenticator            DISABLED
-  │    └─ Recovery Authentication Code Form DISABLED
-  └─ UserPass Access Check  CONDITIONAL
-       ├─ Condition - user role (negiert)   REQUIRED
-       └─ Deny access                       REQUIRED
+    subgraph Check [CONDITIONAL: Zugriffscheck nach jeder Methode]
+        direction TB
+        Cond{Hat der User\ndie erforderliche\nRolle NICHT?}
+    end
+
+    Cond -->|Ja — Rolle fehlt| Deny([Zugriff verweigert ✗])
+    Cond -->|Nein — Rolle vorhanden| Grant([Zugriff gewährt ✓])
 ```
 
 ### Setup
@@ -111,44 +97,30 @@ The role condition logic is inverted (negated): the condition checks whether the
 
 ### Structure of the generated browser flow
 
-```
-Cookie                     ALTERNATIVE
-  ├─ auth-cookie            ALTERNATIVE
-  └─ Cookie Access Check    CONDITIONAL
-       ├─ Condition - user role (negated)    REQUIRED
-       └─ Deny access                        REQUIRED
+The pattern is identical for every authentication method: after successful authentication, a CONDITIONAL subflow checks whether the required role is **missing** — and denies access if so.
 
-Kerberos                   ALTERNATIVE
-  ├─ auth-spnego            ALTERNATIVE
-  └─ Kerberos Access Check  CONDITIONAL
-       ├─ Condition - user role (negated)    REQUIRED
-       └─ Deny access                        REQUIRED
+```mermaid
+flowchart TD
+    Start([Login request]) --> Auth
 
-Identity Provider          ALTERNATIVE
-  ├─ identity-provider-redirector            ALTERNATIVE
-  └─ IDP Access Check       CONDITIONAL
-       ├─ Condition - user role (negated)    REQUIRED
-       └─ Deny access                        REQUIRED
+    subgraph Auth [Authentication — first matching method wins]
+        direction TB
+        Cookie[Cookie]
+        Kerberos[Kerberos]
+        IDP[Identity Provider]
+        Org[Organization]
+        UP[Username + Password\n+ optional OTP]
+    end
 
-Organization               ALTERNATIVE
-  ├─ Browser - Conditional Organization      CONDITIONAL
-  │    ├─ Condition - user configured        REQUIRED
-  │    └─ Organization Identity-First Login  ALTERNATIVE
-  └─ Organization Access Check               CONDITIONAL
-       ├─ Condition - user role (negated)    REQUIRED
-       └─ Deny access                        REQUIRED
+    Auth --> Check
 
-UsernamePassword           ALTERNATIVE
-  ├─ Username Password Form                  REQUIRED
-  ├─ OTP                    CONDITIONAL
-  │    ├─ Condition - user configured        REQUIRED
-  │    ├─ Condition - credential             REQUIRED
-  │    ├─ OTP Form                           ALTERNATIVE
-  │    ├─ WebAuthn Authenticator             DISABLED
-  │    └─ Recovery Authentication Code Form  DISABLED
-  └─ UserPass Access Check  CONDITIONAL
-       ├─ Condition - user role (negated)    REQUIRED
-       └─ Deny access                        REQUIRED
+    subgraph Check [CONDITIONAL: access check after each method]
+        direction TB
+        Cond{Does the user\nNOT have the\nrequired role?}
+    end
+
+    Cond -->|Yes — role missing| Deny([Access denied ✗])
+    Cond -->|No — role present| Grant([Access granted ✓])
 ```
 
 ### Setup

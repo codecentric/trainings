@@ -124,18 +124,26 @@ The Azure AD application requires admin consent to access user profile informati
 
 ## Architecture Overview
 
-```
-┌─────────────────┐         OIDC Flow          ┌──────────────────┐
-│                 │◄──────────────────────────►│                  │
-│   Keycloak      │                             │   Azure Entra   │
-│   (Localhost)   │  Authorization Code Flow   │   ID (Cloud)    │
-│                 │                             │                  │
-└─────────────────┘                             └──────────────────┘
-        │                                                │
-        │                                                │
-        ▼                                                ▼
-   User Accounts                                  Azure AD Users
-   (Local Realm)                                  
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Application
+    participant KC as Keycloak (localhost)
+    participant Entra as Azure Entra ID (cloud)
+
+    User->>App: Access protected resource
+    App->>KC: Redirect to Keycloak login
+    KC-->>User: Login page with "Microsoft Azure AD" button
+    User->>KC: Click "Microsoft Azure AD"
+    KC->>Entra: Authorization Code Request (OIDC)
+    Entra-->>User: Microsoft login page
+    User->>Entra: Login with Azure AD credentials
+    Entra-->>KC: Authorization Code
+    KC->>Entra: Exchange code for tokens (backchannel)
+    Entra-->>KC: ID Token + Access Token
+    Note over KC: JIT provisioning:<br/>create/update local user in realm
+    KC-->>App: Keycloak Access Token
+    App-->>User: Access granted
 ```
 
 ## Customization

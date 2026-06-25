@@ -14,6 +14,32 @@ Die Lösung: **OIDC Identity Brokering**. Keycloak in `meine-firma` vertraut dem
 
 Da wir für die Demo keine zwei separaten Keycloak-Instanzen brauchen, nutzen wir zwei Realms auf derselben Instanz.
 
+```mermaid
+sequenceDiagram
+    actor User
+    participant MF as meine-firma<br/>(Keycloak Realm)
+    participant EF as externe-firma<br/>(Keycloak Realm)
+
+    User->>MF: Öffnet Account Console
+    MF-->>User: Login-Seite mit Button<br/>"Login über externe-firma"
+    User->>MF: Klick auf Button
+    MF->>EF: Authorization Code Request<br/>(client_id = meine-firma-broker)
+    EF-->>User: Login-Seite von externe-firma
+    User->>EF: Login (user-a oder user-b / test)
+    EF-->>MF: Authorization Code
+    MF->>EF: Code gegen Token tauschen (Backchannel)
+    EF-->>MF: ID Token mit yourapp_access-Claim (nur User A)
+
+    alt User A — Claim yourapp_access=true vorhanden
+        Note over MF: Essential Claim Check: ✓
+        Note over MF: JIT-Provisioning:<br/>User A wird in meine-firma angelegt
+        MF-->>User: Zugriff gewährt ✓
+    else User B — Claim fehlt
+        Note over MF: Essential Claim Check: ✗
+        MF-->>User: Authentifizierung abgebrochen ✗<br/>(kein User in meine-firma angelegt)
+    end
+```
+
 ### Umgebung starten
 
 ```bash
@@ -185,6 +211,32 @@ The solution: **OIDC Identity Brokering**. Keycloak in `meine-firma` trusts the 
 - **User B** (has no claim) → Login is denied, **no** user is created in `meine-firma`
 
 Since we don't need two separate Keycloak instances for this demo, we use two realms on the same instance.
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant MF as meine-firma<br/>(Keycloak Realm)
+    participant EF as externe-firma<br/>(Keycloak Realm)
+
+    User->>MF: Opens Account Console
+    MF-->>User: Login page with<br/>"Login über externe-firma" button
+    User->>MF: Clicks button
+    MF->>EF: Authorization Code Request<br/>(client_id = meine-firma-broker)
+    EF-->>User: Login page of externe-firma
+    User->>EF: Login (user-a or user-b / test)
+    EF-->>MF: Authorization Code
+    MF->>EF: Exchange code for tokens (backchannel)
+    EF-->>MF: ID Token with yourapp_access claim (User A only)
+
+    alt User A — claim yourapp_access=true present
+        Note over MF: Essential Claim Check: ✓
+        Note over MF: JIT provisioning:<br/>User A created in meine-firma
+        MF-->>User: Access granted ✓
+    else User B — claim missing
+        Note over MF: Essential Claim Check: ✗
+        MF-->>User: Authentication aborted ✗<br/>(no user created in meine-firma)
+    end
+```
 
 ### Start the Environment
 

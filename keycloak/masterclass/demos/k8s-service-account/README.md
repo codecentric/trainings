@@ -10,20 +10,18 @@ Dies nutzt Keycloaks natives **Federated Client Authentication**-Feature (GA sei
 
 ### Konzept
 
-```
-Pod (in K8s)                        Keycloak (in K8s)             K8s API Server
- |                                       |                               |
- | 1. Liest projiziertes SA-Token        |                               |
- |    (aud = Keycloak Realm Issuer URL)  |                               |
- |                                       |                               |
- | 2. POST /token                        |                               |
- |    grant_type=client_credentials      |                               |
- |    client_assertion=<SA-JWT> ───────▶ |                               |
- |                                       | 3. GET /.well-known/          |
- |                                       |    openid-configuration ────▶ |
- |                                       |◀── JWKS ──────────────────── |
- |                                       | 4. Validiert JWT              |
- |◀── Keycloak Access Token ──────────── |    (Signatur, aud, sub)       |
+```mermaid
+sequenceDiagram
+    participant Pod as Pod (in K8s)
+    participant KC as Keycloak (in K8s)
+    participant API as K8s API Server
+
+    Note over Pod: Liest projiziertes SA-Token
+    Pod->>KC: POST /token (grant_type=client_credentials, client_assertion=SA-JWT)
+    KC->>API: GET /.well-known/openid-configuration
+    API-->>KC: JWKS (öffentliche Schlüssel)
+    Note over KC: Validiert JWT (Signatur, aud, sub)
+    KC-->>Pod: Keycloak Access Token
 ```
 
 **Keycloak konfiguriert einen Kubernetes Identity Provider**, der die öffentlichen Schlüssel vom K8s-API-Server bezieht. Der Client `workload-service` ist an den `sub`-Claim des Service Accounts gebunden (`system:serviceaccount:default:demo-workload`). Kein Client-Secret wird benötigt.
@@ -154,20 +152,18 @@ This leverages Keycloak's native **Federated Client Authentication** feature (GA
 
 ### Concept
 
-```
-Pod (in K8s)                        Keycloak (in K8s)             K8s API Server
- |                                       |                               |
- | 1. Reads projected SA token           |                               |
- |    (aud = Keycloak Realm Issuer URL)  |                               |
- |                                       |                               |
- | 2. POST /token                        |                               |
- |    grant_type=client_credentials      |                               |
- |    client_assertion=<SA JWT> ───────▶ |                               |
- |                                       | 3. GET /.well-known/          |
- |                                       |    openid-configuration ────▶ |
- |                                       |◀── JWKS ──────────────────── |
- |                                       | 4. Validates JWT              |
- |◀── Keycloak Access Token ──────────── |    (signature, aud, sub)      |
+```mermaid
+sequenceDiagram
+    participant Pod as Pod (in K8s)
+    participant KC as Keycloak (in K8s)
+    participant API as K8s API Server
+
+    Note over Pod: Reads projected SA token
+    Pod->>KC: POST /token (grant_type=client_credentials, client_assertion=SA-JWT)
+    KC->>API: GET /.well-known/openid-configuration
+    API-->>KC: JWKS (public keys)
+    Note over KC: Validates JWT (signature, aud, sub)
+    KC-->>Pod: Keycloak Access Token
 ```
 
 **Keycloak configures a Kubernetes Identity Provider** that fetches public keys from the K8s API server. The client `workload-service` is bound to the Service Account's `sub` claim (`system:serviceaccount:masterclass:demo-workload`). No client secret is needed.
