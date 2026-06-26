@@ -24,7 +24,7 @@ sequenceDiagram
     KC-->>Pod: Keycloak Access Token
 ```
 
-**Keycloak konfiguriert einen Kubernetes Identity Provider**, der die öffentlichen Schlüssel vom K8s-API-Server bezieht. Der Client `workload-service` ist an den `sub`-Claim des Service Accounts gebunden (`system:serviceaccount:default:demo-workload`). Kein Client-Secret wird benötigt.
+**Keycloak konfiguriert einen Kubernetes Identity Provider**, der die öffentlichen Schlüssel vom K8s-API-Server bezieht. Der Client `workload-service` ist an den `sub`-Claim des Service Accounts gebunden (`system:serviceaccount:masterclass:demo-workload`). Kein Client-Secret wird benötigt.
 
 Da Keycloak den K8s-JWKS-Endpunkt (`https://kubernetes.default.svc`) erreichen muss, **läuft Keycloak im selben Kubernetes-Cluster**.
 
@@ -72,20 +72,85 @@ Da Keycloak den K8s-JWKS-Endpunkt (`https://kubernetes.default.svc`) erreichen m
    ```
    Der Wert entspricht dem `--service-account-issuer`-Flag des API-Servers und ist cluster-spezifisch (z.B. `https://kubernetes.default.svc.cluster.local` bei k3d/kind).
 
-7. Terraform initialisieren und anwenden (Port-Forward muss aktiv sein):
-   ```bash
-   cd terraform
-   terraform init
-   terraform apply -var="kubernetes_issuer=<ISSUER>"
-   ```
-   Falls der Issuer `https://kubernetes.default.svc` ist (Standard), kann `-var` weggelassen werden.
-   Terraform legt an: Realm `lab-realm`, Kubernetes Identity Provider und den Client `workload-service`.
-
 7. Kubernetes-Manifeste deployen:
    ```bash
    kubectl apply -f manifests/
    ```
-   Dies erstellt den Service Account `demo-workload` und den Pod `test-pod` mit einem projizierten SA-Token.
+   Dies erstellt die Service Accounts (`demo-workload`, `terraform`) sowie die Pods `test-pod` und `terraform-pod`.
+
+### Terraform anwenden
+
+Es gibt zwei Möglichkeiten, Terraform gegen Keycloak auszuführen – je nachdem, ob Keycloak bereits durch Terraform konfiguriert ist oder ob Bootstrap-Zugriff über Admin-Credentials nötig ist.
+
+---
+
+#### Option A: Admin-Credentials (Bootstrap)
+
+Der Provider authentifiziert sich mit Benutzername und Passwort. Geeignet für den ersten Durchlauf, wenn noch kein Terraform-Client in Keycloak existiert.
+
+`main.tf` Provider-Block:
+```hcl
+provider "keycloak" {
+  client_id = "admin-cli"
+  username  = "admin"
+  password  = "admin"
+  url       = "http://localhost:8080"
+}
+```
+
+Terraform lokal ausführen (Port-Forward muss aktiv sein):
+```bash
+cd terraform
+terraform init
+terraform apply -var="kubernetes_issuer=<ISSUER>"
+```
+
+---
+
+#### Option B: Signed JWT via Kubernetes Service Account (secretlos)
+
+Der Provider authentifiziert sich mit dem SA-Token des `terraform`-Pods – kein statisches Secret nötig. Dies setzt voraus, dass in Keycloak bereits ein passender Client konfiguriert ist (s.u.).
+
+**Voraussetzungen in Keycloak (manuell oder durch Option A angelegt):**
+
+1. Im `master`-Realm einen **Kubernetes Identity Provider** anlegen:
+   - *Alias:* `kubernetes`
+   - *Issuer:* SA-Token-Issuer des Clusters (z.B. `https://kubernetes.default.svc.cluster.local`)
+
+2. Einen Client `terraform` im `master`-Realm anlegen:
+   - *Access Type:* Confidential, Service Accounts enabled
+   - *Client Authenticator:* Federated JWT
+   - *jwt.credential.issuer:* `kubernetes` (Alias des IdP)
+   - *jwt.credential.sub:* `system:serviceaccount:masterclass:terraform`
+   - *Service Account Roles:* Admin-Rechte zuweisen (z.B. `admin`)
+
+3. SA-Token-Audience muss auf den `master`-Realm zeigen. In `manifests/terraform-pod.yaml` ist dies bereits korrekt gesetzt:
+   ```yaml
+   audience: "http://keycloak-keycloakx-http/realms/master"
+   ```
+
+`main.tf` Provider-Block:
+```hcl
+provider "keycloak" {
+  jwt_token_file = "/var/run/secrets/serviceaccount/token"
+  url            = "http://keycloak-keycloakx-http"
+}
+```
+
+Terraform aus dem Pod ausführen:
+```bash
+# Terraform-Code in den Pod kopieren
+kubectl cp terraform/ masterclass/terraform-pod:/terraform
+
+# Shell im Pod öffnen
+kubectl exec -it terraform-pod -- sh
+
+# Terraform ausführen
+terraform init
+terraform apply -var="kubernetes_issuer=<ISSUER>"
+```
+
+---
 
 ### Was konfiguriert wird
 
@@ -96,6 +161,8 @@ Da Keycloak den K8s-JWKS-Endpunkt (`https://kubernetes.default.svc`) erreichen m
 | Client `workload-service` | Gebunden an `system:serviceaccount:masterclass:demo-workload` |
 | ServiceAccount `demo-workload` | Kubernetes-Identität des Demo-Workloads |
 | Pod `test-pod` | curl-Pod mit projiziertem SA-Token |
+| ServiceAccount `terraform` | Kubernetes-Identität des Terraform-Pods |
+| Pod `terraform-pod` | Terraform-Pod mit projiziertem SA-Token (Audience: master-Realm) |
 
 ### Demo-Ablauf
 
@@ -214,20 +281,85 @@ Since Keycloak must reach the K8s JWKS endpoint (`https://kubernetes.default.svc
    ```
    This reflects the API server's `--service-account-issuer` flag and is cluster-specific (e.g. `https://kubernetes.default.svc.cluster.local` on k3d/kind).
 
-7. Initialize and apply Terraform (port-forward must be active):
-   ```bash
-   cd terraform
-   terraform init
-   terraform apply -var="kubernetes_issuer=<ISSUER>"
-   ```
-   If the issuer is `https://kubernetes.default.svc` (the default), the `-var` flag can be omitted.
-   Terraform creates: realm `lab-realm`, Kubernetes Identity Provider, and the client `workload-service`.
-
-8. Deploy Kubernetes manifests:
+7. Deploy Kubernetes manifests:
    ```bash
    kubectl apply -f manifests/
    ```
-   This creates the `demo-workload` Service Account and the `test-pod` with a projected SA token.
+   This creates the Service Accounts (`demo-workload`, `terraform`) and the pods `test-pod` and `terraform-pod`.
+
+### Applying Terraform
+
+There are two ways to run Terraform against Keycloak — depending on whether Keycloak is already configured or whether bootstrap access via admin credentials is needed.
+
+---
+
+#### Option A: Admin Credentials (Bootstrap)
+
+The provider authenticates with username and password. Suitable for the first run when no Terraform client exists in Keycloak yet.
+
+`main.tf` provider block:
+```hcl
+provider "keycloak" {
+  client_id = "admin-cli"
+  username  = "admin"
+  password  = "admin"
+  url       = "http://localhost:8080"
+}
+```
+
+Run Terraform locally (port-forward must be active):
+```bash
+cd terraform
+terraform init
+terraform apply -var="kubernetes_issuer=<ISSUER>"
+```
+
+---
+
+#### Option B: Signed JWT via Kubernetes Service Account (secretless)
+
+The provider authenticates using the SA token of the `terraform` pod — no static secret needed. This requires a matching client to already be configured in Keycloak (see below).
+
+**Prerequisites in Keycloak (set up manually or via Option A):**
+
+1. Create a **Kubernetes Identity Provider** in the `master` realm:
+   - *Alias:* `kubernetes`
+   - *Issuer:* the cluster's SA token issuer (e.g. `https://kubernetes.default.svc.cluster.local`)
+
+2. Create a client `terraform` in the `master` realm:
+   - *Access Type:* Confidential, Service Accounts enabled
+   - *Client Authenticator:* Federated JWT
+   - *jwt.credential.issuer:* `kubernetes` (alias of the IdP above)
+   - *jwt.credential.sub:* `system:serviceaccount:masterclass:terraform`
+   - *Service Account Roles:* assign admin permissions (e.g. `admin`)
+
+3. The SA token audience must point to the `master` realm. This is already set correctly in `manifests/terraform-pod.yaml`:
+   ```yaml
+   audience: "http://keycloak-keycloakx-http/realms/master"
+   ```
+
+`main.tf` provider block:
+```hcl
+provider "keycloak" {
+  jwt_token_file = "/var/run/secrets/serviceaccount/token"
+  url            = "http://keycloak-keycloakx-http"
+}
+```
+
+Run Terraform from inside the pod:
+```bash
+# Copy Terraform code into the pod
+kubectl cp terraform/ masterclass/terraform-pod:/terraform
+
+# Open a shell in the pod
+kubectl exec -it terraform-pod -- sh
+
+# Run Terraform
+terraform init
+terraform apply -var="kubernetes_issuer=<ISSUER>"
+```
+
+---
 
 ### What gets configured
 
@@ -238,6 +370,8 @@ Since Keycloak must reach the K8s JWKS endpoint (`https://kubernetes.default.svc
 | Client `workload-service` | Bound to `system:serviceaccount:masterclass:demo-workload` |
 | ServiceAccount `demo-workload` | Kubernetes identity of the demo workload |
 | Pod `test-pod` | curl pod with projected SA token |
+| ServiceAccount `terraform` | Kubernetes identity of the Terraform pod |
+| Pod `terraform-pod` | Terraform pod with projected SA token (audience: master realm) |
 
 ### Demo walkthrough
 

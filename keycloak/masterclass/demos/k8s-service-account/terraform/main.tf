@@ -7,11 +7,16 @@ terraform {
   }
 }
 
+#provider "keycloak" {
+#  client_id = "admin-cli"
+#  username  = "admin"
+#  password  = "admin"
+#  url       = "http://localhost:8080"
+#}
+
 provider "keycloak" {
-  client_id = "admin-cli"
-  username  = "admin"
-  password  = "admin"
-  url       = "http://localhost:8080"
+  jwt_token_file = "/var/run/secrets/serviceaccount/token"
+  url            = "http://keycloak-keycloakx-http"
 }
 
 # ─── Realm ────────────────────────────────────────────────────────────────────
