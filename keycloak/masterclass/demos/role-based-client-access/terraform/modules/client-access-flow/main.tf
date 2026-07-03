@@ -12,172 +12,40 @@ resource "keycloak_authentication_flow" "browser" {
   provider_id = "basic-flow"
 }
 
-# ─── Cookie subflow ───────────────────────────────────────────────────────────
+# ─── Authentication subflow (REQUIRED) ────────────────────────────────────────
+# 1:1 copy of the built-in browser flow
 
-resource "keycloak_authentication_subflow" "cookie" {
+resource "keycloak_authentication_subflow" "authentication" {
   realm_id          = var.realm_id
-  alias             = "${var.client_id} Cookie"
+  alias             = "${var.client_id} Authentication"
   parent_flow_alias = keycloak_authentication_flow.browser.alias
   provider_id       = "basic-flow"
-  requirement       = "ALTERNATIVE"
+  requirement       = "REQUIRED"
   priority          = 10
 }
 
 resource "keycloak_authentication_execution" "cookie" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.cookie.alias
+  parent_flow_alias = keycloak_authentication_subflow.authentication.alias
   authenticator     = "auth-cookie"
   requirement       = "ALTERNATIVE"
   priority          = 10
 }
 
-resource "keycloak_authentication_subflow" "cookie_access_check" {
-  realm_id          = var.realm_id
-  alias             = "${var.client_id} Cookie Access Check"
-  parent_flow_alias = keycloak_authentication_subflow.cookie.alias
-  provider_id       = "basic-flow"
-  requirement       = "CONDITIONAL"
-  priority          = 20
-}
-
-resource "keycloak_authentication_execution" "cookie_role_condition" {
-  for_each          = local.role_priority
-  realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.cookie_access_check.alias
-  authenticator     = "conditional-user-role"
-  requirement       = "REQUIRED"
-  priority          = each.value
-}
-
-resource "keycloak_authentication_execution_config" "cookie_role_condition" {
-  for_each     = local.role_priority
-  realm_id     = var.realm_id
-  execution_id = keycloak_authentication_execution.cookie_role_condition[each.key].id
-  alias        = "${var.client_id}-cookie-${replace(each.key, ".", "-")}"
-  config = {
-    condUserRole = each.key
-    negate = "true"
-  }
-}
-
-resource "keycloak_authentication_execution" "cookie_deny" {
-  realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.cookie_access_check.alias
-  authenticator     = "deny-access-authenticator"
-  requirement       = "REQUIRED"
-  priority          = local.deny_priority
-}
-
-# ─── Kerberos subflow ─────────────────────────────────────────────────────────
-
-resource "keycloak_authentication_subflow" "kerberos" {
-  realm_id          = var.realm_id
-  alias             = "${var.client_id} Kerberos"
-  parent_flow_alias = keycloak_authentication_flow.browser.alias
-  provider_id       = "basic-flow"
-  requirement       = "ALTERNATIVE"
-  priority          = 20
-}
-
 resource "keycloak_authentication_execution" "kerberos" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.kerberos.alias
+  parent_flow_alias = keycloak_authentication_subflow.authentication.alias
   authenticator     = "auth-spnego"
-  requirement       = "ALTERNATIVE"
-  priority          = 10
-}
-
-resource "keycloak_authentication_subflow" "kerberos_access_check" {
-  realm_id          = var.realm_id
-  alias             = "${var.client_id} Kerberos Access Check"
-  parent_flow_alias = keycloak_authentication_subflow.kerberos.alias
-  provider_id       = "basic-flow"
-  requirement       = "CONDITIONAL"
+  requirement       = "DISABLED"
   priority          = 20
-}
-
-resource "keycloak_authentication_execution" "kerberos_role_condition" {
-  for_each          = local.role_priority
-  realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.kerberos_access_check.alias
-  authenticator     = "conditional-user-role"
-  requirement       = "REQUIRED"
-  priority          = each.value
-}
-
-resource "keycloak_authentication_execution_config" "kerberos_role_condition" {
-  for_each     = local.role_priority
-  realm_id     = var.realm_id
-  execution_id = keycloak_authentication_execution.kerberos_role_condition[each.key].id
-  alias        = "${var.client_id}-kerberos-${replace(each.key, ".", "-")}"
-  config = {
-    condUserRole = each.key
-    negate = "true"
-  }
-}
-
-resource "keycloak_authentication_execution" "kerberos_deny" {
-  realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.kerberos_access_check.alias
-  authenticator     = "deny-access-authenticator"
-  requirement       = "REQUIRED"
-  priority          = local.deny_priority
-}
-
-# ─── Identity Provider subflow ────────────────────────────────────────────────
-
-resource "keycloak_authentication_subflow" "idp" {
-  realm_id          = var.realm_id
-  alias             = "${var.client_id} Identity Provider"
-  parent_flow_alias = keycloak_authentication_flow.browser.alias
-  provider_id       = "basic-flow"
-  requirement       = "ALTERNATIVE"
-  priority          = 30
 }
 
 resource "keycloak_authentication_execution" "idp_redirector" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.idp.alias
+  parent_flow_alias = keycloak_authentication_subflow.authentication.alias
   authenticator     = "identity-provider-redirector"
   requirement       = "ALTERNATIVE"
-  priority          = 10
-}
-
-resource "keycloak_authentication_subflow" "idp_access_check" {
-  realm_id          = var.realm_id
-  alias             = "${var.client_id} IDP Access Check"
-  parent_flow_alias = keycloak_authentication_subflow.idp.alias
-  provider_id       = "basic-flow"
-  requirement       = "CONDITIONAL"
-  priority          = 20
-}
-
-resource "keycloak_authentication_execution" "idp_role_condition" {
-  for_each          = local.role_priority
-  realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.idp_access_check.alias
-  authenticator     = "conditional-user-role"
-  requirement       = "REQUIRED"
-  priority          = each.value
-}
-
-resource "keycloak_authentication_execution_config" "idp_role_condition" {
-  for_each     = local.role_priority
-  realm_id     = var.realm_id
-  execution_id = keycloak_authentication_execution.idp_role_condition[each.key].id
-  alias        = "${var.client_id}-idp-${replace(each.key, ".", "-")}"
-  config = {
-    condUserRole = each.key
-    negate = "true"
-  }
-}
-
-resource "keycloak_authentication_execution" "idp_deny" {
-  realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.idp_access_check.alias
-  authenticator     = "deny-access-authenticator"
-  requirement       = "REQUIRED"
-  priority          = local.deny_priority
+  priority          = 25
 }
 
 # ─── Organization subflow ─────────────────────────────────────────────────────
@@ -185,10 +53,10 @@ resource "keycloak_authentication_execution" "idp_deny" {
 resource "keycloak_authentication_subflow" "organization" {
   realm_id          = var.realm_id
   alias             = "${var.client_id} Organization"
-  parent_flow_alias = keycloak_authentication_flow.browser.alias
+  parent_flow_alias = keycloak_authentication_subflow.authentication.alias
   provider_id       = "basic-flow"
   requirement       = "ALTERNATIVE"
-  priority          = 40
+  priority          = 26
 }
 
 resource "keycloak_authentication_subflow" "organization_conditional" {
@@ -200,7 +68,7 @@ resource "keycloak_authentication_subflow" "organization_conditional" {
   priority          = 10
 }
 
-resource "keycloak_authentication_execution" "organization_condition" {
+resource "keycloak_authentication_execution" "organization_user_configured" {
   realm_id          = var.realm_id
   parent_flow_alias = keycloak_authentication_subflow.organization_conditional.alias
   authenticator     = "conditional-user-configured"
@@ -216,143 +84,117 @@ resource "keycloak_authentication_execution" "organization" {
   priority          = 20
 }
 
-resource "keycloak_authentication_subflow" "organization_access_check" {
+# ─── Forms subflow ────────────────────────────────────────────────────────────
+
+resource "keycloak_authentication_subflow" "forms" {
   realm_id          = var.realm_id
-  alias             = "${var.client_id} Organization Access Check"
-  parent_flow_alias = keycloak_authentication_subflow.organization.alias
-  provider_id       = "basic-flow"
-  requirement       = "CONDITIONAL"
-  priority          = 20
-}
-
-resource "keycloak_authentication_execution" "organization_role_condition" {
-  for_each          = local.role_priority
-  realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.organization_access_check.alias
-  authenticator     = "conditional-user-role"
-  requirement       = "REQUIRED"
-  priority          = each.value
-}
-
-resource "keycloak_authentication_execution_config" "organization_role_condition" {
-  for_each     = local.role_priority
-  realm_id     = var.realm_id
-  execution_id = keycloak_authentication_execution.organization_role_condition[each.key].id
-  alias        = "${var.client_id}-organization-${replace(each.key, ".", "-")}"
-  config = {
-    condUserRole = each.key
-    negate = "true"
-  }
-}
-
-resource "keycloak_authentication_execution" "organization_deny" {
-  realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.organization_access_check.alias
-  authenticator     = "deny-access-authenticator"
-  requirement       = "REQUIRED"
-  priority          = local.deny_priority
-}
-
-# ─── Username/Password subflow ────────────────────────────────────────────────
-
-resource "keycloak_authentication_subflow" "userpass" {
-  realm_id          = var.realm_id
-  alias             = "${var.client_id} UsernamePassword"
-  parent_flow_alias = keycloak_authentication_flow.browser.alias
+  alias             = "${var.client_id} forms"
+  parent_flow_alias = keycloak_authentication_subflow.authentication.alias
   provider_id       = "basic-flow"
   requirement       = "ALTERNATIVE"
-  priority          = 50
+  priority          = 30
 }
 
-resource "keycloak_authentication_execution" "userpass_form" {
+resource "keycloak_authentication_execution" "username_password_form" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.userpass.alias
+  parent_flow_alias = keycloak_authentication_subflow.forms.alias
   authenticator     = "auth-username-password-form"
   requirement       = "REQUIRED"
   priority          = 10
 }
 
-resource "keycloak_authentication_subflow" "userpass_otp" {
+resource "keycloak_authentication_subflow" "conditional_2fa" {
   realm_id          = var.realm_id
-  alias             = "${var.client_id} OTP"
-  parent_flow_alias = keycloak_authentication_subflow.userpass.alias
+  alias             = "${var.client_id} Browser - Conditional 2FA"
+  parent_flow_alias = keycloak_authentication_subflow.forms.alias
   provider_id       = "basic-flow"
   requirement       = "CONDITIONAL"
   priority          = 20
 }
 
-resource "keycloak_authentication_execution" "userpass_otp_condition_configured" {
+resource "keycloak_authentication_execution" "conditional_2fa_user_configured" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.userpass_otp.alias
+  parent_flow_alias = keycloak_authentication_subflow.conditional_2fa.alias
   authenticator     = "conditional-user-configured"
   requirement       = "REQUIRED"
   priority          = 10
 }
 
-resource "keycloak_authentication_execution" "userpass_otp_condition_credential" {
+resource "keycloak_authentication_execution" "conditional_2fa_credential" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.userpass_otp.alias
+  parent_flow_alias = keycloak_authentication_subflow.conditional_2fa.alias
   authenticator     = "conditional-credential"
   requirement       = "REQUIRED"
   priority          = 20
 }
 
-resource "keycloak_authentication_execution" "userpass_otp_form" {
+resource "keycloak_authentication_execution_config" "conditional_2fa_credential" {
+  realm_id     = var.realm_id
+  execution_id = keycloak_authentication_execution.conditional_2fa_credential.id
+  alias        = "${var.client_id}-browser-conditional-credential"
+  config = {
+    credentials = "webauthn-passwordless"
+  }
+}
+
+resource "keycloak_authentication_execution" "otp_form" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.userpass_otp.alias
+  parent_flow_alias = keycloak_authentication_subflow.conditional_2fa.alias
   authenticator     = "auth-otp-form"
   requirement       = "ALTERNATIVE"
   priority          = 30
 }
 
-resource "keycloak_authentication_execution" "userpass_webauthn" {
+resource "keycloak_authentication_execution" "webauthn" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.userpass_otp.alias
+  parent_flow_alias = keycloak_authentication_subflow.conditional_2fa.alias
   authenticator     = "webauthn-authenticator"
   requirement       = "DISABLED"
   priority          = 40
 }
 
-resource "keycloak_authentication_execution" "userpass_recovery_code" {
+resource "keycloak_authentication_execution" "recovery_code" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.userpass_otp.alias
+  parent_flow_alias = keycloak_authentication_subflow.conditional_2fa.alias
   authenticator     = "auth-recovery-authn-code-form"
   requirement       = "DISABLED"
   priority          = 50
 }
 
-resource "keycloak_authentication_subflow" "userpass_access_check" {
+# ─── Access Check (CONDITIONAL) ───────────────────────────────────────────────
+
+resource "keycloak_authentication_subflow" "access_check" {
   realm_id          = var.realm_id
-  alias             = "${var.client_id} UserPass Access Check"
-  parent_flow_alias = keycloak_authentication_subflow.userpass.alias
+  alias             = "${var.client_id} Access Check"
+  parent_flow_alias = keycloak_authentication_flow.browser.alias
   provider_id       = "basic-flow"
   requirement       = "CONDITIONAL"
-  priority          = 30
+  priority          = 20
 }
 
-resource "keycloak_authentication_execution" "userpass_role_condition" {
+resource "keycloak_authentication_execution" "role_condition" {
   for_each          = local.role_priority
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.userpass_access_check.alias
+  parent_flow_alias = keycloak_authentication_subflow.access_check.alias
   authenticator     = "conditional-user-role"
   requirement       = "REQUIRED"
   priority          = each.value
 }
 
-resource "keycloak_authentication_execution_config" "userpass_role_condition" {
+resource "keycloak_authentication_execution_config" "role_condition" {
   for_each     = local.role_priority
   realm_id     = var.realm_id
-  execution_id = keycloak_authentication_execution.userpass_role_condition[each.key].id
-  alias        = "${var.client_id}-userpass-${replace(each.key, ".", "-")}"
+  execution_id = keycloak_authentication_execution.role_condition[each.key].id
+  alias        = "${var.client_id}-${replace(each.key, ".", "-")}"
   config = {
     condUserRole = each.key
-    negate = "true"
+    negate       = "true"
   }
 }
 
-resource "keycloak_authentication_execution" "userpass_deny" {
+resource "keycloak_authentication_execution" "deny" {
   realm_id          = var.realm_id
-  parent_flow_alias = keycloak_authentication_subflow.userpass_access_check.alias
+  parent_flow_alias = keycloak_authentication_subflow.access_check.alias
   authenticator     = "deny-access-authenticator"
   requirement       = "REQUIRED"
   priority          = local.deny_priority

@@ -40,6 +40,10 @@ flowchart TD
     Cond -->|Nein — Rolle vorhanden| Grant([Zugriff gewährt ✓])
 ```
 
+### Einschränkung
+
+Dieser Ansatz funktioniert **nicht**, wenn die Authentifizierung über einen externen Identity Provider erfolgt. In diesem Fall wird der Browser-Flow abgebrochen und nach der Weiterleitung zurück zu Keycloak der **First Broker Login**-Flow ausgeführt — der Zugriffscheck im Browser-Flow wird dabei nie erreicht.
+
 ### Setup
 
 **Voraussetzungen:** Docker, Terraform
@@ -122,6 +126,10 @@ flowchart TD
     Cond -->|Yes — role missing| Deny([Access denied ✗])
     Cond -->|No — role present| Grant([Access granted ✓])
 ```
+
+### Caveat
+
+This approach does **not** work if authentication happens via an external identity provider. In that case, the browser flow is cancelled and after the redirect back to Keycloak, the **first broker login** flow is executed — the access check in the browser flow is never reached.
 
 ### Setup
 
