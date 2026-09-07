@@ -1,0 +1,35 @@
+name: kc-mc-demo-helpdesk
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.3
+    environment:
+      # Keycloak Admin User (nur fuer den Realm "master")
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      # Logging, see: https://www.keycloak.org/server/logging
+      KC_LOG_LEVEL: INFO
+
+    volumes:
+      - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
+      # Realm "helpdesk" inkl. Rollen, Gruppen und Benutzern
+      - ./realm-helpdesk.json:/opt/keycloak/data/import/realm-helpdesk.json
+      # Corporate-Design-Theme "nordlicht" (Typen login + admin).
+      # start-dev deaktiviert den Theme-Cache, Aenderungen wirken nach einem Reload.
+      - ./themes:/opt/keycloak/themes:z
+
+    ports:
+      - 127.0.0.1:8080:8080 # HTTP
+
+    command:
+      - "--verbose"
+      - "start-dev" # Only for Dev-Environment!
+      - "--import-realm"
+      # Das Workflows-Tab auf der Benutzerseite prueft KEINE Berechtigung, sondern
+      # nur dieses Feature-Flag - sein Endpunkt verlangt aber manage-realm. Fuer
+      # jeden delegierten Admin endet ein Klick darauf in der Fehlerseite.
+      # Siehe README, Abschnitt "Wenn die Console mehr zeigt, als sie darf".
+      - "--features-disabled=workflows"
+
+volumes:
+  keycloak-data:

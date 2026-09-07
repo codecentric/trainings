@@ -1,0 +1,92 @@
+/* ============================================================
+   Nordlicht Energie AG - Account-Console
+   Keycloak 26.7.3, Theme-Typ "account", parent = keycloak.v3
+   ------------------------------------------------------------
+   Gleiche Technik wie das Admin-Theme: faerben ueber
+   PatternFly-v5-Custom-Properties, !important nur dort, wo
+   PatternFly die Eigenschaft hart deklariert.
+   ============================================================ */
+
+:root {
+  --nl-petrol:       #0E3A4A;
+  --nl-petrol-dark:  #0B2C38;
+  --nl-petrol-light: #14506A;
+  --nl-amber:        #F2A93B;
+  --nl-amber-hover:  #D9922B;
+  --nl-on-dark:      #E6EEF2;
+  --nl-on-dark-soft: #A9C2CE;
+
+  --pf-v5-global--primary-color--100: var(--nl-amber);
+  --pf-v5-global--primary-color--200: var(--nl-amber-hover);
+  --pf-v5-global--active-color--100:  var(--nl-amber);
+  --pf-v5-global--link--Color:        var(--nl-petrol-light);
+  --pf-v5-global--link--Color--hover: var(--nl-petrol);
+}
+
+/* ---------- Masthead ---------- */
+.pf-v5-c-masthead {
+  --pf-v5-c-masthead--BackgroundColor: var(--nl-petrol);
+  --pf-v5-c-masthead--m-light--BackgroundColor: var(--nl-petrol);
+  background-color: var(--nl-petrol) !important;
+  border-bottom: 3px solid var(--nl-amber);
+  color: var(--nl-on-dark);
+}
+
+/* Die Account-Console vergibt fuer das Brand-Bild eine gehashte
+   CSS-Modul-Klasse, deshalb ueber das Masthead-Element greifen. */
+.pf-v5-c-masthead__brand img,
+.pf-v5-c-masthead__brand .pf-v5-c-brand {
+  height: 32px;
+  width: auto;
+}
+
+.pf-v5-c-masthead .pf-v5-c-button,
+.pf-v5-c-masthead .pf-v5-c-menu-toggle,
+.pf-v5-c-masthead .pf-v5-c-menu-toggle__text {
+  color: var(--nl-on-dark);
+}
+
+/* ---------- Seitennavigation ---------- */
+.pf-v5-c-page__sidebar {
+  --pf-v5-c-page__sidebar--BackgroundColor: var(--nl-petrol-dark);
+  --pf-v5-c-page__sidebar--m-light--BackgroundColor: var(--nl-petrol-dark);
+  background-color: var(--nl-petrol-dark) !important;
+}
+
+.pf-v5-c-nav__link {
+  --pf-v5-c-nav__link--Color: var(--nl-on-dark-soft);
+  --pf-v5-c-nav__link--hover--Color: #FFFFFF;
+  --pf-v5-c-nav__link--hover--BackgroundColor: rgba(242, 169, 59, 0.08);
+  --pf-v5-c-nav__link--m-current--Color: #FFFFFF;
+  --pf-v5-c-nav__link--m-current--BackgroundColor: rgba(242, 169, 59, 0.14);
+  --pf-v5-c-nav__link--m-current--after--BorderColor: var(--nl-amber);
+  --pf-v5-c-nav__link--after--BorderColor: transparent;
+}
+
+/* ---------- Primaerbuttons ---------- */
+.pf-v5-c-button.pf-m-primary {
+  --pf-v5-c-button--m-primary--BackgroundColor:         var(--nl-amber);
+  --pf-v5-c-button--m-primary--Color:                   var(--nl-petrol);
+  --pf-v5-c-button--m-primary--hover--BackgroundColor:  var(--nl-amber-hover);
+  --pf-v5-c-button--m-primary--focus--BackgroundColor:  var(--nl-amber-hover);
+  --pf-v5-c-button--m-primary--active--BackgroundColor: var(--nl-amber-hover);
+  font-weight: 600;
+}
+
+.pf-v5-c-button.pf-m-secondary {
+  --pf-v5-c-button--m-secondary--Color:       var(--nl-petrol);
+  --pf-v5-c-button--m-secondary--BorderColor: var(--nl-petrol);
+}
+
+/* ---------- Karten und Tabs ---------- */
+.pf-v5-c-card {
+  border-top: 3px solid var(--nl-amber);
+}
+
+.pf-v5-c-tabs__item.pf-m-current .pf-v5-c-tabs__link {
+  --pf-v5-c-tabs__link--after--BorderColor: var(--nl-amber);
+}
+
+.pf-v5-c-form-control {
+  --pf-v5-c-form-control--focus--after--BorderBottomColor: var(--nl-amber);
+}

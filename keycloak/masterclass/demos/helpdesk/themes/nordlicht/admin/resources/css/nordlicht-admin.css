@@ -1,0 +1,112 @@
+/* ============================================================
+   Nordlicht Energie AG - Admin-Console
+   Keycloak 26.7.3, Theme-Typ "admin", parent = keycloak.v2
+   ------------------------------------------------------------
+   Die Admin-Console ist eine PatternFly-v5-Anwendung. Wir faerben
+   sie ueber PatternFly-Custom-Properties statt ueber Einzelselektoren
+   - das ist spezifitaetsunabhaengig und ueberlebt Umbauten am Markup.
+
+   Achtung: Keycloak rendert Masthead und Sidebar mit dem Modifier
+   pf-m-light. Deshalb muss jeweils AUCH die --m-light--Variante
+   gesetzt werden, sonst passiert sichtbar nichts.
+   ============================================================ */
+
+:root {
+  /* --- Corporate Design --- */
+  --nl-petrol:       #0E3A4A;
+  --nl-petrol-dark:  #0B2C38;
+  --nl-petrol-light: #14506A;
+  --nl-amber:        #F2A93B;
+  --nl-amber-hover:  #D9922B;
+  --nl-on-dark:      #E6EEF2;
+  --nl-on-dark-soft: #A9C2CE;
+
+  /* --- Durchreichen an die globalen PatternFly-Tokens --- */
+  --pf-v5-global--primary-color--100: var(--nl-amber);
+  --pf-v5-global--primary-color--200: var(--nl-amber-hover);
+  --pf-v5-global--active-color--100:  var(--nl-amber);
+  --pf-v5-global--link--Color:        var(--nl-petrol-light);
+  --pf-v5-global--link--Color--hover: var(--nl-petrol);
+}
+
+/* ---------- Masthead ---------- */
+.pf-v5-c-masthead {
+  --pf-v5-c-masthead--BackgroundColor: var(--nl-petrol);
+  --pf-v5-c-masthead--m-light--BackgroundColor: var(--nl-petrol);
+  background-color: var(--nl-petrol) !important;
+  border-bottom: 3px solid var(--nl-amber);
+  color: var(--nl-on-dark);
+}
+
+.keycloak__pageheader_brand {
+  height: 32px;
+  width: auto;
+}
+
+/* Dasselbe Logo wird von der Dashboard-Startseite als "Keycloak icon"
+   verwendet - dort aber auf hellem Grund, wo die weisse Wortmarke
+   unsichtbar waere. Deshalb bekommt sie hier eine Petrol-Platte. */
+.keycloak__dashboard_icon {
+  height: auto;
+  max-height: 76px;
+  width: auto;
+  padding: 14px 20px;
+  border-radius: 10px;
+  background-color: var(--nl-petrol);
+}
+
+/* Buttons und Menues im Masthead auf hellen Text ziehen */
+.pf-v5-c-masthead .pf-v5-c-button,
+.pf-v5-c-masthead .pf-v5-c-menu-toggle,
+.pf-v5-c-masthead .pf-v5-c-menu-toggle__text {
+  color: var(--nl-on-dark);
+}
+
+/* ---------- Seitennavigation ---------- */
+.pf-v5-c-page__sidebar {
+  --pf-v5-c-page__sidebar--BackgroundColor: var(--nl-petrol-dark);
+  --pf-v5-c-page__sidebar--m-light--BackgroundColor: var(--nl-petrol-dark);
+  background-color: var(--nl-petrol-dark) !important;
+}
+
+.pf-v5-c-nav__link {
+  --pf-v5-c-nav__link--Color: var(--nl-on-dark-soft);
+  --pf-v5-c-nav__link--hover--Color: #FFFFFF;
+  --pf-v5-c-nav__link--hover--BackgroundColor: rgba(242, 169, 59, 0.08);
+  --pf-v5-c-nav__link--focus--Color: #FFFFFF;
+  --pf-v5-c-nav__link--focus--BackgroundColor: rgba(242, 169, 59, 0.08);
+  /* Aktiver Eintrag: heller Text, Bernstein-Kante (der Marker ist ::after) */
+  --pf-v5-c-nav__link--m-current--Color: #FFFFFF;
+  --pf-v5-c-nav__link--m-current--BackgroundColor: rgba(242, 169, 59, 0.14);
+  --pf-v5-c-nav__link--m-current--after--BorderColor: var(--nl-amber);
+  --pf-v5-c-nav__link--after--BorderColor: transparent;
+}
+
+.pf-v5-c-nav__section-title {
+  color: var(--nl-on-dark-soft);
+}
+
+/* ---------- Primaerbuttons in Bernstein ---------- */
+.pf-v5-c-button.pf-m-primary {
+  --pf-v5-c-button--m-primary--BackgroundColor:         var(--nl-amber);
+  --pf-v5-c-button--m-primary--Color:                   var(--nl-petrol);
+  --pf-v5-c-button--m-primary--hover--BackgroundColor:  var(--nl-amber-hover);
+  --pf-v5-c-button--m-primary--focus--BackgroundColor:  var(--nl-amber-hover);
+  --pf-v5-c-button--m-primary--active--BackgroundColor: var(--nl-amber-hover);
+  font-weight: 600;
+}
+
+.pf-v5-c-button.pf-m-secondary {
+  --pf-v5-c-button--m-secondary--Color:       var(--nl-petrol);
+  --pf-v5-c-button--m-secondary--BorderColor: var(--nl-petrol);
+}
+
+/* ---------- Aktive Tabs ---------- */
+.pf-v5-c-tabs__item.pf-m-current .pf-v5-c-tabs__link {
+  --pf-v5-c-tabs__link--after--BorderColor: var(--nl-amber);
+}
+
+/* ---------- Eingabefelder ---------- */
+.pf-v5-c-form-control {
+  --pf-v5-c-form-control--focus--after--BorderBottomColor: var(--nl-amber);
+}

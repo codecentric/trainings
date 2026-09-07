@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 44" role="img" aria-label="Nordlicht Energie AG">
+  <title>Nordlicht Energie AG</title>
+  <!-- Polarlicht-Bogen: drei geschachtelte Baender -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M6 34 A 16 16 0 0 1 38 34" stroke="#F2A93B" stroke-width="4"/>
+    <path d="M12 34 A 10 10 0 0 1 32 34" stroke="#7FC7E0" stroke-width="3" opacity=".85"/>
+    <path d="M18 34 A 4 4 0 0 1 26 34" stroke="#FFFFFF" stroke-width="2.5" opacity=".9"/>
+  </g>
+  <text x="52" y="24" font-family="'Helvetica Neue',Arial,sans-serif" font-size="17"
+        font-weight="700" letter-spacing="1.6" fill="#FFFFFF">NORDLICHT</text>
+  <text x="52" y="37" font-family="'Helvetica Neue',Arial,sans-serif" font-size="10"
+        font-weight="500" letter-spacing="3.4" fill="#F2A93B">ENERGIE AG</text>
+</svg>

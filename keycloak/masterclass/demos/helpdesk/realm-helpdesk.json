@@ -1,0 +1,162 @@
+{
+  "realm": "helpdesk",
+  "displayName": "Nordlicht Energie AG",
+  "displayNameHtml": "<span class=\"nl-brand\">Nordlicht Energie AG</span>",
+  "enabled": true,
+
+  "loginTheme": "nordlicht",
+  "adminTheme": "nordlicht",
+  "accountTheme": "nordlicht",
+
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "registrationAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+
+  "internationalizationEnabled": true,
+  "supportedLocales": ["de", "en"],
+  "defaultLocale": "de",
+
+  "eventsEnabled": true,
+  "eventsExpiration": 86400,
+  "eventsListeners": ["jboss-logging"],
+  "adminEventsEnabled": true,
+  "adminEventsDetailsEnabled": true,
+
+  "groups": [
+    { "name": "Vertrieb" },
+    { "name": "Netzbetrieb" },
+    { "name": "Abrechnung", "realmRoles": ["abrechnung"] }
+  ],
+
+  "roles": {
+    "realm": [
+      {
+        "name": "helpdesk-agent",
+        "description": "Darf Benutzer verwalten, ist aber ausdruecklich kein Realm-Admin.",
+        "composite": true,
+        "composites": {
+          "client": {
+            "realm-management": [
+              "view-users",
+              "manage-users",
+              "impersonation",
+              "view-events"
+            ]
+          }
+        }
+      },
+      {
+        "name": "helpdesk-search-only",
+        "description": "Negativbeispiel: nur query-users. Reicht zum Suchen, nicht zum Ansehen oder Aendern.",
+        "composite": true,
+        "composites": {
+          "client": {
+            "realm-management": [
+              "query-users"
+            ]
+          }
+        }
+      },
+      {
+        "name": "abrechnung",
+        "description": "Fachrolle: Zugriff auf die Abrechnungsanwendung. Bewusst KEINE Admin-Rolle - der Helpdesk kann sie trotzdem vergeben."
+      }
+    ]
+  },
+
+  "users": [
+    {
+      "username": "h.nordmann",
+      "firstName": "Helga",
+      "lastName": "Nordmann",
+      "email": "helga.nordmann@nordlicht-energie.example",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        { "type": "password", "value": "helpdesk", "temporary": false }
+      ],
+      "realmRoles": ["default-roles-helpdesk", "helpdesk-agent"]
+    },
+    {
+      "username": "t.klein",
+      "firstName": "Tim",
+      "lastName": "Klein",
+      "email": "tim.klein@nordlicht-energie.example",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        { "type": "password", "value": "helpdesk", "temporary": false }
+      ],
+      "realmRoles": ["default-roles-helpdesk", "helpdesk-search-only"]
+    },
+
+    {
+      "username": "a.baumann",
+      "firstName": "Anke",
+      "lastName": "Baumann",
+      "email": "anke.baumann@nordlicht-energie.example",
+      "enabled": true,
+      "emailVerified": true,
+      "groups": ["/Vertrieb"],
+      "credentials": [
+        { "type": "password", "value": "start123", "temporary": false }
+      ],
+      "realmRoles": ["default-roles-helpdesk"]
+    },
+    {
+      "username": "b.christiansen",
+      "firstName": "Bjoern",
+      "lastName": "Christiansen",
+      "email": "bjoern.christiansen@nordlicht-energie.example",
+      "enabled": true,
+      "emailVerified": true,
+      "groups": ["/Netzbetrieb"],
+      "credentials": [
+        { "type": "password", "value": "start123", "temporary": false }
+      ],
+      "realmRoles": ["default-roles-helpdesk"]
+    },
+    {
+      "username": "c.dittmer",
+      "firstName": "Carla",
+      "lastName": "Dittmer",
+      "email": "carla.dittmer@nordlicht-energie.example",
+      "enabled": false,
+      "emailVerified": true,
+      "groups": ["/Vertrieb"],
+      "credentials": [
+        { "type": "password", "value": "start123", "temporary": false }
+      ],
+      "realmRoles": ["default-roles-helpdesk"]
+    },
+    {
+      "username": "d.ehlers",
+      "firstName": "Dirk",
+      "lastName": "Ehlers",
+      "email": "dirk.ehlers@nordlicht-energie.example",
+      "enabled": true,
+      "emailVerified": true,
+      "groups": ["/Netzbetrieb"],
+      "requiredActions": ["UPDATE_PASSWORD"],
+      "credentials": [
+        { "type": "password", "value": "start123", "temporary": false }
+      ],
+      "realmRoles": ["default-roles-helpdesk"]
+    },
+    {
+      "username": "e.friedrich",
+      "firstName": "Elke",
+      "lastName": "Friedrich",
+      "email": "elke.friedrich@nordlicht-energie.example",
+      "enabled": true,
+      "emailVerified": true,
+      "groups": ["/Vertrieb"],
+      "credentials": [
+        { "type": "password", "value": "start123", "temporary": false }
+      ],
+      "realmRoles": ["default-roles-helpdesk"]
+    }
+  ]
+}

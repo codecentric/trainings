@@ -1,0 +1,130 @@
+/* ============================================================
+   Nordlicht Energie AG - Login-Theme
+   Keycloak 26.7.3, Theme-Typ "login", parent = keycloak.v2
+   ------------------------------------------------------------
+   Gilt fuer die Login-Seite des Realms "helpdesk" - und damit
+   auch fuer den Einstieg in /admin/helpdesk/console/.
+   ============================================================ */
+
+:root {
+  --nl-petrol:       #0E3A4A;
+  --nl-petrol-dark:  #0B2C38;
+  --nl-petrol-deep:  #061A22;
+  --nl-amber:        #F2A93B;
+  --nl-amber-hover:  #D9922B;
+  --nl-ink:          #12212A;
+  --nl-ink-soft:     #5A6E78;
+  --nl-line:         #DCE5EA;
+}
+
+/* ---------- Buehne: Petrol-Verlauf statt Hintergrundbild ----------
+   keycloak.v2 setzt den Hintergrund ueber html.login-pf und die
+   Variable --keycloak-bg-logo-url. Beides hier uebernehmen. */
+:root,
+html.login-pf {
+  --keycloak-bg-logo-url: none;
+  /* keycloak.v2 zeichnet die Oberkante der Karte ueber diese Variable
+     (Default: blue-400). Hier greifen statt eine eigene border-top zu setzen. */
+  --keycloak-card-top-color: var(--nl-amber);
+  background-color: var(--nl-petrol-deep);
+}
+
+.login-pf body,
+html.login-pf body {
+  margin: 0;
+  min-height: 100%;
+  background: linear-gradient(160deg, #0E3A4A 0%, #0B2C38 55%, #061A22 100%) !important;
+  background-color: var(--nl-petrol-deep) !important;
+}
+
+/* Hintergrundebene des Parent-Themes ausblenden */
+.pf-v5-c-background-image {
+  display: none !important;
+}
+
+/* ---------- Weisse Karte ---------- */
+.pf-v5-c-login__main {
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+  overflow: hidden;
+}
+
+.pf-v5-c-login__main-header,
+.pf-v5-c-login__main-body,
+.pf-v5-c-login__main-footer {
+  background: transparent;
+  color: var(--nl-ink);
+}
+
+.pf-v5-c-login__main-header {
+  border-bottom: 1px solid var(--nl-line);
+}
+
+/* Wortmarke steht auf dem dunklen Verlauf, nicht auf der Karte -
+   deshalb die helle Logo-Variante. */
+
+/* ---------- Wortmarke ueber der Karte ---------- */
+#kc-header-wrapper {
+  background-image: url("../img/nordlicht-logo.svg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: auto 44px;
+  padding-top: 64px;
+  /* Der Realm-Anzeigename wird durch das Logo ersetzt */
+  font-size: 0;
+  color: transparent;
+  text-transform: none;
+}
+
+/* ---------- Titel und Fliesstext ---------- */
+#kc-page-title,
+.pf-v5-c-login__main-header .pf-v5-c-title {
+  color: var(--nl-petrol);
+  font-weight: 600;
+}
+
+.pf-v5-c-login__main-footer-band,
+.pf-v5-c-login__main-footer-band-item {
+  color: var(--nl-ink-soft);
+}
+
+/* ---------- Eingabefelder ---------- */
+.pf-v5-c-form-control {
+  --pf-v5-c-form-control--after--BorderBottomColor: var(--nl-line);
+  --pf-v5-c-form-control--hover--after--BorderBottomColor: var(--nl-petrol);
+  --pf-v5-c-form-control--focus--after--BorderBottomColor: var(--nl-amber);
+}
+
+/* ---------- Primaerbutton in Bernstein ---------- */
+.pf-v5-c-button.pf-m-primary,
+#kc-login {
+  --pf-v5-c-button--m-primary--BackgroundColor:        var(--nl-amber);
+  --pf-v5-c-button--m-primary--Color:                  var(--nl-petrol);
+  --pf-v5-c-button--m-primary--hover--BackgroundColor: var(--nl-amber-hover);
+  --pf-v5-c-button--m-primary--focus--BackgroundColor: var(--nl-amber-hover);
+  --pf-v5-c-button--m-primary--active--BackgroundColor: var(--nl-amber-hover);
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+/* ---------- Links ---------- */
+:root {
+  --pf-v5-global--link--Color: var(--nl-petrol);
+  --pf-v5-global--link--Color--hover: var(--nl-petrol-dark);
+  --pf-v5-global--primary-color--100: var(--nl-amber);
+}
+
+/* ---------- Sprachumschalter ----------
+   Liegt in 26.7.x als Select in .pf-v5-c-login__main-header-utilities
+   innerhalb der weissen Karte - also dunkle Schrift, kein #kc-locale mehr. */
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control {
+  color: var(--nl-ink-soft);
+}
+
+@media (max-width: 600px) {
+  #kc-header-wrapper {
+    background-size: auto 34px;
+    padding-top: 50px;
+  }
+}
