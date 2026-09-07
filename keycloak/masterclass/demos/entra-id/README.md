@@ -95,32 +95,85 @@ terraform output -raw keycloak_configuration_guide
 
 Use the values from Terraform outputs:
 
-| Field | Value |
-|-------|-------|
-| **Alias** | `azure` |
-| **Display Name** | `Microsoft Azure AD` |
-| **Authorization URL** | From `terraform output authorization_endpoint` |
-| **Token URL** | From `terraform output token_endpoint` |
-| **Client ID** | From `terraform output application_client_id` |
+| Field | Value                                                  |
+|-------|--------------------------------------------------------|
+| **Alias** | `azure`                                                |
+| **Display Name** | `Microsoft Entra ID`                                   |
+| **Authorization URL** | From `terraform output authorization_endpoint`         |
+| **Token URL** | From `terraform output token_endpoint`                 |
+| **Client ID** | From `terraform output application_client_id`          |
 | **Client Secret** | From `terraform output -raw application_client_secret` |
-| **Issuer** | From `terraform output issuer` |
-| **Default Scopes** | `openid profile email` |
+| **Issuer** | From `terraform output issuer`                         |
+| **Scopes** | `openid profile email`                                 |
+
+> **Careful — this is the most common mistake in this demo.** The **Scopes** field lives in the
+> collapsed **Advanced settings** section, so it is easy to miss. If you leave it empty, Keycloak
+> requests `scope=openid` only. Entra ID then returns an ID token containing nothing but
+> `sub`/`oid`/`tid` — no `preferred_username`, `name`, `given_name`, `family_name` or `email` — and
+> every login ends on Keycloak's *Update Account Information* page.
+>
+> You can verify what Keycloak actually sends by clicking the provider button on the login page and
+> inspecting the `scope` parameter of the redirect to `login.microsoftonline.com`.
 
 ### Step 3: Grant Admin Consent (Required)
 
-The Azure AD application requires admin consent to access user profile information:
+The Entra ID application requires admin consent to access user profile information:
 
 1. Go to [Azure Portal](https://portal.azure.com)
 2. Navigate to: **App registrations** > **Keycloak Identity Broker-XXXXXX**
 3. Click: **API permissions** > **Grant admin consent for [Your Directory]**
 4. Confirm the consent
 
-### Step 4: Test the Integration
+### Step 4: Check Which Attributes Actually Arrive
 
-1. In Keycloak, create a test application or use the account console
-2. Navigate to the login page
-3. Click on **Microsoft Azure AD** button
-4. Login in Microsoft Azure AD. You should then see a registration page of Keycloak
+Requesting a scope does not guarantee that Entra ID has a value to put in the claim. This matters
+most for `email`:
+
+- `given_name` / `family_name` come from the user's *Given name* / *Surname* in the directory.
+- `preferred_username` carries the UPN.
+- **`email` is sourced exclusively from the user's `mail` attribute.** For cloud-only users without
+  an Exchange license — which is what you get in a fresh demo or sandbox tenant — `mail` is `null`,
+  so no `email` claim is issued. The `optional_claims` block in `main.tf` requests the claim, but a
+  requested claim without a directory value stays absent.
+
+Check the user in your tenant:
+
+```bash
+az ad user show --id <upn> \
+  --query '{upn:userPrincipalName, mail:mail, given:givenName, sur:surname}'
+```
+
+Since `email`, `firstName` and `lastName` are required attributes of the default user profile,
+a missing `email` claim alone is enough to trigger *Update Account Information* on every first login.
+
+If `mail` is empty and you cannot set it (no permissions, or no mailbox on the account), map the UPN
+onto the email attribute in Keycloak instead — **Identity Providers > azure > Mappers > Add mapper**:
+
+| Field | Value |
+|-------|-------|
+| **Name** | `email-from-upn` |
+| **Sync mode override** | `Inherit` |
+| **Mapper type** | `Attribute Importer` |
+| **Claim** | `preferred_username` |
+| **User Attribute Name** | `email` |
+
+Then set **Trust Email = On** on the identity provider — this realm has no SMTP server configured,
+so without it the user gets stuck on *Verify email*.
+
+This step is worth doing live in the workshop: it is the clearest illustration of why brokered
+attribute mapping has to be verified rather than assumed.
+
+### Step 5: Test the Integration
+
+1. In Keycloak, open the account console of the realm: http://localhost:8080/realms/labrealm/account
+2. On the login page, click **Microsoft Entra ID**
+3. Sign in with your Entra ID account
+4. You are redirected back to Keycloak, which provisions the user just in time (JIT) and lands you
+   in the account console — **without** an *Update Account Information* page
+
+If that page still shows up, see the troubleshooting section below. Note that the user is only
+provisioned once: to test a changed mapping, delete the user in **Users** first, otherwise
+`first broker login` is skipped on the next sign-in.
 
 ## Architecture Overview
 
@@ -133,11 +186,11 @@ sequenceDiagram
 
     User->>App: Access protected resource
     App->>KC: Redirect to Keycloak login
-    KC-->>User: Login page with "Microsoft Azure AD" button
-    User->>KC: Click "Microsoft Azure AD"
+    KC-->>User: Login page with "Microsoft Entra ID" button
+    User->>KC: Click "Microsoft Entra ID"
     KC->>Entra: Authorization Code Request (OIDC)
     Entra-->>User: Microsoft login page
-    User->>Entra: Login with Azure AD credentials
+    User->>Entra: Login with Azure Entra ID credentials
     Entra-->>KC: Authorization Code
     KC->>Entra: Exchange code for tokens (backchannel)
     Entra-->>KC: ID Token + Access Token
@@ -194,6 +247,20 @@ Type `yes` to confirm deletion.
 ### Issue: "Client authentication failed"
 
 **Solution**: Double-check that you're using the correct client secret from `terraform output -raw application_client_secret`.
+
+### Issue: Keycloak shows "Update Account Information" after returning from Entra ID
+
+Keycloak's `first broker login` flow runs the **Review Profile** authenticator with
+`Update Profile on First Login = missing`, so this page appears whenever a required user-profile
+attribute could not be filled from the token. Work through it in this order:
+
+1. **Are the scopes set?** Identity provider > *Advanced settings* > **Scopes** must contain
+   `profile email` (see Step 2). Empty means `scope=openid` only, and then *all* fields are missing.
+2. **Which field is still empty?** The pre-filled fields on the page tell you exactly which claims
+   arrived. Username and first/last name filled but email empty is the `mail`-is-null case from
+   Step 4 — fix it with the `email-from-upn` mapper.
+3. **Delete the already-provisioned user** in the realm before re-testing. Once a user is linked to
+   the provider, `first broker login` no longer runs and you will not see your change take effect.
 
 ## Security Notes
 
