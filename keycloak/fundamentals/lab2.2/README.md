@@ -38,5 +38,5 @@ What a PostgreSQL container might look like is described below.
     networks:
       - backend
     volumes:
-        - postgres-data:/var/lib/postgresql/data
+        - postgres-data:/var/lib/postgresql
 ```
