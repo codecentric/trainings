@@ -33,7 +33,7 @@ Before running the test, please make sure either Docker Desktop or Podman Deskto
 * **Podman Desktop:** https://podman-desktop.io/ (ensure Compose support or `podman-compose` is enabled/installed)
 
 ### Running the Test
-1) Open a terminal and navigate to this directory (`keycloak/fundamentals/composetest`).
+1) Open a terminal and navigate to this directory (`keycloak/composetest`).
 2) Start the Keycloak container in detached mode:
     * **Docker:** `docker compose up -d`
     * **Podman:** `podman compose up -d`
