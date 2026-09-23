@@ -3,7 +3,7 @@ name: kc-fundamentals-composetest
 services:
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.3.3
+    image: quay.io/keycloak/keycloak:26.7.4
     environment:
 
       # Keycloak Admin User

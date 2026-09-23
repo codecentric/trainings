@@ -2,7 +2,7 @@ name: kc-fundamentals-lab2-8
 services:
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.5.3
+    image: quay.io/keycloak/keycloak:26.7.4
     environment:
 
       # Keycloak Admin User
