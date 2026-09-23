@@ -1,48 +1,55 @@
-# Lab 2.5
+# Lab 2.5 – Token Exchange & Downscoping
 
 ## DE
 
-1) Startet das Lab via `docker compose up`.
-2) Legt (im Master Realm) einen neuen Client mit dem Namen `labclient` an. Die Einstellungen können auf Default bleiben. Achtet darauf, den Direct Access Grant zu aktivieren.
-3) Legt einen neuen User `labuser` an.
-4) Legt unter Realm Settings -> Tokens -> Access Token Lifespan die Zeit auf 15min fest.
-5) Ruft für den Admin die Token ab (s. Code 1) und prüft dessen ID Token unter jwt.io.
-6) Tauscht den Access Tokens des Admin gegen die Token des angelegen `labuser` ein (s. Code 2).
-7) Prüft, ob der erhaltene ID-Token zum `labuser` gehört.
+1) Startet das Lab via `docker compose up`. Das Realm `labrealm` (Clients, User, Mapper) wird automatisch importiert – schaut euch die Datei `./config/labrealm.json` an, um zu sehen, was konfiguriert wurde.
+2) Loggt euch in die Admin Console ein (http://localhost:8080, `admin`/`admin`) und verschafft euch einen Überblick im Realm `labrealm`:
+   - Client `labclient`: confidential Client (**Client authentication** an), **Direct access grants** an, **Standard token exchange** an (Settings → Capability config)
+   - Die beiden Audience-Mapper am `labclient` (Client scopes → `labclient-dedicated` → Mappers)
+   - User `labuser`
+3) Ruft die Token für `labuser` ab (s. Code 1) und prüft den **Access Token** unter jwt.io: Die `aud`-Claim enthält `backend-a` und `backend-b`.
+4) Tauscht den Access Token gegen einen auf `backend-a` heruntergestuften ("downscoped") Token ein (s. Code 2). Achtet darauf, dass sich `labclient` dabei per **Client Secret** authentifizieren muss.
+5) Prüft den erhaltenen Access Token unter jwt.io: Die `aud`-Claim enthält nur noch `backend-a`. Die `sub`-Claim gehört weiterhin zum `labuser` — durch den Token Exchange ändert sich also **nicht** die Identität, sondern nur die Zielgruppe/Authorisierung.
+6) Optional: Was passiert, wenn ihr die `-u`-Client-Authentifizierung weglasst? Und was, wenn ihr eine Audience anfragt, die im Token nicht verfügbar ist (z. B. ein zusätzlich angelegter `backend-c` ohne Mapper)?
 
 ## EN
 
-1) Starts the lab via `docker compose up`.
-2) Create (in master realm) a new client with the name `labclient`. The settings can remain at default. Make sure to activate the Direct Access Grant.
-3) Create a new user `labuser`.
-4) Set the time to 15min under Realm Settings -> Tokens -> Access Token Lifespan.
-5) Retrieve the tokens for the admin (see code 1) and check his ID token under jwt.io.
-6) Exchange the admin's access token for the tokens of the created `labuser` (see code 2).
-7) Check whether the ID token received belongs to the `labuser`.
- 
+1) Start the lab via `docker compose up`. The realm `labrealm` (clients, user, mappers) is imported automatically – take a look at the file `./config/labrealm.json` to see what has been configured.
+2) Log into the admin console (http://localhost:8080, `admin`/`admin`) and get an overview of the realm `labrealm`:
+   - Client `labclient`: confidential client (**Client authentication** on), **Direct access grants** on, **Standard token exchange** on (Settings → Capability config)
+   - The two audience mappers on `labclient` (Client scopes → `labclient-dedicated` → Mappers)
+   - User `labuser`
+3) Retrieve the tokens for `labuser` (see code 1) and check the **access token** under jwt.io: The `aud` claim contains `backend-a` and `backend-b`.
+4) Exchange the access token for a token downscoped to `backend-a` (see code 2). Note that `labclient` has to authenticate with its **client secret**.
+5) Check the received access token under jwt.io: The `aud` claim only contains `backend-a` anymore. The `sub` claim still belongs to `labuser` — the token exchange does **not** change the identity, only the audience/authorization.
+6) Optional: What happens if you omit the `-u` client authentication? And what if you request an audience that is not available in the token (e.g. an additionally created `backend-c` without a mapper)?
+
 ## Code 1
 
 ```
 curl \
 -d "client_id=labclient" \
--d "username=admin" \
--d "password=admin" \
+-d "client_secret=labclient-secret" \
+-d "username=labuser" \
+-d "password=labuser" \
 -d "grant_type=password" \
--d "scope=openid" \
-"http://localhost:8080/realms/master/protocol/openid-connect/token"
+"http://localhost:8080/realms/labrealm/protocol/openid-connect/token"
 ```
-
 
 ## Code 2
 
 ```
 curl \
--d "client_id=labclient" \
--d "requested_subject=labuser" \
--d "subject_token=<ADMIN-ACCESS-TOKEN>" \
+-u "labclient:labclient-secret" \
 -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
--d "scope=openid" \
-"http://localhost:8080/realms/master/protocol/openid-connect/token"
+-d "subject_token=<ACCESS-TOKEN>" \
+-d "subject_token_type=urn:ietf:params:oauth:token-type:access_token" \
+-d "audience=backend-a" \
+"http://localhost:8080/realms/labrealm/protocol/openid-connect/token"
 ```
 
+## Background
 
+Token Exchange ist die RFC 8693-konforme, vollständig unterstützte Implementierung und seit Keycloak 26 standardmäßig aktiviert. Über den `audience`-Parameter wird der Token auf die minimal nötige Zielgruppe (**Least Privilege**) heruntergestuft. Das ist das typische Muster für Microservice-Architekturen: ein Gateway tauscht den User-Token gegen einen Token ein, der nur noch für den jeweils aufzurufenden Service gültig ist.
+
+English: Token exchange is the RFC 8693-compliant, fully supported implementation and enabled by default since Keycloak 26. The `audience` parameter downscopes the token to the minimum required audience (least privilege) — the typical pattern for microservice architectures, where a gateway exchanges the user token for one valid only for the service it is about to call.

@@ -1,0 +1,65 @@
+{
+  "enabled": true,
+  "realm": "labrealm",
+  "clients": [
+    {
+      "clientId": "backend-a",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "backend-b",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "labclient",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "labclient-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "attributes": { "standard.token.exchange.enabled": "true" },
+      "protocolMappers": [
+        {
+          "name": "aud-backend-a",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "backend-a",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "aud-backend-b",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "backend-b",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "labuser",
+      "enabled": true,
+      "firstName": "Lab",
+      "lastName": "User",
+      "email": "labuser@example.org",
+      "emailVerified": true,
+      "credentials": [
+        { "type": "password", "value": "labuser", "temporary": false }
+      ]
+    }
+  ]
+}

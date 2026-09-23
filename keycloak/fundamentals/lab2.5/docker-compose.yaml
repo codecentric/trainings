@@ -1,4 +1,3 @@
-
 name: kc-fundamentals-lab2-5
 services:
 
@@ -13,8 +12,6 @@ services:
       # Logging, see: https://www.keycloak.org/server/logging
       KC_LOG_LEVEL: INFO
 
-      KC_FEATURES: token-exchange
-
     volumes:
       - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
 
@@ -27,6 +24,24 @@ services:
     command:
       - "--verbose"
       - "start-dev" # Only for Dev-Environment!
+
+  # Imports the preconfigured realm `labrealm` (clients, mappers, user) on startup
+  keycloak-config:
+    depends_on:
+      - keycloak
+    image: adorsys/keycloak-config-cli:latest-26.1.0
+    environment:
+      KEYCLOAK_URL: "http://keycloak:8080/"
+      KEYCLOAK_USER: "admin"
+      KEYCLOAK_PASSWORD: "admin"
+      KEYCLOAK_AVAILABILITYCHECK_ENABLED: true
+      KEYCLOAK_AVAILABILITYCHECK_TIMEOUT: 120s
+      IMPORT_FILES_LOCATIONS: '/config/*'
+    volumes:
+      - ./config:/config
+    networks:
+      - backend
+    restart: "no"
 
 networks:
   backend:
