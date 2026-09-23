@@ -10,7 +10,7 @@ Bevor ihr startet, muss entweder Docker Desktop oder Podman Desktop auf eurem Re
 * **Podman Desktop:** https://podman-desktop.io/ (stellt sicher, dass die Compose-Unterstützung bzw. `podman-compose` aktiviert/installiert ist)
 
 ### Test ausführen
-1) Öffnet ein Terminal und wechselt in dieses Verzeichnis (`keycloak/fundamentals/composetest`).
+1) Öffnet ein Terminal und wechselt in dieses Verzeichnis (`keycloak/composetest`).
 2) Startet den Keycloak-Container im Hintergrund:
     * **Docker:** `docker compose up -d`
     * **Podman:** `podman compose up -d`
