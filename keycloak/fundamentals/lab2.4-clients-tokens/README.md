@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab werden die zentralen Konzepte von OAuth2/OIDC in der Praxis kennenengelernt: Realm, Client und User werden angelegt und über den Direct Access Grant (Resource Owner Password Credentials) per curl ein Token abgerufen. Du lernst, wie ein Token-Request aussieht, was ein Access Token (JWT) enthält und wie du es mit jwt.io analysierst — die Grundlage für alle weiteren Labs.
+
 1) Startet das Lab via `docker compose up`.
 2) Legt einen neuen Realm mit dem Namen `labrealm` an.
 3) Legt einen neuen Client mit dem Namen `labclient` an. Die Einstellungen können auf Default bleiben. Achtet darauf, den Direct Access Grant zu aktivieren.
@@ -19,6 +23,10 @@
 cURL unter Windows ist nicht gleich cURL unter macOS oder Linux und funktioniert ganz anders. Unter Windows empfehlen wir Invoke-WebRequest unter Powershell. Unten ist ein Beispiel.
 
 ## EN
+
+### Goal
+
+In this lab, you will get to know the central concepts of OAuth2/OIDC in practice: realm, client and user are created and a token is retrieved via curl using the Direct Access Grant (Resource Owner Password Credentials). You will learn what a token request looks like, what an access token (JWT) contains and how to analyze it with jwt.io — the foundation for all subsequent labs.
 
 1) Starts the lab via `docker compose up`.
 2) Create a new realm with the name `labrealm`.

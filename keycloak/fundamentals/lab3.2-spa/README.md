@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab wird eine Single Page Application (SPA) mit keycloak-js direkt an Keycloak angebunden. Du lernst, wie eine eigene Anwendung den OIDC-Login-Flow (mit Redirects und Sessions) selbst implementiert, wie du Login und Logout in den Developer Tools nachvollziehst und wie Single-Sign-On und Single-Sign-Out über Anwendungen hinweg funktionieren.
+
 1) Startet das Lab via `docker compose up`.
 2) Realm `labrealm` und einen Testbenutzer anlegen
 3) Lege einen Client `spa` an (ohne Client Auth) und erlaube `http://localhost:8081/*` als Redirect URL
@@ -10,6 +14,10 @@
 6) Logge dich ein der SPA ein. Rufe dann die Account Console mit dem gleichen Benutzer auf und logge dich dort aus. Du kannst beobachten, dass du auch in der SPA ausgeloggt wirst, da Keycloak Single-Sign-Out unterstützt.
 
 ## EN
+
+### Goal
+
+In this lab, a single page application (SPA) is connected directly to Keycloak using keycloak-js. You will learn how your own application implements the OIDC login flow (with redirects and sessions) itself, how you can trace login and logout in the developer tools and how single sign-on and single sign-out work across applications.
 
 1) Start the lab via `docker compose up`.
 2) Create realm `labrealm` and a test user

@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab wird Keycloak zum ersten Mal über Docker Compose gestartet. Du lernst, wie eine Keycloak-Instanz als Container betrieben wird, welche Informationen du bereits aus der Compose-Datei ablesen kannst (Image, Ports, Start-Modus, Admin-Zugang) und wie du dich in die Admin Console einloggst.
+
 **Voraussetzung:** Ihr müsst `Docker Desktop` (https://www.docker.com/products/docker-desktop/, bitte Lizensierung beachten)
 oder `Podman Desktop` (https://podman-desktop.io/) auf eurem PC installiert haben.
 
@@ -11,6 +15,10 @@ oder `Podman Desktop` (https://podman-desktop.io/) auf eurem PC installiert habe
 4) Öffnet in eurem Browser die URL http://localhost:8080 und loggt euch mit den Credentials `admin`/`admin` ein.
 
 ## EN
+
+### Goal
+
+In this lab, Keycloak is started for the first time via Docker Compose. You will learn how to operate a Keycloak instance as a container, which information you can already read from the compose file (image, ports, start mode, admin access) and how to log in to the Admin Console.
 
 **Prerequisite:** You must have `Docker Desktop` (https://www.docker.com/products/docker-desktop/, please note licensing)
 or `Podman Desktop` (https://podman-desktop.io/) installed on your PC.

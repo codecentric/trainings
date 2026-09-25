@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab wird die von Keycloak standardmäßig genutzte H2-Datenbank durch eine PostgreSQL-Datenbank ersetzt. Du lernst, wie Keycloak über Environmentvariablen (`KC_DB*`) konfiguriert wird, wie man einen Datenbank-Container in die Compose-Umgebung integriert und wie du die aktive Datenbankverbindung über die Admin Console (SPI `connectionsJpa`) verifizierst.
+
 1) Bitte öffnet die in diesem Verzeichnis liegende Datei `docker-compose.yaml`. Sie ist der aus der vorherigen Lab sehr ähnlich.
 2) Aktuell nutzt Keycloak in dieser Konfiguration eine H2 Datenbank, die für eine Produktionsumgebung nicht empfohlen wird. Sie sollte z. B. auf eine PostgreSQL Datenbank umgestellt werden, indem ihr die .yaml-Datei anpasst. Schaut euch hierzu die Containerdokumentation an: https://www.keycloak.org/server/containers
     * Interessant für euch sind insbesondere die Environmentvariablen `KC_DB`, `KC_DB_URL`, `KC_DB_USERNAME` und `KC_DB_PASSWORD` die ihr eurem Keycloak-Container hinzufügen solltet.
@@ -13,6 +17,10 @@
 Wie ein PostgreSQL Container aussehen könnte, ist unten beschrieben.
 
 ## EN
+
+### Goal
+
+In this lab, the H2 database used by Keycloak by default is replaced by a PostgreSQL database. You will learn how Keycloak is configured via environment variables (`KC_DB*`), how to integrate a database container into the compose environment and how to verify the active database connection via the Admin Console (SPI `connectionsJpa`).
 
 1) Please open the file `docker-compose.yaml` located in this directory. It is very similar to the one from the previous lab.
 2) Keycloak currently uses an H2 database in this configuration, which is not recommended for a production environment. It should be switched to a PostgreSQL database by adapting the .yaml file. Take a look at the container documentation: https://www.keycloak.org/server/containers

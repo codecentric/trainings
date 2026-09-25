@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab wird der Standard Token Exchange (RFC 8693) praktisch erprobt: Ein Access Token mit mehreren Audiences (`backend-a`, `backend-b`) wird gegen einen auf eine Zielgruppe heruntergestuften („downscoped") Token eingetauscht. Du lernst, wie der Token-Exchange-Grant funktioniert, welchen Einfluss Audience-Mapper auf die `aud`-Claim haben und wie man nach dem Least-Privilege-Prinzip Tokens gezielt für einzelne Services ausstellt — das typische Muster für Microservice-Architekturen.
+
 1) Startet das Lab via `docker compose up`. Das Realm `labrealm` (Clients, User, Mapper) wird automatisch importiert – schaut euch die Datei `./config/labrealm.json` an, um zu sehen, was konfiguriert wurde.
 2) Loggt euch in die Admin Console ein (http://localhost:8080, `admin`/`admin`) und verschafft euch einen Überblick im Realm `labrealm`:
    - Client `labclient`: confidential Client (**Client authentication** an), **Direct access grants** an, **Standard token exchange** an (Settings → Capability config)
@@ -13,6 +17,10 @@
 6) Optional: Was passiert, wenn ihr die `-u`-Client-Authentifizierung weglasst? Und was, wenn ihr eine Audience anfragt, die im Token nicht verfügbar ist (z. B. ein zusätzlich angelegter `backend-c` ohne Mapper)?
 
 ## EN
+
+### Goal
+
+In this lab, you will practically try out standard token exchange (RFC 8693): an access token with multiple audiences (`backend-a`, `backend-b`) is exchanged for a token downscoped to a single audience. You will learn how the token exchange grant works, how audience mappers influence the `aud` claim and how to issue tokens for individual services following the least-privilege principle — the typical pattern for microservice architectures.
 
 1) Start the lab via `docker compose up`. The realm `labrealm` (clients, user, mappers) is imported automatically – take a look at the file `./config/labrealm.json` to see what has been configured.
 2) Log into the admin console (http://localhost:8080, `admin`/`admin`) and get an overview of the realm `labrealm`:

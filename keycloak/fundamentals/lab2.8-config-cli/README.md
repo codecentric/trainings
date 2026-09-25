@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab wird die Realm-Konfiguration nicht manuell über die Admin Console, sondern deklarativ über die keycloak-config-cli vorgenommen. Du lernst, wie eine Realm-Konfiguration als JSON-Datei beschrieben wird, wie der Import per `docker compose run` ausgeführt wird und wie man über Variablen-Substitution (`IMPORT_VAR_SUBSTITUTION_ENABLED`) Konfigurationen wiederverwendbar macht — die Grundlage für Infrastructure as Code mit Keycloak.
+
 ### Teil 1 - Config Importieren
 
 1) Startet das Lab via `docker compose up`.
@@ -19,6 +23,10 @@
 4) Setzt die Config wie zuvor um und prüft, ob alles geklappt hat.
 
 ## EN
+
+### Goal
+
+In this lab, the realm configuration is not done manually via the Admin Console, but declaratively using the keycloak-config-cli. You will learn how a realm configuration is described as a JSON file, how the import is executed via `docker compose run` and how variable substitution (`IMPORT_VAR_SUBSTITUTION_ENABLED`) makes configurations reusable — the foundation for infrastructure as code with Keycloak.
 
 ### Part 1 - Import config
 

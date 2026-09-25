@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab wird ein OAuth2 Proxy als Reverse Proxy vor eine statische Webseite geschaltet, um die Anwendung mit Single Sign-On abzusichern, ohne dass die Anwendung selbst etwas von OAuth2/OIDC wissen muss. Du lernst, wie der Proxy als OAuth2-Client an Keycloak angebunden wird, welche Rolle der Audience-Mapper für die Token-Validierung spielt und wie der Authorization Code Flow mit Redirects in der Praxis abläuft.
+
 1) Startet das Lab via `docker compose up`.
 2) Legt einen Realm `proxy` sowie darin einen Client `proxy` mit Client Auth an, der die Redirect URL `http://localhost:4180/*` akzeptiert. Kopiert euch das Client Secret.
 3) Legt einen Benutzer vollständig an.
@@ -14,6 +18,10 @@
 Zusatzaufgabe: Versucht über eine Environmentvariable des OAuth Proxies PKCE zu aktivieren.
 
 ## EN
+
+### Goal
+
+In this lab, an OAuth2 proxy is placed as a reverse proxy in front of a static website in order to secure the application with single sign-on without the application itself needing to know anything about OAuth2/OIDC. You will learn how the proxy is connected to Keycloak as an OAuth2 client, which role the audience mapper plays in token validation and how the authorization code flow with redirects works in practice.
 
 1) Start the Lab via `docker compose up`.
 2) Create a realm `proxy` and a client `proxy` with Client Auth that accepts the redirect URL `http://localhost:4180/*`. Copy the client secret.

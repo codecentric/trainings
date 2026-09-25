@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab wird eine OpenLDAP-Instanz als User Federation an Keycloak angebunden. Du lernst, wie Keycloak Benutzer nicht nur in seiner eigenen Datenbank, sondern auch aus externen Verzeichnisdiensten (LDAP) beziehen kann, wie eine LDAP-Verbindung konfiguriert und getestet wird und wie importierte Benutzer sich anschließend ganz normal über die Account-Console einloggen.
+
 1) Bitte öffnet die in diesem Verzeichnis liegende Datei `docker-compose.yaml`.
 2) Schaut euch den Inhalt der Datei an und prüft, welche Eigenschaften der Umgebung ihr hier erfahren könnt. Prüft insbesondere auch den `openldap`-Container.
 3) Legt einen neuen Realm an.
@@ -16,6 +20,10 @@
 6) Versucht euch mit einem der importierten Benutzer in die Account-Console einzuloggen. Den Link zur Account-Console findet ihr unter Clients in der rechten Spalte als Home URL.
 
 ## EN
+
+### Goal
+
+In this lab, an OpenLDAP instance is connected to Keycloak as user federation. You will learn how Keycloak can obtain users not only from its own database but also from external directory services (LDAP), how to configure and test an LDAP connection and how imported users can then log in normally via the Account Console.
 
 1) Please open the file `docker-compose.yaml` located in this directory.
 2) Look at the contents of the file and check which properties of the environment you can find out here. In particular, check the `openldap` container.

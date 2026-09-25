@@ -2,6 +2,10 @@
 
 ## DE
 
+### Ziel
+
+In diesem Lab wird der Authentication Flow (Browser Flow) von Keycloak angepasst: Ein eigenes User-Profil-Attribut (`farbe`) wird über eine Condition in den Login-Prozess eingebunden, so dass Benutzer mit einem bestimmten Attributwert den Zugriff verweigert bekommen. Du lernst, wie User-Profil-Attribute konfiguriert werden, wie Authentication Flows aufgebaut sind (Sub Flows, Conditions, Executions) und wie man eigene Authentifizierungsregeln umsetzt.
+
 1) Startet das Lab via `docker compose up`.
 2) Legt einen neuen Realm und einen Benutzer im Realm an.
 3) Fügt in den Realm settings dem User profile ein neues Attribut mit dem Namen `farbe` hinzu. Nutzt die Permissions im Erstellungsdialog um das Attribut durch User & Admin einsehbar und editierbar zu machen.
@@ -16,6 +20,10 @@
 8) Prüft, ob der Login erfolgreich ist, wenn ihr dem Benutzer zuvor eine andere Lieblingsfarbe zuweist.
 
 ## EN
+
+### Goal
+
+In this lab, Keycloak's authentication flow (browser flow) is customized: a custom user profile attribute (`color`) is integrated into the login process via a condition, so that users with a certain attribute value are denied access. You will learn how user profile attributes are configured, how authentication flows are structured (sub flows, conditions, executions) and how to implement your own authentication rules.
 
 1) Start the lab via `docker compose up`.
 2) Create a new realm and a user in the realm.
