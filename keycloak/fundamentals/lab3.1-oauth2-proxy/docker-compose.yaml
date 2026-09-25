@@ -34,7 +34,7 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ./html:/usr/share/nginx/html
+      - ./html:/usr/share/nginx/html:ro,z
     networks:
       - backend
     restart: always
@@ -46,8 +46,6 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_LOG_LEVEL: INFO
       KC_HEALTH_ENABLED: "true"
-    volumes:
-      - keycloak-data:/opt/keycloak/data:z
     ports:
       - "8080:8080"
       - "9000:9000"
@@ -65,6 +63,3 @@ services:
 
 networks:
   backend:
-
-volumes:
-  keycloak-data:

@@ -8,8 +8,6 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_LOG_LEVEL: INFO
-    volumes:
-      - keycloak-data:/opt/keycloak/data:z
     ports:
       - "8080:8080"
     networks:
@@ -33,12 +31,6 @@ services:
       LDAP_ROOT: dc=codecentric,dc=de
     networks:
       - backend
-    volumes:
-      - 'openldap-data:/bitnami/openldap'
 
 networks:
   backend:
-
-volumes:
-  keycloak-data:
-  openldap-data:

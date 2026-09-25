@@ -13,10 +13,6 @@ services:
       # Logging, see: https://www.keycloak.org/server/logging
       KC_LOG_LEVEL: INFO
 
-    volumes:
-      # Keycloak data, including but not exclusive to the H2 database
-      - keycloak-data:/opt/keycloak/data:z
-
     ports:
       - "8080:8080"   # HTTP
 
@@ -29,6 +25,3 @@ services:
 
 networks:
   backend:
-
-volumes:
-  keycloak-data:

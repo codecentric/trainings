@@ -45,6 +45,4 @@ What a PostgreSQL container might look like is described below.
       - "5432:5432"
     networks:
       - backend
-    volumes:
-        - postgres-data:/var/lib/postgresql
 ```

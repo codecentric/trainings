@@ -20,8 +20,7 @@ services:
       KC_DB_PASSWORD: postgres_pass
 
     volumes:
-      - keycloak-data:/opt/keycloak/data:z
-      - ./themes:/opt/keycloak/themes:z
+      - ./themes:/opt/keycloak/themes:ro,z
 
     ports:
       - "8080:8080"   # HTTP
@@ -43,12 +42,6 @@ services:
         - "5432:5432"
     networks:
       - backend
-    volumes:
-        - postgres-data:/var/lib/postgresql
 
 networks:
   backend:
-
-volumes:
-  keycloak-data:
-  postgres-data:
