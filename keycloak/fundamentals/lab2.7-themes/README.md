@@ -1,4 +1,4 @@
-# Lab 2.7
+# Lab 2.7 – Themes
 
 ## DE
 

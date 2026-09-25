@@ -1,4 +1,4 @@
-# Lab 2.2
+# Lab 2.2 – PostgreSQL Database
 
 ## DE
 

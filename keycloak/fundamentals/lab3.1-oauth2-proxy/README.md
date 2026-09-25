@@ -1,4 +1,4 @@
-# Lab 3.1
+# Lab 3.1 – OAuth2 Proxy
 
 ## DE
 

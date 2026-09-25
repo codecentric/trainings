@@ -1,4 +1,4 @@
-# Lab 2.6
+# Lab 2.6 – Authentication Flows
 
 ## DE
 

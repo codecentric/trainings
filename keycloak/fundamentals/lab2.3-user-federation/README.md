@@ -1,4 +1,4 @@
-# Lab 2.3
+# Lab 2.3 – User Federation (LDAP)
 
 ## DE
 

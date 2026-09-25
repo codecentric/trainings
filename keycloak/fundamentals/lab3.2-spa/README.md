@@ -1,4 +1,4 @@
-# Lab 3.2
+# Lab 3.2 – Single Page Application with keycloak-js
 
 ## DE
 

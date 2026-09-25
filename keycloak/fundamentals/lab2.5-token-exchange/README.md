@@ -1,4 +1,4 @@
-# Lab 2.5 – Token Exchange & Downscoping
+# Lab 2.5 – Token Exchange
 
 ## DE
 

@@ -1,4 +1,4 @@
-# Lab 2.8
+# Lab 2.8 – keycloak-config-cli
 
 ## DE
 
