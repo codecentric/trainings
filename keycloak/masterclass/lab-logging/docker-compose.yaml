@@ -14,7 +14,7 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z
-      - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json
+      - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json:z
 
     ports:
       - "127.0.0.1:8080:8080"
@@ -33,7 +33,7 @@ services:
   loki:
     image: grafana/loki:3.4.3
     volumes:
-      - ./loki/loki.yml:/etc/loki/local-config.yaml:ro
+      - ./loki/loki.yml:/etc/loki/local-config.yaml:ro,z
       - loki-data:/loki
     ports:
       - "3100:3100"
@@ -43,9 +43,9 @@ services:
   promtail:
     image: grafana/promtail:3.4.3
     volumes:
-      - ./promtail/promtail.yml:/etc/promtail/config.yml:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./promtail/promtail.yml:/etc/promtail/config.yml:ro,z
+      - /var/run/docker.sock:/var/run/docker.sock:ro,z
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro,z
     depends_on:
       - loki
     networks:
@@ -58,7 +58,7 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: admin
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro,z
     ports:
       - "3000:3000"
     depends_on:

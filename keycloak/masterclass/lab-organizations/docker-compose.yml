@@ -12,8 +12,8 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
-      - ./realm-customer-a.json:/opt/keycloak/data/import/realm-customer-a.json
-      - ./realm-customer-b.json:/opt/keycloak/data/import/realm-customer-b.json
+      - ./realm-customer-a.json:/opt/keycloak/data/import/realm-customer-a.json:z
+      - ./realm-customer-b.json:/opt/keycloak/data/import/realm-customer-b.json:z
 
     ports:
       - 127.0.0.1:8080:8080 # HTTP

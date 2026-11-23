@@ -30,7 +30,7 @@ services:
       IMPORT_VAR_SUBSTITUTION_ENABLED: "true"
       LASTNAME: "codecentric"
     volumes:
-      - ./config:/config
+      - ./config:/config:z
 
 volumes:
   keycloak-data:

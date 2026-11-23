@@ -16,8 +16,8 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
-      - ./config/realm-externe-firma.json:/opt/keycloak/data/import/realm-externe-firma.json
-      - ./config/realm-meine-firma.json:/opt/keycloak/data/import/realm-meine-firma.json
+      - ./config/realm-externe-firma.json:/opt/keycloak/data/import/realm-externe-firma.json:z
+      - ./config/realm-meine-firma.json:/opt/keycloak/data/import/realm-meine-firma.json:z
 
     ports:
       - 127.0.0.1:8080:8080 # HTTP

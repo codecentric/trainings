@@ -12,7 +12,7 @@ services:
       JAVA_OPTS_APPEND: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     volumes:
       - keycloak-data:/opt/keycloak/data:z
-      - ./realm/mcp-demo.json:/opt/keycloak/data/import/mcp-demo.json:ro
+      - ./realm/mcp-demo.json:/opt/keycloak/data/import/mcp-demo.json:ro,z
     ports:
       - 127.0.0.1:8080:8080
       - 127.0.0.1:5005:5005

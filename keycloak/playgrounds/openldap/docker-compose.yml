@@ -57,7 +57,7 @@ services:
     volumes:
       - ldap-data:/var/lib/ldap
       - ldap-config:/etc/ldap/slapd.d
-      - ./openldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/bootstrap.ldif:ro
+      - ./openldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/bootstrap.ldif:ro,z
     environment:
       LDAP_ORGANISATION: Example
       LDAP_DOMAIN: example.com
@@ -102,8 +102,8 @@ services:
         condition: service_healthy
     volumes:
       - keytabs:/keytabs:ro
-      - ./krb5.conf:/etc/krb5.conf:ro
-      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+      - ./krb5.conf:/etc/krb5.conf:ro,z
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro,z
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin

@@ -10,7 +10,7 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z  # Keycloak h2 database, not for production!
-      - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json
+      - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json:z
 
     ports:
       - "127.0.0.1:8080:8080"   # HTTP (Admin UI, Auth)
@@ -30,7 +30,7 @@ services:
   prometheus:
     image: prom/prometheus:v3.2.1
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro,z
       - prometheus-data:/prometheus
     ports:
       - "9090:9090"
@@ -46,8 +46,8 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: admin
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro,z
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro,z
     ports:
       - "3000:3000"
     depends_on:

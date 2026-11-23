@@ -12,7 +12,7 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
-      - ./realm-self-service.json:/opt/keycloak/data/import/realm-self-service.json
+      - ./realm-self-service.json:/opt/keycloak/data/import/realm-self-service.json:z
 
     ports:
       - 127.0.0.1:8080:8080 # HTTP

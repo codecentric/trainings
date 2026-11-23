@@ -11,7 +11,7 @@ services:
       KC_HOSTNAME_BACKCHANNEL_DYNAMIC: true
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
-      - ./realm-lab.json:/opt/keycloak/data/import/realm-lab.json
+      - ./realm-lab.json:/opt/keycloak/data/import/realm-lab.json:z
     ports:
       - 127.0.0.1:8080:8080 # HTTP
     networks:

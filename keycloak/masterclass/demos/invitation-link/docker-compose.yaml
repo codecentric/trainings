@@ -23,7 +23,7 @@ services:
       KC_SMTP_SSL: "false"
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
-      - ./realm-invitation.json:/opt/keycloak/data/import/realm-invitation.json
+      - ./realm-invitation.json:/opt/keycloak/data/import/realm-invitation.json:z
     ports:
       - 127.0.0.1:8080:8080 # HTTP
     networks:

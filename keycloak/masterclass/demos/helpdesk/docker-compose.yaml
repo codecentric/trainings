@@ -13,7 +13,7 @@ services:
     volumes:
       - keycloak-data:/opt/keycloak/data:z # Keycloak h2 database, not for production!
       # Realm "helpdesk" inkl. Rollen, Gruppen und Benutzern
-      - ./realm-helpdesk.json:/opt/keycloak/data/import/realm-helpdesk.json
+      - ./realm-helpdesk.json:/opt/keycloak/data/import/realm-helpdesk.json:z
       # Corporate-Design-Theme "nordlicht" (Typen login + admin).
       # start-dev deaktiviert den Theme-Cache, Aenderungen wirken nach einem Reload.
       - ./themes:/opt/keycloak/themes:z

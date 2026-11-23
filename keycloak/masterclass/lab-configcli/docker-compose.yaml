@@ -36,7 +36,7 @@ services:
       KEYCLOAK_AVAILABILITYCHECK_TIMEOUT: 5s
       IMPORT_FILES_LOCATIONS: "/config/*"
     volumes:
-      - ./config:/config
+      - ./config:/config:z
 
 volumes:
   keycloak-data:

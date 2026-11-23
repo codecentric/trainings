@@ -19,7 +19,7 @@ services:
     volumes:
       - keycloak-data:/opt/keycloak/data:z
       - ./themes:/opt/keycloak/themes:z
-      - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json
+      - ../realm-lab.json:/opt/keycloak/data/import/realm-lab.json:z
 
     ports:
       - 127.0.0.1:8080:8080 # HTTP
